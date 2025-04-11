@@ -80,7 +80,7 @@
     ]
     
     const menu5 = [
-        { label: '공지 사항', href: '/notice' },
+        { label: '공지 사항', href: '/noticeLayout' },
         { label: '문의 사항', href: '/qna' },
         { label: '나의 신고 내역', href: '/myReport' }
     ]

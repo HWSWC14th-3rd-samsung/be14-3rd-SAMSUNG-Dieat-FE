@@ -5,16 +5,15 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Signup from '@/views/Signup.vue';
 import Login from '@/views/Login.vue';
-import Service from '@/views/Service.vue';
-// import About from '@/pages/About.vue';
-// import Contact from '@/pages/Contact.vue';
+import NoticeLayout from '../views/NoticeLayout.vue';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {path: '/', name: Home, component: Home},
     {path: '/signup', component: Signup},
-    {path: '/login', component: Login}
+    {path: '/login', component: Login},
+    {path: '/noticeLayout', component: NoticeLayout}
 
   ]
 });
