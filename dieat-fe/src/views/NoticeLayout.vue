@@ -2,7 +2,9 @@
     <Header></Header>
     <div>
         <div class="breadcrumb">
-            <span>Home &gt; Service &gt; 공지 사항</span>
+            <RouterLink to="/" class="text-link">Home &gt; </RouterLink>
+            <span>Service &gt; </span>
+            <RouterLink to="/noticeLayout" class="text-link">공지 사항</RouterLink>
         </div>
         <h1>공지 사항</h1>
         <img src="@/assets/searching.png" alt="searching bar" class="searchingBar-img">
@@ -14,15 +16,17 @@
             </li>
         </ul>
     </div>
+
     <div class="board-wrapper">
-        <NoticeTable :posts="noticePosts"/>
+        <ServiceTable :posts="noticePosts"/>
     </div>
+
 </template>
 
 <script setup>
     import Header from '../components/common/Header.vue';
-    import NoticeTable from './NoticeTable.vue';
-    import { ref } from 'vue';
+    import ServiceTable from './ServiceTable.vue';
+    import { ref, computed } from 'vue';
     import { useRouter } from 'vue-router';
 
     const noticePosts = ref([
@@ -39,12 +43,20 @@
 
 <style scoped>
 
-    .breadcrumb span {
+    .breadcrumb {
         display: block;
         text-align: right;
         margin-top: 1rem;
         margin-right: 3rem;
         color: gray;
+        flex-wrap: nowrap;
+    }
+
+    .text-link {
+        color: inherit;
+        text-decoration: none;
+        font-weight: normal;
+        cursor: pointer;
     }
 
     h1 {
@@ -55,7 +67,7 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 5rem;
+        margin-top: 6rem;
     }
 
     .board-wrapper {

@@ -81,24 +81,29 @@
     
     const menu5 = [
         { label: '공지 사항', href: '/noticeLayout' },
-        { label: '문의 사항', href: '/qna' },
-        { label: '나의 신고 내역', href: '/myReport' }
+        { label: '문의 사항', href: '/qnaLayout' },
+        { label: '나의 신고 내역', href: '/myReportLayout' }
     ]
 </script>
   
 <style scoped>
     .header {
+        position: fixed;
         display: flex;
         align-items: center;
+        width: 100%;
+        height: 100%;
         justify-content: space-between;
         background-color: #155b45;
-        padding: 30px;
+        padding: 20px 30px;
         z-index: 3000;
         position: relative;
+        flex-wrap: wrap;
     }
   
     .logo img {
         height: 50px;
+        max-width: 100%;
         margin-left: 50px;
     }
   
@@ -107,6 +112,7 @@
         left: 50%;
         transform: translateX(-50%);
         display: flex;
+        /* flex-wrap: wrap; */
         gap: 100px;
         color: white;
         font-weight: bold;
@@ -118,9 +124,13 @@
     }
   
     .auth-nav {
+        position: absolute;
+        top: 15px;
+        right: 30px;
         display: flex;
         gap: 20px;
-        margin-right: 50px;
+        margin-right: 100px;
+        flex-wrap: wrap;
     }
   
     .auth-nav a {
@@ -133,6 +143,32 @@
     .router-link-active {
         font-weight: bold;
         text-decoration: underline;
+    }
+
+    /* 화면 축소 시 위치 */
+    @media (max-width: 768px) {
+        .main-nav {
+            position: absolute;
+            /* transform: none; */
+            /* flex-direction: column; */
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header {
+            /* flex-direction: column; */
+            align-items: center;
+        }
+
+        .logo img {
+            position: static;
+            margin-left: auto;
+        }
+
+        .auth-nav {
+            justify-content: center;
+            margin-right: auto;
+        }
     }
 </style>
   

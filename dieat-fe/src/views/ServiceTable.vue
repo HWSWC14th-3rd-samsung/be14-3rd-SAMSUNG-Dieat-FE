@@ -13,8 +13,8 @@
             <tr v-for="(post, index) in posts" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ post.title }}</td>
-                <td>{{ post.author }}</td>
                 <td>{{ post.date }}</td>
+                <td>{{ post.count }}</td>
             </tr>
         </tbody>
     </table>
@@ -31,11 +31,15 @@
   
 <style scoped>
     .post-table {
+        position: relative;
         width: 100%;
         border-collapse: separate;
         border-spacing: 0 10px;
         margin-top: 1rem;
         border-radius: 12px;
+        border: 2px solid lightgray;
+        padding: 30px;
+  
     }
   
     /* .post-table th,
