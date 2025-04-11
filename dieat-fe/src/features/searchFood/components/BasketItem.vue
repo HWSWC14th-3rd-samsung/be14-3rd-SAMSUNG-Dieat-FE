@@ -8,13 +8,13 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        item: {
-            type: Object,
-            required: true
-        }
+<script setup>
+defineProps({
+    item: {
+        type: Object,
+        required: true
     }
-}
+})
+
+defineEmits(['remove'])
 </script>

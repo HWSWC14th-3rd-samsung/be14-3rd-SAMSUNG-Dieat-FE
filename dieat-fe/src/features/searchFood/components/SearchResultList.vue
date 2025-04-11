@@ -6,13 +6,13 @@
     </ul>
 </template>
 
-<script>
-export default {
-    props: {
-        results: {
-            type: Array,
-            required: true
-        }
+<script setup>
+defineProps({
+    results: {
+        type: Array,
+        required: true
     }
-};
+})
+
+defineEmits(['select'])
 </script>

@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(item, index) in items" :key="index" class="clickable-row" @click="addToBasket(item)">
+            <tr v-for="(item, index) in items" :key="index" class="clickable-row" @click="handleClick(item)">
                 <td class="wide">{{ item.name }}</td>
                 <td>{{ item.unit }}</td>
                 <td>{{ item.kcal }}</td>
@@ -31,19 +31,17 @@
     </table>
 </template>
 
-<script>
-export default {
-    name: 'FoodTable',
-    props: {
-        items: {
-            type: Array,
-            required: true,
-        },
-    },
-    methods: {
-        addToBasket(item) {
-            this.$emit('add-to-basket', item);
-        },
-    },
-};
+<script setup>
+const props = defineProps({
+    items: {
+        type: Array,
+        required: true
+    }
+})
+
+const emit = defineEmits(['add-to-basket'])
+
+const handleClick = (item) => {
+    emit('add-to-basket', item)
+}
 </script>
