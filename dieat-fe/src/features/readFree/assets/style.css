@@ -1,185 +1,54 @@
-/* FoodSearchPage */
-.food-search-page {
+:root {
+    --color-primary: #189b71;
+    --color-accent: #f85230;
+    --color-background: #fff8ed;
+    --color-header-bg: #155B45;
+}
+
+/* === 기본 페이지 레이아웃 === */
+.post-list-page {
     background-color: #fff;
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.main-content {
+.page-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.post-header-row {
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     max-width: 1400px;
-    justify-content: space-between;
-    margin-top: 1rem;
+    margin: 0 auto 1.5rem;
+    padding: 0 1rem;
 }
 
-.search-result {
-    flex: 3;
-    background-color: var(--color-background);
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.basket-panel {
-    flex: 1;
-    background-color: var(--color-background);
-    border-radius: 1rem;
-    padding: 1rem;
+/* === Search Bar === */
+.post-search-bar {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.complete-button {
-    background-color: var(--color-primary);
-    color: white;
-    border: none;
-    padding: 0.8rem;
-    border-radius: 0.5rem;
-    margin-top: auto;
-    cursor: pointer;
-    width: 100%;
-}
-
-.no-data {
-    text-align: center;
-    color: var(--color-accent);
-    margin-top: 2rem;
-}
-
-/* BasketPanel */
-.basket-panel-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.basket-item {
-    position: relative;
-    background-color: #ffeee0;
-    border-radius: 1rem;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-}
-
-.remove-button {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: var(--color-accent);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.item-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-}
-
-.item-name {
-    flex: 2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.item-qty-input {
-    flex: 1;
-    background-color: #dddddd;
-    border: none;
-    border-radius: 0.6rem;
-    padding: 0.6rem 0.8rem;
-    font-size: 1rem;
-    text-align: right;
-    appearance: textfield;
-    min-width: 55px;
-    max-width: 90px;
-}
-
-.item-qty-input::-webkit-outer-spin-button,
-.item-qty-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* SearchResultList */
-.search-bar-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-}
-
-.search-result-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    border: 1px solid var(--color-primary);
-    border-radius: 1rem;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 10;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.result-count {
-    margin-bottom: 0.8rem;
-    font-weight: bold;
-    color: var(--color-header-bg);
-}
-
-.search-item {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.search-item:last-child {
-    border-bottom: none;
-}
-
-.search-item:hover {
-    background-color: #f2f2f2;
-}
-
-.verified {
-    color: var(--color-primary);
-    font-size: 0.9rem;
-    margin-left: 0.3rem;
-}
-
-/* SearchBar */
-.search-section {
-    display: flex;
-    align-items: center;
-    background: var(--color-background);
-    border: 2px solid var(--color-primary);
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     border-radius: 2rem;
     padding: 0.5rem 1rem;
+
     width: 100%;
-    max-width: 600px;
-    margin: 1.5rem 0 0.5rem;
+    max-width: 280px;
+
+    margin: 0 auto 1.5rem;
 }
 
-.search-section input {
+.post-search-bar input {
     flex: 1;
     border: none;
     outline: none;
@@ -197,39 +66,31 @@
     cursor: pointer;
 }
 
-/* FoodTable */
-.food-table {
+.search-icon {
+    background-color: transparent;
+    border: none;
+    color: var(--color-primary);
+    font-size: 1.1rem;
+    cursor: default;
+}
+
+/* === 버튼 & 유틸 === */
+.create-button-wrapper {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    table-layout: fixed;
+    max-width: 1300px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
 }
 
-.food-table th {
-    background-color: var(--color-primary);
-    color: white;
-    padding: 12px;
+.create-button {
+    background-color: #f6f6f6;
+    border: 1px solid #ccc;
+    border-radius: 1.2rem;
+    padding: 0.5rem 1.2rem;
     font-weight: 600;
-    white-space: normal;
-    word-break: keep-all;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.food-table td {
-    text-align: center;
-    padding: 10px;
-    border: 1px solid rgba(24, 155, 113, 0.2);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.food-table .wide {
-    width: 150px;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .clickable-row {
@@ -239,4 +100,74 @@
 
 .clickable-row:hover {
     background-color: #f5fffa;
+}
+
+/* === 페이지네이션 === */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 0.5rem;
+}
+
+.pagination span {
+    cursor: pointer;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.4rem;
+}
+
+.pagination .active {
+    font-weight: bold;
+    background-color: #eee;
+}
+
+/* === 자유게시글 조회 테이블 === */
+.post-table {
+    width: 100%;
+    max-width: 1400px;
+    background-color: white;
+    border-radius: 1.5rem;
+    padding: 0 1rem 1rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-collapse: separate;
+    border-spacing: 0 16px;
+    font-size: 1rem;
+}
+
+.post-table thead th {
+    text-align: center;
+    padding: 1.2rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #000;
+    border-bottom: 1px solid #000;
+}
+
+.post-table tbody tr {
+    background-color: #f6f6f6;
+    border-radius: 2rem;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.post-table tbody td {
+    padding: 1rem;
+    background-color: #f6f6f6;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.post-table tbody td:first-child {
+    text-align: left;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+}
+
+.post-table tbody td:last-child {
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+}
+
+.title-cell {
+    text-align: left;
+    padding-left: 1rem;
 }
