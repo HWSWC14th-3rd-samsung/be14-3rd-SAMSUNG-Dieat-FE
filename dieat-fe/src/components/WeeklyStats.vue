@@ -1,6 +1,6 @@
 <template>
     <div class="weekly-stats">
-        <h3>주간 통계</h3>
+        <h3>이번 주</h3>
         <div class="stats-grid">
             <div class="stat-item">
                 <div class="stat-label">평균 칼로리</div>
@@ -95,22 +95,34 @@ watch(selectedDate, (newDate) => {
 
 <style scoped>
 .weekly-stats {
+    width: 400px;
+    height: 332px;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h3 {
-    margin: 0 0 20px 0;
-    color: #333;
-    font-size: 1.2em;
+    width: 287px;
+    position: relative;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    font-family: Inter;
+    color: #000;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    height: 25px;
+    margin: 0;
 }
 
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+    margin-top: 20px;
 }
 
 .stat-item {

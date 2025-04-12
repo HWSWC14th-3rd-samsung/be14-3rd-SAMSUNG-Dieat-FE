@@ -3,20 +3,48 @@
         <h3>오늘 하루</h3>
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="stat-label">칼로리</div>
-                <div class="stat-value">{{ calculateTotalCalories() }} kcal</div>
+                <div class="stat-content">
+                    <div class="stat-label">칼로리</div>
+                    <div class="stat-value">{{ calculateTotalCalories() }} kcal</div>
+                </div>
+                <div class="line-div"></div>
+                <div class="nutrient-bar">
+                    <div class="nutrient-fill calories-fill"></div>
+                </div>
+                <div class="target-value">0 kcal</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">탄수화물</div>
-                <div class="stat-value">{{ calculateTotalCarbs() }}g</div>
+                <div class="stat-content">
+                    <div class="stat-label">탄수화물</div>
+                    <div class="stat-value">{{ calculateTotalCarbs() }}g</div>
+                </div>
+                <div class="line-div"></div>
+                <div class="nutrient-bar">
+                    <div class="nutrient-fill carbs-fill"></div>
+                </div>
+                <div class="target-value">0 g</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">단백질</div>
-                <div class="stat-value">{{ calculateTotalProtein() }}g</div>
+                <div class="stat-content">
+                    <div class="stat-label">단백질</div>
+                    <div class="stat-value">{{ calculateTotalProtein() }}g</div>
+                </div>
+                <div class="line-div"></div>
+                <div class="nutrient-bar">
+                    <div class="nutrient-fill protein-fill"></div>
+                </div>
+                <div class="target-value">0 g</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">지방</div>
-                <div class="stat-value">{{ calculateTotalFat() }}g</div>
+                <div class="stat-content">
+                    <div class="stat-label">지방</div>
+                    <div class="stat-value">{{ calculateTotalFat() }}g</div>
+                </div>
+                <div class="line-div"></div>
+                <div class="nutrient-bar">
+                    <div class="nutrient-fill fat-fill"></div>
+                </div>
+                <div class="target-value">0 g</div>
             </div>
         </div>
     </div>
@@ -76,40 +104,179 @@ watch(selectedDate, () => {
 
 <style scoped>
 .meal-stats {
+    width: 400px;
+    height: 376px;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h3 {
-    margin: 0 0 20px 0;
-    color: #333;
-    font-size: 1.2em;
+    width: 287px;
+    position: relative;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    font-family: Inter;
+    color: #000;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    height: 25px;
+    margin: 0;
 }
 
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    position: relative;
+    width: 347px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stats-grid::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    height: 245px;
+    left: 33.33%;
+    border-left: 1px dashed rgba(154, 154, 154, 0.8); /* #9a9a9a with 80% opacity */
+    z-index: 3;
+}
+
+.stats-grid::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    height: 245px;
+    left: 66.66%;
+    border-left: 1px dashed rgba(154, 154, 154, 0.8); /* #9a9a9a with 80% opacity */
+    z-index: 3;
 }
 
 .stat-item {
     text-align: center;
-    padding: 10px;
-    background: #f5f5f5;
+    background: white;
     border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-item:nth-child(1) {
+    margin-bottom: 15px;
+}
+
+.stat-item:nth-child(2) {
+    margin-bottom: 15px;
+}
+
+.stat-item:nth-child(3) {
+    margin-bottom: 15px;
+}
+
+.stat-item:nth-child(4) {
+    margin-bottom: 0;
+}
+
+.stat-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 343px;
+    margin-bottom: 4px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.line-div {
+    width: 347px;
+    position: relative;
+    border-top: 1px solid rgba(107, 107, 107, 0.11);
+    box-sizing: border-box;
+    height: 1px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .stat-label {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 5px;
+    width: 54px;
+    position: relative;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    font-family: Inter;
+    color: #000;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    height: 16px;
+    margin-left: 0;
 }
 
 .stat-value {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #4CAF50;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: Inter;
+    color: #696969;
+    margin-right: 2px;
+}
+
+.nutrient-bar {
+    width: 347px;
+    height: 8px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.nutrient-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 60%;
+}
+
+.calories-fill {
+    background-color: #FD5D5D; /* 칼로리 */
+}
+
+.carbs-fill {
+    background-color: #FDCA5D; /* 탄수화물 */
+}
+
+.protein-fill {
+    background-color: #50E250; /* 단백질 */
+}
+
+.fat-fill {
+    background-color: #5D7DFD; /* 지방 */
+}
+
+.target-value {
+    width: 62px;
+    font-size: 10px;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    font-family: Inter;
+    color: #9e9e9e;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 16px;
+    position: relative;
+    margin-right: 10px;
+    align-self: flex-end;
 }
 </style>

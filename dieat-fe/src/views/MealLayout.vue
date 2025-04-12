@@ -80,7 +80,13 @@
 }
 
 .meal-rightsection > :nth-child(2) {
-    margin-top: 6px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.meal-rightsection > :nth-child(3) {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .meal-rightsection::-webkit-scrollbar {
