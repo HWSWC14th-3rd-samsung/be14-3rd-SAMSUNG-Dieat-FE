@@ -16,12 +16,9 @@
             </div>
         </div>
         <div class="meal-rightsection">
-            <div class="meal-stats">
-                <MealStats />
-            </div>
-            <div class="week-stats">
-                <WeeklyStats />
-            </div>
+            <h3>영양 요약</h3>
+            <MealStats />
+            <WeeklyStats />
         </div>
     </div>
 </template>
@@ -71,7 +68,19 @@
     height: calc(100vh - 110px);
     overflow-y: auto;
     background: #F0F0F0;
-    padding: 0;
+    padding: 20px;
+}
+
+.meal-rightsection h3 {
+    margin: 0;
+    padding-top: 20px;
+    color: #333;
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+.meal-rightsection > :nth-child(2) {
+    margin-top: 6px;
 }
 
 .meal-rightsection::-webkit-scrollbar {
@@ -147,17 +156,5 @@
 
 .meal-list::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-.meal-stats, .week-stats {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.meal-stats:last-child, .week-stats:last-child {
-    margin-bottom: 0;
 }
 </style>

@@ -37,7 +37,7 @@ const fetchWeeklyStats = async (date) => {
         const endOfWeek = new Date(startOfWeek)
         endOfWeek.setDate(startOfWeek.getDate() + 6)
 
-        // 날짜 형식 변환
+
         const startDate = startOfWeek.toISOString().split('T')[0]
         const endDate = endOfWeek.toISOString().split('T')[0]
 
@@ -47,7 +47,6 @@ const fetchWeeklyStats = async (date) => {
         }
         const allMeals = await response.json()
         
-        // 해당 주의 식사만 필터링
         weeklyMeals.value = allMeals.filter(meal => {
             const mealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
             return mealDate >= startDate && mealDate <= endDate
@@ -96,7 +95,7 @@ watch(selectedDate, (newDate) => {
 
 <style scoped>
 .weekly-stats {
-    background: white;
+    background-color: white;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
