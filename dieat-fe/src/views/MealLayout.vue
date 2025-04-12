@@ -43,8 +43,8 @@
 .meal-container {
     display: flex;
     gap: 20px;
-    padding: 20px;
-    height: calc(100vh - 150px);
+    padding: 0;
+    height: calc(100vh - 110px);
     overflow: hidden;
     position: relative;
 }
@@ -56,24 +56,22 @@
     gap: 20px;
     min-width: 0;
     overflow-y: auto;
-    padding-right: 20px;
-    margin-right: 320px;
+    margin-right: 493px;
+    padding: 20px;
 }
 
 .meal-rightsection {
     position: fixed;
-    right: 20px;
-    top: 170px;
-    width: 300px;
+    right: 0;
+    top: 110px;
+    width: 493px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    height: calc(100vh - 190px);
+    height: calc(100vh - 110px);
     overflow-y: auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    background: #F0F0F0;
+    padding: 0;
 }
 
 .meal-rightsection::-webkit-scrollbar {
@@ -95,19 +93,25 @@
 }
 
 .meal-header {
-    position: relative;
-    z-index: 10;
-    padding: 15px;
+    width: 582px;
+    margin: 0 auto;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    position: relative;
+    padding-top: 20px;
 }
 
 .meal-header h3 {
     margin: 0;
     color: #333;
     font-size: 1.2em;
+    margin-left: 10px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .meal-header button {
@@ -117,6 +121,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .meal-list {
@@ -148,5 +153,11 @@
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.meal-stats:last-child, .week-stats:last-child {
+    margin-bottom: 0;
 }
 </style>
