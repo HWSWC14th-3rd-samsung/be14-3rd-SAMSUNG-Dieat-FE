@@ -184,21 +184,25 @@ const nextWeek = () => {
 }
 
 .calendar-grid {
-  width: 582px;
+  width: 580px;
   margin: 20px auto 0;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(7, 58px);
+  gap: 15px;
+  justify-content: space-between;
 }
 
 .calendar-day {
+  width: 58px;
+  height: 78px;
   padding: 10px;
   text-align: center;
   border: 1px solid #eee;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: white;
+  box-sizing: border-box;
 }
 
 .calendar-day.today {
@@ -223,12 +227,13 @@ const nextWeek = () => {
 
 .day-name {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .day-date {
   font-size: 0.9em;
   color: #666;
+  margin-top: 10px;
 }
 
 .selected .day-date {
