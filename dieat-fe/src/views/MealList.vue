@@ -56,6 +56,8 @@
 
 <style scoped>
     .meal-list {
+        width: 582px;
+        margin: 0 auto;
         padding: 20px;
     }
 

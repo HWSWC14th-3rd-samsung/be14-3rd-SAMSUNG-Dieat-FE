@@ -5,7 +5,6 @@
         <LeftArrowIcon />
       </button>
       <div class="week-range" @click="isCalendarVisible = !isCalendarVisible">
-        <img class="week-range-bg" src="@/assets/weekly-background.svg" />
         <div class="week-range-text">{{ getWeekRangeText() }}</div>
         <Calendar
         v-if="isCalendarVisible"
@@ -25,7 +24,10 @@
         v-for="day in getWeekDays()"
         :key="day.date"
         class="calendar-day"
-        :class="{ 'selected': selectedDate === day.date }"
+        :class="{ 
+          'selected': selectedDate === day.date,
+          'today': isToday(day.date)
+        }"
         @click="selectDate(day.date)"
       >
         <div class="day-name">{{ day.dayName }}</div>
@@ -44,6 +46,11 @@ import RightArrowIcon from './icons/RightArrowIcon.vue'
 const selectedDate = inject('selectedDate')
 const currentWeekOffset = ref(0)
 const isCalendarVisible = ref(false)
+
+function isToday(date) {
+  const today = new Date().toISOString().split('T')[0]
+  return date === today
+}
 
 function getWeekDays() {
   const days = []
@@ -110,52 +117,48 @@ const nextWeek = () => {
 
 <style scoped>
 .week-range-container {
-  background: tomato;
+  width: 582px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 67px;
+  background: #EFEFEF;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
   margin-bottom: 10px;
 }
 
 .week-range {
-  background: orange;
   width: 100%;
   position: relative;
-  height: 67px;
+  height: 100%;
   text-align: center;
   font-size: 16px;
   color: #000;
   font-family: Inter;
   flex: 1;
   cursor: pointer;
-}
-
-.week-range-bg {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  left: 0%;
-  border-radius: 10px;
-  max-width: 100%;
-  overflow: hidden;
-  max-height: 100%;
-}
-
-.week-range-text {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0%;
-  left: 0%;
-  letter-spacing: -0.02em;
-  font-weight: 600;
-  white-space: pre-wrap;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.week-range-text {
+  width: 100%;
+  position: relative;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  font-family: Inter;
+  color: #000;
+  white-space: pre-wrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .calendar-popup {
@@ -181,21 +184,25 @@ const nextWeek = () => {
 }
 
 .calendar-grid {
-  background: red;
+  width: 582px;
+  margin: 20px auto 0;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
-  margin-top: 20px;
 }
 
 .calendar-day {
-  background: gray;
   padding: 10px;
   text-align: center;
   border: 1px solid #eee;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
+  background: white;
+}
+
+.calendar-day.today {
+  background-color: #FFF8ED;
 }
 
 .calendar-day:hover {
@@ -203,6 +210,12 @@ const nextWeek = () => {
 }
 
 .calendar-day.selected {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.calendar-day.today.selected {
   background-color: #4CAF50;
   color: white;
   border-color: #4CAF50;
