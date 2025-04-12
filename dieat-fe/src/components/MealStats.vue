@@ -5,56 +5,72 @@
             <div class="stat-item">
                 <div class="stat-content">
                     <div class="stat-label">칼로리</div>
-                    <div class="stat-value">{{ calculateTotalCalories() }} kcal</div>
+                    <div class="stat-value" :style="{ color: caloriesColor }">
+                        {{ calculateTotalCalories() }} kcal
+                    </div>
                 </div>
                 <div class="line-div"></div>
                 <div class="nutrient-bar">
-                    <div class="nutrient-fill calories-fill"></div>
+                    <div class="nutrient-fill calories-fill" :style="{ width: caloriesRatio }"></div>
                 </div>
-                <div class="target-value">0 kcal</div>
+                <div class="target-value">{{ TARGET_VALUES.calories }} kcal</div>
             </div>
             <div class="stat-item">
                 <div class="stat-content">
                     <div class="stat-label">탄수화물</div>
-                    <div class="stat-value">{{ calculateTotalCarbs() }}g</div>
+                    <div class="stat-value" :style="{ color: carbsColor }">
+                        {{ calculateTotalCarbs() }}g
+                    </div>
                 </div>
                 <div class="line-div"></div>
                 <div class="nutrient-bar">
-                    <div class="nutrient-fill carbs-fill"></div>
+                    <div class="nutrient-fill carbs-fill" :style="{ width: carbsRatio }"></div>
                 </div>
-                <div class="target-value">0 g</div>
+                <div class="target-value">{{ TARGET_VALUES.carbs }}g</div>
             </div>
             <div class="stat-item">
                 <div class="stat-content">
                     <div class="stat-label">단백질</div>
-                    <div class="stat-value">{{ calculateTotalProtein() }}g</div>
+                    <div class="stat-value" :style="{ color: proteinColor }">
+                        {{ calculateTotalProtein() }}g
+                    </div>
                 </div>
                 <div class="line-div"></div>
                 <div class="nutrient-bar">
-                    <div class="nutrient-fill protein-fill"></div>
+                    <div class="nutrient-fill protein-fill" :style="{ width: proteinRatio }"></div>
                 </div>
-                <div class="target-value">0 g</div>
+                <div class="target-value">{{ TARGET_VALUES.protein }}g</div>
             </div>
             <div class="stat-item">
                 <div class="stat-content">
                     <div class="stat-label">지방</div>
-                    <div class="stat-value">{{ calculateTotalFat() }}g</div>
+                    <div class="stat-value" :style="{ color: fatColor }">
+                        {{ calculateTotalFat() }}g
+                    </div>
                 </div>
                 <div class="line-div"></div>
                 <div class="nutrient-bar">
-                    <div class="nutrient-fill fat-fill"></div>
+                    <div class="nutrient-fill fat-fill" :style="{ width: fatRatio }"></div>
                 </div>
-                <div class="target-value">0 g</div>
+                <div class="target-value">{{ TARGET_VALUES.fat }}g</div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, inject, watch } from 'vue'
+import { ref, onMounted, inject, watch, computed } from 'vue'
 
 const selectedDate = inject('selectedDate')
 const todayMeals = ref([])
+
+// 목표치 상수 정의
+const TARGET_VALUES = {
+    calories: 2000,
+    carbs: 300,
+    protein: 200,
+    fat: 50
+}
 
 const fetchTodayMeals = async () => {
     try {
@@ -64,7 +80,6 @@ const fetchTodayMeals = async () => {
         }
         const allMeals = await response.json()
         
-        // 선택된 날짜의 식사만 필터링
         todayMeals.value = allMeals.filter(meal => {
             const mealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
             return mealDate === selectedDate.value
@@ -75,6 +90,7 @@ const fetchTodayMeals = async () => {
     }
 }
 
+// 영양성분 계산 함수들
 const calculateTotalCalories = () => {
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_calories || 0), 0))
 }
@@ -91,12 +107,45 @@ const calculateTotalFat = () => {
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_fat || 0), 0))
 }
 
-// 컴포넌트 마운트 시 초기 데이터 로드
+// 영양성분 수치값 색상 계산
+const getNutrientColor = (current, target, isProtein = false) => {
+    const ratio = (current / target) * 100
+    
+    if (isProtein) {
+        // 단백질의 경우 목표치 미달 시 색상 변경
+        if (ratio < 90) return '#D30E0E'  // 90% 미만
+        if (ratio < 100) return '#FF9D00'  // 90~100%
+        return '#696969'  // 100% 이상
+    } else {
+        // 다른 영양성분은 초과 시 색상 변경
+        if (ratio > 110) return '#D30E0E'  // 110% 초과
+        if (ratio > 100) return '#FF9D00'  // 100~110%
+        return '#696969'  // 100% 이하
+    }
+}
+
+// computed 속성으로 각 영양성분 색상 계산
+const caloriesColor = computed(() => getNutrientColor(calculateTotalCalories(), TARGET_VALUES.calories))
+const carbsColor = computed(() => getNutrientColor(calculateTotalCarbs(), TARGET_VALUES.carbs))
+const proteinColor = computed(() => getNutrientColor(calculateTotalProtein(), TARGET_VALUES.protein, true))
+const fatColor = computed(() => getNutrientColor(calculateTotalFat(), TARGET_VALUES.fat))
+
+// 영양성분 비율 계산 함수 추가
+const calculateNutrientRatio = (current, target) => {
+    const ratio = (current / target) * 100
+    return Math.min(ratio, 100) + '%'  // 100%를 넘어가도 바는 100%까지만 표시
+}
+
+// computed 속성으로 각 영양성분 비율 계산
+const caloriesRatio = computed(() => calculateNutrientRatio(calculateTotalCalories(), TARGET_VALUES.calories))
+const carbsRatio = computed(() => calculateNutrientRatio(calculateTotalCarbs(), TARGET_VALUES.carbs))
+const proteinRatio = computed(() => calculateNutrientRatio(calculateTotalProtein(), TARGET_VALUES.protein))
+const fatRatio = computed(() => calculateNutrientRatio(calculateTotalFat(), TARGET_VALUES.fat))
+
 onMounted(() => {
     fetchTodayMeals()
 })
 
-// selectedDate가 변경될 때마다 데이터 업데이트
 watch(selectedDate, () => {
     fetchTodayMeals()
 })
@@ -224,8 +273,9 @@ h3 {
     font-size: 14px;
     font-weight: 600;
     font-family: Inter;
-    color: #696969;
     margin-right: 2px;
+    width: 62px;
+    text-align: right;
 }
 
 .nutrient-bar {
@@ -244,7 +294,7 @@ h3 {
 .nutrient-fill {
     height: 100%;
     border-radius: 3px;
-    width: 60%;
+    transition: width 0.3s ease; /* 너비 변경 시 애니메이션 효과 추가 */
 }
 
 .calories-fill {
