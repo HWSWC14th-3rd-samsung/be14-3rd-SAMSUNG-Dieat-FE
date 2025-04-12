@@ -64,7 +64,7 @@ import { ref, onMounted, inject, watch, computed } from 'vue'
 const selectedDate = inject('selectedDate')
 const todayMeals = ref([])
 
-// 목표치 상수 정의
+// 목표치 (임시값)
 const TARGET_VALUES = {
     calories: 2000,
     carbs: 300,
@@ -90,7 +90,6 @@ const fetchTodayMeals = async () => {
     }
 }
 
-// 영양성분 계산 함수들
 const calculateTotalCalories = () => {
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_calories || 0), 0))
 }
@@ -107,36 +106,32 @@ const calculateTotalFat = () => {
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_fat || 0), 0))
 }
 
-// 영양성분 수치값 색상 계산
 const getNutrientColor = (current, target, isProtein = false) => {
     const ratio = (current / target) * 100
     
     if (isProtein) {
-        // 단백질의 경우 목표치 미달 시 색상 변경
-        if (ratio < 90) return '#D30E0E'  // 90% 미만
-        if (ratio < 100) return '#FF9D00'  // 90~100%
-        return '#696969'  // 100% 이상
+        
+        if (ratio < 90) return '#D30E0E'
+        if (ratio < 100) return '#FF9D00'
+        return '#696969'
     } else {
-        // 다른 영양성분은 초과 시 색상 변경
-        if (ratio > 110) return '#D30E0E'  // 110% 초과
-        if (ratio > 100) return '#FF9D00'  // 100~110%
-        return '#696969'  // 100% 이하
+
+        if (ratio > 110) return '#D30E0E'
+        if (ratio > 100) return '#FF9D00'
+        return '#696969'
     }
 }
 
-// computed 속성으로 각 영양성분 색상 계산
 const caloriesColor = computed(() => getNutrientColor(calculateTotalCalories(), TARGET_VALUES.calories))
 const carbsColor = computed(() => getNutrientColor(calculateTotalCarbs(), TARGET_VALUES.carbs))
 const proteinColor = computed(() => getNutrientColor(calculateTotalProtein(), TARGET_VALUES.protein, true))
 const fatColor = computed(() => getNutrientColor(calculateTotalFat(), TARGET_VALUES.fat))
 
-// 영양성분 비율 계산 함수 추가
 const calculateNutrientRatio = (current, target) => {
     const ratio = (current / target) * 100
-    return Math.min(ratio, 100) + '%'  // 100%를 넘어가도 바는 100%까지만 표시
+    return Math.min(ratio, 100) + '%'
 }
 
-// computed 속성으로 각 영양성분 비율 계산
 const caloriesRatio = computed(() => calculateNutrientRatio(calculateTotalCalories(), TARGET_VALUES.calories))
 const carbsRatio = computed(() => calculateNutrientRatio(calculateTotalCarbs(), TARGET_VALUES.carbs))
 const proteinRatio = computed(() => calculateNutrientRatio(calculateTotalProtein(), TARGET_VALUES.protein))
@@ -192,7 +187,7 @@ h3 {
     top: 20px;
     height: 245px;
     left: 33.33%;
-    border-left: 1px dashed rgba(154, 154, 154, 0.8); /* #9a9a9a with 80% opacity */
+    border-left: 1px dashed rgba(154, 154, 154, 0.8);
     z-index: 3;
 }
 
@@ -202,7 +197,7 @@ h3 {
     top: 20px;
     height: 245px;
     left: 66.66%;
-    border-left: 1px dashed rgba(154, 154, 154, 0.8); /* #9a9a9a with 80% opacity */
+    border-left: 1px dashed rgba(154, 154, 154, 0.8);
     z-index: 3;
 }
 
@@ -294,23 +289,23 @@ h3 {
 .nutrient-fill {
     height: 100%;
     border-radius: 3px;
-    transition: width 0.3s ease; /* 너비 변경 시 애니메이션 효과 추가 */
+    transition: width 0.3s ease;
 }
 
 .calories-fill {
-    background-color: #FD5D5D; /* 칼로리 */
+    background-color: #FD5D5D;
 }
 
 .carbs-fill {
-    background-color: #FDCA5D; /* 탄수화물 */
+    background-color: #FDCA5D; 
 }
 
 .protein-fill {
-    background-color: #50E250; /* 단백질 */
+    background-color: #50E250;
 }
 
 .fat-fill {
-    background-color: #5D7DFD; /* 지방 */
+    background-color: #5D7DFD;
 }
 
 .target-value {

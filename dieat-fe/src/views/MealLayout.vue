@@ -74,6 +74,7 @@
 .meal-rightsection h3 {
     margin: 0;
     padding-top: 20px;
+    padding-left: 30px;
     color: #333;
     font-size: 1.2em;
     line-height: 1.6;

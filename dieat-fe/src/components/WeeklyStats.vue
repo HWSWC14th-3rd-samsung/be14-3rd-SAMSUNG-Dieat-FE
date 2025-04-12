@@ -1,22 +1,32 @@
 <template>
     <div class="weekly-stats">
         <h3>이번 주</h3>
-        <div class="stats-grid">
+        <div class="stats-overview">
+            <div class="main-stat">
+                <div class="stat-value" :style="{ color: caloriesColor }">{{ averageCalories }}</div>
+                <div class="stat-label">칼로리(kcal)</div>
+            </div>
+            <div class="main-stat">
+                <div class="stat-value">86%</div>
+                <div class="stat-label">목표 달성률</div>
+            </div>
+        </div>
+        <div class="stats-detail">
             <div class="stat-item">
                 <div class="stat-label">평균 칼로리</div>
                 <div class="stat-value">{{ averageCalories }} kcal</div>
             </div>
             <div class="stat-item">
                 <div class="stat-label">평균 탄수화물</div>
-                <div class="stat-value">{{ averageCarbs }}g</div>
+                <div class="stat-value">{{ averageCarbs }} g</div>
             </div>
             <div class="stat-item">
                 <div class="stat-label">평균 단백질</div>
-                <div class="stat-value">{{ averageProtein }}g</div>
+                <div class="stat-value">{{ averageProtein }} g</div>
             </div>
             <div class="stat-item">
                 <div class="stat-label">평균 지방</div>
-                <div class="stat-value">{{ averageFat }}g</div>
+                <div class="stat-value">{{ averageFat }} g</div>
             </div>
         </div>
     </div>
@@ -27,6 +37,22 @@ import { ref, inject, watch, onMounted, computed } from 'vue'
 
 const selectedDate = inject('selectedDate')
 const weeklyMeals = ref([])
+
+// 목표치 상수 정의
+const TARGET_VALUES = {
+    calories: 2000,
+    carbs: 300,
+    protein: 200,
+    fat: 50
+}
+
+// 영양성분 수치값 색상 계산
+const getNutrientColor = (current, target) => {
+    const ratio = (current / target) * 100
+    if (ratio > 110) return '#D30E0E'  // 110% 초과
+    if (ratio > 100) return '#FF9D00'  // 100~110%
+    return '#000'  // 기본 색상
+}
 
 const fetchWeeklyStats = async (date) => {
     try {
@@ -57,29 +83,46 @@ const fetchWeeklyStats = async (date) => {
     }
 }
 
+// 평균값 계산을 위한 유틸리티 함수
+const calculateDailyAverage = (meals, nutrientKey) => {
+    if (meals.length === 0) return 0
+
+    // 날짜별로 영양성분 합계를 구함
+    const dailyTotals = meals.reduce((acc, meal) => {
+        const date = new Date(meal.meal_dt).toISOString().split('T')[0]
+        if (!acc[date]) {
+            acc[date] = 0
+        }
+        acc[date] += meal[nutrientKey] || 0
+        return acc
+    }, {})
+
+    // 식사가 등록된 날짜 수
+    const daysWithMeals = Object.keys(dailyTotals).length
+
+    // 식사가 등록된 날짜들의 합계 평균
+    const total = Object.values(dailyTotals).reduce((sum, daily) => sum + daily, 0)
+    return Math.round(total / daysWithMeals)
+}
+
 // 평균값 계산
 const averageCalories = computed(() => {
-    if (weeklyMeals.value.length === 0) return 0
-    const total = weeklyMeals.value.reduce((sum, meal) => sum + (meal.meal_calories || 0), 0)
-    return Math.round(total / weeklyMeals.value.length)
+    return calculateDailyAverage(weeklyMeals.value, 'meal_calories')
 })
 
+// 칼로리 색상 계산
+const caloriesColor = computed(() => getNutrientColor(averageCalories.value, TARGET_VALUES.calories))
+
 const averageCarbs = computed(() => {
-    if (weeklyMeals.value.length === 0) return 0
-    const total = weeklyMeals.value.reduce((sum, meal) => sum + (meal.meal_carbs || 0), 0)
-    return Math.round(total / weeklyMeals.value.length)
+    return calculateDailyAverage(weeklyMeals.value, 'meal_carbs')
 })
 
 const averageProtein = computed(() => {
-    if (weeklyMeals.value.length === 0) return 0
-    const total = weeklyMeals.value.reduce((sum, meal) => sum + (meal.meal_protein || 0), 0)
-    return Math.round(total / weeklyMeals.value.length)
+    return calculateDailyAverage(weeklyMeals.value, 'meal_protein')
 })
 
 const averageFat = computed(() => {
-    if (weeklyMeals.value.length === 0) return 0
-    const total = weeklyMeals.value.reduce((sum, meal) => sum + (meal.meal_fat || 0), 0)
-    return Math.round(total / weeklyMeals.value.length)
+    return calculateDailyAverage(weeklyMeals.value, 'meal_fat')
 })
 
 // 컴포넌트 마운트 시 초기 데이터 로드
@@ -99,13 +142,13 @@ watch(selectedDate, (newDate) => {
     height: 332px;
     background-color: white;
     border-radius: 10px;
+    box-sizing: border-box;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h3 {
     width: 287px;
-    position: relative;
     font-size: 16px;
     letter-spacing: -0.02em;
     font-weight: 800;
@@ -116,31 +159,79 @@ h3 {
     align-items: center;
     height: 25px;
     margin: 0;
+    padding: 0;
 }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+.stats-overview {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 19px;
+}
+
+.main-stat {
+    text-align: center;
+    background-color: #F5F5F5;
+    border-radius: 5px;
+    height: 46px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+}
+
+.main-stat:first-child {
+    width: 227px;
+}
+
+.main-stat:last-child {
+    width: 114px;
+}
+
+.main-stat .stat-value {
+    font-size: 12px;
+    font-weight: 600;
+    font-family: Inter;
+    margin-bottom: 4px;
+    transition: color 0.3s ease;
+}
+
+.main-stat .stat-label {
+    font-size: 8px;
+    font-weight: 500;
+    font-family: Inter;
+    color: #696969;
+}
+
+.stats-detail {
     margin-top: 20px;
 }
 
 .stat-item {
-    text-align: center;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(107, 107, 107, 0.11);
 }
 
-.stat-label {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 5px;
+.stat-item:last-child {
+    border-bottom: none;
 }
 
-.stat-value {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #4CAF50;
+.stat-item .stat-label {
+    font-size: 14px;
+    color: #000;
+    font-family: Pretendard;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+.stat-item .stat-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #696969;
+    font-family: Pretendard;
+    letter-spacing: -0.02em;
 }
 </style>
