@@ -1,6 +1,6 @@
 <template>
     <div class="meal-stats">
-        <h3>오늘 하루</h3>
+        <h3>하루 총합</h3>
         <div class="stats-grid">
             <div class="stat-item">
                 <div class="stat-content">
@@ -19,7 +19,7 @@
                 <div class="stat-content">
                     <div class="stat-label">탄수화물</div>
                     <div class="stat-value" :style="{ color: carbsColor }">
-                        {{ calculateTotalCarbs() }}g
+                        {{ calculateTotalCarbs() }}
                     </div>
                 </div>
                 <div class="line-div"></div>

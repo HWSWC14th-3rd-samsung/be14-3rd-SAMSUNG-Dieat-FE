@@ -70,14 +70,13 @@
 <script setup>
 import { inject, ref } from 'vue'
 import { Calendar } from 'v-calendar'
-import LeftArrowIcon from './icons/LeftArrowIcon.vue'
-import RightArrowIcon from './icons/RightArrowIcon.vue'
+import LeftArrowIcon from '@/components/icons/LeftArrowIcon.vue'
+import RightArrowIcon from '@/components/icons/RightArrowIcon.vue'
 
 const selectedDate = inject('selectedDate')
 const currentWeekOffset = ref(0)
 const isCalendarVisible = ref(false)
 
-// 캘린더 설정
 const calendarOptions = ref({
   firstDayOfWeek: 0,
   minDate: null,
@@ -144,17 +143,14 @@ const onDayClick = (day) => {
   console.log('Day clicked:', day);
   const selectedDay = new Date(day.date)
   
-  // 날짜 포맷팅
   const year = selectedDay.getFullYear()
   const month = String(selectedDay.getMonth() + 1).padStart(2, '0')
   const date = String(selectedDay.getDate()).padStart(2, '0')
   const formattedDate = `${year}-${month}-${date}`
   
-  // 선택한 날짜 설정
   selectedDate.value = formattedDate
   isCalendarVisible.value = false
   
-  // 주간 offset 계산하여 달력 업데이트
   const today = new Date()
   const diffTime = selectedDay - today
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))

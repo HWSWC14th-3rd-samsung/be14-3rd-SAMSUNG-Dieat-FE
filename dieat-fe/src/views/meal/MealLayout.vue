@@ -25,9 +25,9 @@
 
 <script setup>
     import MealList from './MealList.vue';
-    import MealStats from '@/components/MealStats.vue';
+    import MealStats from '@/components/meal/MealStats.vue';
     import WeeklyCalendar from './WeeklyCalendar.vue';
-    import WeeklyStats from '@/components/WeeklyStats.vue';
+    import WeeklyStats from '@/components/meal/WeeklyStats.vue';
     import Header from '@/components/common/Header.vue';
 
     import { ref, provide } from 'vue'

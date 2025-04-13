@@ -5,7 +5,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Signup from '@/views/Signup.vue';
 import Login from '@/views/Login.vue';
-import MealLayout from '../views/MealLayout.vue';
+import MealLayout from '@/views/meal/MealLayout.vue';
+import RegistMeal from '@/views/meal/RegistMeal.vue';
 import NoticeLayout from '../views/NoticeLayout.vue';
 import QnaLayout from '../views/QnaLayout.vue';
 
@@ -22,6 +23,7 @@ const router = createRouter({
     {path: '/signup', component: Signup},
     {path: '/login', component: Login},
     {path: '/meal', component: MealLayout},
+    {path: '/registmeal', component: RegistMeal},
     {path: '/searchFood', component: SearchFood },
     // {path: '/readFree', component: ReadFree },
     {path: '/noticeLayout', component: NoticeLayout},

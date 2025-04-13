@@ -14,7 +14,7 @@
 
 <script setup>
     import { ref, inject, watch, onMounted, computed } from 'vue'
-    import MealCard from '@/components/MealCard.vue'
+    import MealCard from '@/components/meal/MealCard.vue'
 
     const selectedDate = inject('selectedDate')
     const meals = ref([])
