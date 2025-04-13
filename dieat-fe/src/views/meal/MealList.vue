@@ -20,19 +20,11 @@
     const meals = ref([])
 
     const filteredMeals = computed(() => {
-        return meals.value
-            .filter(meal => {
-                if (meal.meal_dt) {
-                    const currentMealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
-                    return currentMealDate === selectedDate.value
-                }
-                return meal.date === selectedDate.value
-            })
-            .sort((a, b) => {
-                const timeA = a.meal_dt ? new Date(a.meal_dt) : new Date(a.date)
-                const timeB = b.meal_dt ? new Date(b.meal_dt) : new Date(b.date)
-                return timeA - timeB
-            })
+        const filtered = meals.value.filter(meal => {
+            const mealDate = meal.meal_dt.split(' ')[0]
+            return mealDate === selectedDate.value
+        })
+        return filtered
     })
 
     const fetchMeals = async () => {
@@ -50,6 +42,11 @@
     }
 
     onMounted(() => {
+        fetchMeals()
+    })
+
+    // selectedDate가 변경될 때마다 fetchMeals를 다시 호출
+    watch(selectedDate, () => {
         fetchMeals()
     })
 </script>
