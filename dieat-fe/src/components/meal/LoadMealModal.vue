@@ -295,6 +295,55 @@ const fetchMealsByDate = async (date) => {
             return;
         }
 
+        // 시간 추출 및 분 단위 변환 함수 (개선된 버전)
+        const extractMinutes = (datetimeStr) => {
+            try {
+                // 날짜와 시간 분리
+                const parts = datetimeStr.split(' ');
+                if (parts.length < 2) {
+                    console.error('잘못된 datetime 형식:', datetimeStr);
+                    return 0; // 기본값
+                }
+                
+                const timePart = parts[1]; // "08:15:00" 또는 "08:15"
+                const timeComponents = timePart.split(':');
+                const hour = parseInt(timeComponents[0], 10);
+                const minute = parseInt(timeComponents[1], 10);
+                
+                if (isNaN(hour) || isNaN(minute)) {
+                    console.error('시간 파싱 오류:', timePart);
+                    return 0;
+                }
+                
+                return hour * 60 + minute; // 총 분 단위로 변환
+            } catch (error) {
+                console.error('시간 변환 오류:', error, datetimeStr);
+                return 0;
+            }
+        };
+
+        // 데이터 정렬 전 로그
+        // console.log('정렬 전 데이터:', filteredData.map(d => ({
+        //     title: d.meal_title,
+        //     time: d.meal_dt,
+        //     minutes: extractMinutes(d.meal_dt)
+        // })));
+
+        // 시간 순서대로 정렬 (오름차순)
+        filteredData.sort((a, b) => {
+            const timeA = extractMinutes(a.meal_dt);
+            const timeB = extractMinutes(b.meal_dt);
+            // 내림차순으로 변경 (값이 반대로 되는지 확인)
+            return timeB - timeA;
+        });
+        
+        // 데이터 정렬 후 로그
+        // console.log('정렬 후 데이터:', filteredData.map(d => ({
+        //     title: d.meal_title,
+        //     time: d.meal_dt,
+        //     minutes: extractMinutes(d.meal_dt)
+        // })));
+
         // 서버에서 받은 데이터를 화면에 표시할 형식으로 변환
         selectedDateMeals.value = filteredData.map(meal => ({
             id: meal.meal_code,
@@ -543,6 +592,8 @@ const fetchMealsByDate = async (date) => {
     overflow-y: auto;
     padding: 0 8px;
     margin-right: -8px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .modal-footer {
