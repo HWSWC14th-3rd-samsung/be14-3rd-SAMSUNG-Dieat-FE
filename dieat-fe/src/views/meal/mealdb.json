@@ -31,7 +31,19 @@
           "meal_food_cnt": 1
         }
       ],
-      "id": "a729"
+      "id": "a729",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 2,
@@ -70,7 +82,19 @@
           "meal_food_cnt": 3
         }
       ],
-      "id": "2c9c"
+      "id": "2c9c",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 3,
@@ -97,7 +121,19 @@
           "meal_food_cnt": 2.5
         }
       ],
-      "id": "5407"
+      "id": "5407",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 4,
@@ -130,7 +166,19 @@
           "meal_food_cnt": 1.2
         }
       ],
-      "id": "c683"
+      "id": "c683",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 5,
@@ -163,7 +211,19 @@
           "meal_food_cnt": 2.4
         }
       ],
-      "id": "5de7"
+      "id": "5de7",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 6,
@@ -202,7 +262,19 @@
           "meal_food_cnt": 1.3
         }
       ],
-      "id": "5b7b"
+      "id": "5b7b",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 7,
@@ -241,7 +313,19 @@
           "meal_food_cnt": 2
         }
       ],
-      "id": "b1fb"
+      "id": "b1fb",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 8,
@@ -280,7 +364,19 @@
           "meal_food_cnt": 1.8
         }
       ],
-      "id": "d6cf"
+      "id": "d6cf",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 9,
@@ -307,7 +403,19 @@
           "meal_food_cnt": 2.6
         }
       ],
-      "id": "fd71"
+      "id": "fd71",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 10,
@@ -334,7 +442,19 @@
           "meal_food_cnt": 2.1
         }
       ],
-      "id": "b7bc"
+      "id": "b7bc",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 11,
@@ -361,7 +481,19 @@
           "meal_food_cnt": 1.2
         }
       ],
-      "id": "0fde"
+      "id": "0fde",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 12,
@@ -394,7 +526,19 @@
           "meal_food_cnt": 2.3
         }
       ],
-      "id": "ff0d"
+      "id": "ff0d",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 13,
@@ -433,7 +577,19 @@
           "meal_food_cnt": 2.8
         }
       ],
-      "id": "3592"
+      "id": "3592",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 14,
@@ -460,7 +616,19 @@
           "meal_food_cnt": 2.2
         }
       ],
-      "id": "f301"
+      "id": "f301",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 15,
@@ -487,7 +655,19 @@
           "meal_food_cnt": 1.6
         }
       ],
-      "id": "0b03"
+      "id": "0b03",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 16,
@@ -520,7 +700,19 @@
           "meal_food_cnt": 2.5
         }
       ],
-      "id": "bd1d"
+      "id": "bd1d",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 17,
@@ -547,7 +739,19 @@
           "meal_food_cnt": 1.1
         }
       ],
-      "id": "7e3c"
+      "id": "7e3c",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 18,
@@ -580,7 +784,19 @@
           "meal_food_cnt": 1.4
         }
       ],
-      "id": "cbd5"
+      "id": "cbd5",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 19,
@@ -607,7 +823,19 @@
           "meal_food_cnt": 2.3
         }
       ],
-      "id": "13f9"
+      "id": "13f9",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 20,
@@ -640,7 +868,19 @@
           "meal_food_cnt": 1.5
         }
       ],
-      "id": "ff38"
+      "id": "ff38",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 21,
@@ -679,7 +919,19 @@
           "meal_food_cnt": 2.6
         }
       ],
-      "id": "2947"
+      "id": "2947",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 22,
@@ -718,7 +970,19 @@
           "meal_food_cnt": 2.1
         }
       ],
-      "id": "0e82"
+      "id": "0e82",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 23,
@@ -745,7 +1009,19 @@
           "meal_food_cnt": 1.7
         }
       ],
-      "id": "c0d1"
+      "id": "c0d1",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 24,
@@ -784,7 +1060,19 @@
           "meal_food_cnt": 2.8
         }
       ],
-      "id": "e23d"
+      "id": "e23d",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 25,
@@ -811,7 +1099,19 @@
           "meal_food_cnt": 1.7
         }
       ],
-      "id": "9ba2"
+      "id": "9ba2",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 26,
@@ -838,7 +1138,19 @@
           "meal_food_cnt": 2.5
         }
       ],
-      "id": "ea44"
+      "id": "ea44",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 27,
@@ -871,7 +1183,19 @@
           "meal_food_cnt": 2.1
         }
       ],
-      "id": "dfae"
+      "id": "dfae",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 28,
@@ -910,7 +1234,19 @@
           "meal_food_cnt": 2
         }
       ],
-      "id": "4c08"
+      "id": "4c08",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 29,
@@ -937,7 +1273,19 @@
           "meal_food_cnt": 1.9
         }
       ],
-      "id": "bee1"
+      "id": "bee1",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 30,
@@ -976,7 +1324,19 @@
           "meal_food_cnt": 1.6
         }
       ],
-      "id": "0496"
+      "id": "0496",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 31,
@@ -1015,7 +1375,19 @@
           "meal_food_cnt": 2.3
         }
       ],
-      "id": "85e1"
+      "id": "85e1",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 32,
@@ -1054,7 +1426,19 @@
           "meal_food_cnt": 2.8
         }
       ],
-      "id": "10fd"
+      "id": "10fd",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 33,
@@ -1093,7 +1477,19 @@
           "meal_food_cnt": 2.2
         }
       ],
-      "id": "9633"
+      "id": "9633",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 34,
@@ -1132,7 +1528,19 @@
           "meal_food_cnt": 1.7
         }
       ],
-      "id": "682a"
+      "id": "682a",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 35,
@@ -1171,7 +1579,19 @@
           "meal_food_cnt": 2.6
         }
       ],
-      "id": "6794"
+      "id": "6794",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 36,
@@ -1204,7 +1624,19 @@
           "meal_food_cnt": 2.7
         }
       ],
-      "id": "4f51"
+      "id": "4f51",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 37,
@@ -1237,7 +1669,19 @@
           "meal_food_cnt": 1
         }
       ],
-      "id": "f0e3"
+      "id": "f0e3",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 38,
@@ -1270,7 +1714,19 @@
           "meal_food_cnt": 2.1
         }
       ],
-      "id": "9731"
+      "id": "9731",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 39,
@@ -1297,7 +1753,19 @@
           "meal_food_cnt": 1.4
         }
       ],
-      "id": "8322"
+      "id": "8322",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 40,
@@ -1330,7 +1798,19 @@
           "meal_food_cnt": 1.4
         }
       ],
-      "id": "b212"
+      "id": "b212",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 41,
@@ -1369,7 +1849,19 @@
           "meal_food_cnt": 1.8
         }
       ],
-      "id": "4f4f"
+      "id": "4f4f",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 42,
@@ -1396,7 +1888,19 @@
           "meal_food_cnt": 2.6
         }
       ],
-      "id": "45de"
+      "id": "45de",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 43,
@@ -1435,7 +1939,19 @@
           "meal_food_cnt": 1.5
         }
       ],
-      "id": "0eb7"
+      "id": "0eb7",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 44,
@@ -1474,7 +1990,19 @@
           "meal_food_cnt": 1.8
         }
       ],
-      "id": "966e"
+      "id": "966e",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 45,
@@ -1501,7 +2029,19 @@
           "meal_food_cnt": 2
         }
       ],
-      "id": "cefc"
+      "id": "cefc",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 46,
@@ -1534,7 +2074,19 @@
           "meal_food_cnt": 2.4
         }
       ],
-      "id": "c6c8"
+      "id": "c6c8",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 47,
@@ -1561,7 +2113,19 @@
           "meal_food_cnt": 2
         }
       ],
-      "id": "6ba9"
+      "id": "6ba9",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 48,
@@ -1588,7 +2152,19 @@
           "meal_food_cnt": 2.6
         }
       ],
-      "id": "aac0"
+      "id": "aac0",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 49,
@@ -1615,7 +2191,19 @@
           "meal_food_cnt": 1.1
         }
       ],
-      "id": "d14f"
+      "id": "d14f",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 50,
@@ -1642,7 +2230,19 @@
           "meal_food_cnt": 1.8
         }
       ],
-      "id": "0bfc"
+      "id": "0bfc",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 51,
@@ -1669,7 +2269,19 @@
           "meal_food_cnt": 1.2
         }
       ],
-      "id": "0435"
+      "id": "0435",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 52,
@@ -1708,7 +2320,19 @@
           "meal_food_cnt": 2.9
         }
       ],
-      "id": "4f97"
+      "id": "4f97",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 53,
@@ -1735,7 +2359,19 @@
           "meal_food_cnt": 2.5
         }
       ],
-      "id": "4f25"
+      "id": "4f25",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 54,
@@ -1762,7 +2398,19 @@
           "meal_food_cnt": 1.2
         }
       ],
-      "id": "ce8c"
+      "id": "ce8c",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 55,
@@ -1789,7 +2437,19 @@
           "meal_food_cnt": 1.4
         }
       ],
-      "id": "87f8"
+      "id": "87f8",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 56,
@@ -1828,7 +2488,19 @@
           "meal_food_cnt": 1.9
         }
       ],
-      "id": "a04c"
+      "id": "a04c",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 57,
@@ -1861,7 +2533,19 @@
           "meal_food_cnt": 1.5
         }
       ],
-      "id": "dcde"
+      "id": "dcde",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 58,
@@ -1888,7 +2572,19 @@
           "meal_food_cnt": 2.6
         }
       ],
-      "id": "f5c9"
+      "id": "f5c9",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 59,
@@ -1927,7 +2623,19 @@
           "meal_food_cnt": 2.4
         }
       ],
-      "id": "23de"
+      "id": "23de",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 60,
@@ -1954,7 +2662,19 @@
           "meal_food_cnt": 1
         }
       ],
-      "id": "5921"
+      "id": "5921",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 61,
@@ -1993,7 +2713,19 @@
           "meal_food_cnt": 1.7
         }
       ],
-      "id": "38cc"
+      "id": "38cc",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 62,
@@ -2032,7 +2764,19 @@
           "meal_food_cnt": 2.4
         }
       ],
-      "id": "7b37"
+      "id": "7b37",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 63,
@@ -2071,7 +2815,19 @@
           "meal_food_cnt": 1.1
         }
       ],
-      "id": "7f6b"
+      "id": "7f6b",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 64,
@@ -2098,7 +2854,19 @@
           "meal_food_cnt": 2.2
         }
       ],
-      "id": "0f3a"
+      "id": "0f3a",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 65,
@@ -2137,7 +2905,19 @@
           "meal_food_cnt": 1.6
         }
       ],
-      "id": "00f3"
+      "id": "00f3",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 66,
@@ -2164,7 +2944,19 @@
           "meal_food_cnt": 2.8
         }
       ],
-      "id": "e3a0"
+      "id": "e3a0",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 67,
@@ -2203,7 +2995,19 @@
           "meal_food_cnt": 2.4
         }
       ],
-      "id": "b10f"
+      "id": "b10f",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 68,
@@ -2236,7 +3040,19 @@
           "meal_food_cnt": 2.9
         }
       ],
-      "id": "4216"
+      "id": "4216",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 69,
@@ -2275,7 +3091,19 @@
           "meal_food_cnt": 2.9
         }
       ],
-      "id": "427b"
+      "id": "427b",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 70,
@@ -2302,7 +3130,19 @@
           "meal_food_cnt": 2.8
         }
       ],
-      "id": "3565"
+      "id": "3565",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 71,
@@ -2329,7 +3169,19 @@
           "meal_food_cnt": 2.4
         }
       ],
-      "id": "aebb"
+      "id": "aebb",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 72,
@@ -2356,7 +3208,19 @@
           "meal_food_cnt": 2.9
         }
       ],
-      "id": "f939"
+      "id": "f939",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 1,
@@ -2384,6 +3248,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -2414,6 +3279,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -2444,6 +3310,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -2474,6 +3341,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -2504,6 +3372,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -2534,6 +3403,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -2564,6 +3434,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -2593,7 +3464,19 @@
           "meal_food_cnt": 2.2
         }
       ],
-      "id": "1639"
+      "id": "1639",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 80,
@@ -2626,7 +3509,19 @@
           "meal_food_cnt": 1.1
         }
       ],
-      "id": "9fae"
+      "id": "9fae",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 81,
@@ -2659,7 +3554,19 @@
           "meal_food_cnt": 2.2
         }
       ],
-      "id": "5260"
+      "id": "5260",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 82,
@@ -2692,7 +3599,19 @@
           "meal_food_cnt": 2.7
         }
       ],
-      "id": "9a32"
+      "id": "9a32",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 83,
@@ -2731,7 +3650,19 @@
           "meal_food_cnt": 1.1
         }
       ],
-      "id": "cad8"
+      "id": "cad8",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 84,
@@ -2758,7 +3689,19 @@
           "meal_food_cnt": 1.9
         }
       ],
-      "id": "6525"
+      "id": "6525",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 85,
@@ -2785,7 +3728,19 @@
           "meal_food_cnt": 1.4
         }
       ],
-      "id": "841a"
+      "id": "841a",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 86,
@@ -2818,7 +3773,19 @@
           "meal_food_cnt": 2.3
         }
       ],
-      "id": "b777"
+      "id": "b777",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 87,
@@ -2857,7 +3824,19 @@
           "meal_food_cnt": 2.7
         }
       ],
-      "id": "eaf1"
+      "id": "eaf1",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 88,
@@ -2896,7 +3875,19 @@
           "meal_food_cnt": 1.8
         }
       ],
-      "id": "b6cc"
+      "id": "b6cc",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 89,
@@ -2935,7 +3926,19 @@
           "meal_food_cnt": 2.2
         }
       ],
-      "id": "6c2f"
+      "id": "6c2f",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     },
     {
       "meal_code": 90,
@@ -2974,8 +3977,21 @@
           "meal_food_cnt": 1.9
         }
       ],
-      "id": "5e61"
-    },{
+      "id": "5e61",
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
+    },
+    {
       "meal_code": 2,
       "meal_dt": "2025-04-13 07:30",
       "meal_title": "김밥천국 김밥 2줄",
@@ -3001,6 +4017,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -3031,6 +4048,7 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
@@ -3061,9 +4079,142 @@
           "imageData": "",
           "type": "",
           "size": "",
+          "path": "/src/img/meal/",
           "uploadDate": ""
         }
       ]
+    }
+  ],
+  "food_data": [
+    {
+      "name": "김밥",
+      "unit": "100g",
+      "kcal": 200,
+      "carb": 30,
+      "protein": 5,
+      "fat": 5,
+      "sugar": 2,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "닭가슴살",
+      "unit": "100g",
+      "kcal": 165,
+      "carb": 0,
+      "protein": 31,
+      "fat": 3.6,
+      "sugar": 0,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "야채곱창",
+      "unit": "100g",
+      "kcal": 250,
+      "carb": 10,
+      "protein": 15,
+      "fat": 18,
+      "sugar": 3,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "볶음밥",
+      "unit": "100g",
+      "kcal": 180,
+      "carb": 25,
+      "protein": 4,
+      "fat": 6,
+      "sugar": 1,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "참이슬 프레시",
+      "unit": "100g",
+      "kcal": 120,
+      "carb": 0,
+      "protein": 0,
+      "fat": 0,
+      "sugar": 0,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "파리바게트 소금빵",
+      "unit": "100g",
+      "kcal": 350,
+      "carb": 40,
+      "protein": 7,
+      "fat": 18,
+      "sugar": 5,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "갈비탕",
+      "unit": "100g",
+      "kcal": 90,
+      "carb": 2,
+      "protein": 8,
+      "fat": 5,
+      "sugar": 1,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "삼겹살",
+      "unit": "100g",
+      "kcal": 300,
+      "carb": 0,
+      "protein": 16,
+      "fat": 26,
+      "sugar": 0,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "양배추",
+      "unit": "100g",
+      "kcal": 25,
+      "carb": 6,
+      "protein": 1,
+      "fat": 0.1,
+      "sugar": 3,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
+    },
+    {
+      "name": "현미밥",
+      "unit": "100g",
+      "kcal": 110,
+      "carb": 23,
+      "protein": 2.5,
+      "fat": 0.9,
+      "sugar": 0.2,
+      "accurate": 0,
+      "inaccurate": 0,
+      "type": "OPENDATA",
+      "nickname": ""
     }
   ]
 }

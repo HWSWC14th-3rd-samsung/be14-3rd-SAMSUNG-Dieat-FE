@@ -186,24 +186,46 @@
         fileInput.value.click();
     };
 
-    const handleFileUpload = (event) => {
+    const handleFileUpload = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const imageData = e.target.result;
-                const uniqueFileName = generateUniqueFileName(file.name);
-                
-                // 미리보기와 파일 정보만 저장
-                previewImage.value = imageData;
-                selectedImageInfo.value = {
-                    originalName: file.name,
-                    uniqueName: uniqueFileName,
-                    type: file.type,
-                    size: file.size
+            try {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageData = e.target.result;
+                    const uniqueFileName = generateUniqueFileName(file.name);
+                    
+                    // 미리보기와 파일 정보 저장
+                    previewImage.value = imageData;
+                    selectedImageInfo.value = {
+                        originalName: file.name,
+                        uniqueName: uniqueFileName,
+                        type: file.type,
+                        size: file.size,
+                        path: `/src/img/meal/${uniqueFileName}` // 저장될 경로 추가
+                    };
                 };
-            };
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
+
+                // FormData를 사용하여 파일 업로드
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('filename', selectedImageInfo.value.uniqueName);
+
+                // 파일 업로드 API 호출
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('파일 업로드 실패');
+                }
+
+            } catch (error) {
+                console.error('파일 업로드 중 오류 발생:', error);
+                errorMessage.value = '파일 업로드에 실패했습니다.';
+            }
         }
     };
 
@@ -239,14 +261,15 @@
                 meal_name: document.querySelector('.registmeal-name-input').value,
                 meal_description: document.querySelector('.registmeal-desc-input').value,
                 meal_time: timeInput.value,
-                meal_image: {
+                file: [{
+                    id: -1,
                     originalName: selectedImageInfo.value.originalName,
                     uniqueName: selectedImageInfo.value.uniqueName,
-                    imageData: previewImage.value,
+                    path: selectedImageInfo.value.path,
                     type: selectedImageInfo.value.type,
-                    size: selectedImageInfo.value.size
-                },
-                uploadDate: new Date().toISOString()
+                    size: selectedImageInfo.value.size,
+                    uploadDate: new Date().toISOString()
+                }]
             };
 
             // 저장될 데이터 콘솔에 출력
@@ -297,7 +320,6 @@
     margin-top: 20px;
 }
 
-/* 전체 등록 창을 감싸는 컨테이너 스타일 추가 */
 .registmeal-container {
     width: 1054px;
     height: 784px;
@@ -310,21 +332,20 @@
 }
 
 .registmeal-leftsection {
-    width: 426px; /* 466px - 40px(좌우 margin) */
+    width: 426px;
     height: 684px;
     padding: 20px;
     margin-left: 40px;
     position: relative;
 }
 
-/* 경계선 위치 고정 */
 .registmeal-container::after {
     content: '';
     position: absolute;
     left: 466px;
     top: 20px;
     width: 1px;
-    height: calc(100% - 100px); /* 전체 높이에서 상단 패딩(20px) + footer 높이(60px) + 하단 패딩(20px) 제외 */
+    height: calc(100% - 100px);
     background-color: rgba(128, 128, 128, 0.3);
 }
 
@@ -341,7 +362,7 @@
 .registmeal-img-title,
 .registmeal-nutrient-title {
     font-family: 'Inter';
-    font-weight: 800; /* ExtraBold */
+    font-weight: 800;
     font-size: 16px;
     margin-bottom: 10px;
 }
@@ -362,8 +383,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
-    resize: none; /* 크기 조절 비활성화 */
-    font-family: inherit; /* 폰트 상속 */
+    resize: none;
+    font-family: inherit;
 }
 
 .registmeal-time-input {
@@ -373,12 +394,12 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
-    text-align: center;  /* 입력 텍스트 중앙 정렬 */
+    text-align: center;
 }
 
 .registmeal-time-input::placeholder {
     color: #999;
-    text-align: center;  /* placeholder 중앙 정렬 */
+    text-align: center;
 }
 
 .registmeal-img-div {
@@ -395,7 +416,7 @@
     align-items: center;
     position: relative;
     cursor: pointer;
-    overflow: hidden;  /* 이미지가 영역을 벗어나지 않도록 */
+    overflow: hidden;
 }
 
 .registmeal-img-i {
@@ -479,19 +500,17 @@
 
 .nutrient-label {
     font-family: 'Inter';
-    font-weight: 500; /* Medium */
+    font-weight: 500;
     font-size: 12px;
     color: #666;
     text-align: center;
 }
 
-/* 각 영양소별 색상 */
 .nutrient-bar-fill.calorie { background-color: #FF4B4B; }
 .nutrient-bar-fill.carb { background-color: #FFA94B; }
 .nutrient-bar-fill.protein { background-color: #4CAF50; }
 .nutrient-bar-fill.fat { background-color: #4B7BFF; }
 
-/* 배경 그리드 라인 */
 .grid-line {
     position: absolute;
     left: 0;
@@ -517,7 +536,7 @@
 .registmeal-regist,
 .registmeal-cancel {
     font-family: 'Inter';
-    font-weight: 400;  /* Medium에서 Regular로 변경 */
+    font-weight: 400;
     font-size: 16px;
 }
 
@@ -585,7 +604,6 @@
     align-items: center;
 }
 
-/* 호버 효과 */
 .registmeal-load-dietpost:hover,
 .registmeal-load-meal:hover {
     background-color: #ff3333;
@@ -644,7 +662,6 @@
     background-color: transparent;
 }
 
-/* SVG 스타일 */
 .registmeal-mealplus svg,
 .registmeal-mealminus svg {
     width: 24px;
@@ -655,7 +672,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    width: 344px; /* 식사 이름, 설명 input과 동일한 너비 */
+    width: 344px;
     margin-bottom: 20px;
 }
 
@@ -680,7 +697,7 @@
 }
 
 .file-input {
-    display: none;  /* 실제 input 숨기기 */
+    display: none;
 }
 
 .preview-image {
@@ -761,7 +778,6 @@
     background-color: #555555;
 }
 
-/* 모달 스타일 */
 .modal-overlay {
     position: fixed;
     top: 0;
