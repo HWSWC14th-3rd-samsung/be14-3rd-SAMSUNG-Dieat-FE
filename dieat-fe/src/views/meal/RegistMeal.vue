@@ -109,10 +109,10 @@
                 <RegistMealCard v-if="showMealCard" />
             </div>
             <div class="registmeal-footer">
-                <button>식단 불러오기</button>
-                <button>식사 불러오기</button>
-                <button @click="handleSubmit">등록</button>
-                <button @click="goToMeal">취소</button>
+                <button class="registmeal-load-dietpost">식단 불러오기</button>
+                <button class="registmeal-load-meal">식사 불러오기</button>
+                <button class="registmeal-regist" @click="handleSubmit">등록</button>
+                <button class="registmeal-cancel" @click="goToMeal">취소</button>
             </div>
         </div>
     </div>
@@ -504,7 +504,6 @@
 .registmeal-footer {
     clear: both;
     padding: 20px;
-    text-align: center;
     border-top: 1px solid #eee;
     width: calc(100% - 40px);
     height: 60px;
@@ -513,28 +512,91 @@
     left: 20px;
 }
 
-.registmeal-footer button {
-    margin: 0 10px;
+.registmeal-load-dietpost,
+.registmeal-load-meal,
+.registmeal-regist,
+.registmeal-cancel {
+    font-family: 'Inter';
+    font-weight: 400;  /* Medium에서 Regular로 변경 */
+    font-size: 16px;
+}
+
+.registmeal-load-dietpost {
+    position: absolute;
+    left: 100px;
+    background-color: #ff4b4b;
+    color: white;
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    width: 142px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.registmeal-footer button:nth-child(1),
-.registmeal-footer button:nth-child(2) {
+.registmeal-load-meal {
+    position: absolute;
+    left: 270px;
     background-color: #ff4b4b;
     color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 142px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.registmeal-footer button:nth-child(3) {
+.registmeal-regist {
+    position: absolute;
+    right: 280px;
     background-color: #4CAF50;
     color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.registmeal-footer button:nth-child(4) {
+.registmeal-cancel {
+    position: absolute;
+    right: 140px;
     background-color: #9e9e9e;
     color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 호버 효과 */
+.registmeal-load-dietpost:hover,
+.registmeal-load-meal:hover {
+    background-color: #ff3333;
+}
+
+.registmeal-regist:hover {
+    background-color: #45a049;
+}
+
+.registmeal-cancel:hover {
+    background-color: #888888;
 }
 
 .registmeal-header {
