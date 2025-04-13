@@ -19,9 +19,8 @@
                         <input 
                             type="text" 
                             class="registmeal-time-input" 
-                            placeholder="00:00"
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            maxlength="5"
+                            placeholder="0000-00-00 00:00"
+                            maxlength="16"
                             @input="formatTimeInput"
                             v-model="timeInput"
                         >
@@ -166,30 +165,83 @@
 
     const formatTimeInput = (event) => {
         const originalValue = event.target.value;
-        if (/[^\d:]/.test(originalValue)) {  // 숫자나 콜론이 아닌 문자가 있는지 체크
+        if (/[^\d\-: ]/.test(originalValue)) {  // 숫자, 하이픈, 콜론, 공백이 아닌 문자가 있는지 체크
             timeError.value = true;
             return;
         }
         timeError.value = false;
         
         let value = originalValue.replace(/[^\d]/g, ''); // 숫자만 남김
-        if (value.length > 2) {
-            value = value.slice(0, 2) + ':' + value.slice(2);
+        
+        // 날짜와 시간 형식 적용 (0000-00-00 00:00)
+        if (value.length > 0) {
+            // 연도
+            let formatted = value.slice(0, 4);
+            
+            // 월 추가
+            if (value.length > 4) {
+                formatted += '-' + value.slice(4, 6);
+            }
+            
+            // 일 추가
+            if (value.length > 6) {
+                formatted += '-' + value.slice(6, 8);
+            }
+            
+            // 시간 추가
+            if (value.length > 8) {
+                formatted += ' ' + value.slice(8, 10);
+            }
+            
+            // 분 추가
+            if (value.length > 10) {
+                formatted += ':' + value.slice(10, 12);
+            }
+            
+            value = formatted;
         }
-        // 24시간 형식 검증
-        if (value.length >= 2) {
-            const hours = parseInt(value.slice(0, 2));
+        
+        // 날짜 및 시간 유효성 검사
+        const dateParts = value.split(' ')[0]?.split('-') || [];
+        const timeParts = value.split(' ')[1]?.split(':') || [];
+        
+        // 월 검증 (01-12)
+        if (dateParts.length > 1 && dateParts[1].length === 2) {
+            const month = parseInt(dateParts[1]);
+            if (month > 12) {
+                value = value.substring(0, 5) + '12' + value.substring(7);
+            } else if (month === 0) {
+                value = value.substring(0, 5) + '01' + value.substring(7);
+            }
+        }
+        
+        // 일 검증 (01-31)
+        if (dateParts.length > 2 && dateParts[2].length === 2) {
+            const day = parseInt(dateParts[2]);
+            if (day > 31) {
+                value = value.substring(0, 8) + '31' + value.substring(10);
+            } else if (day === 0) {
+                value = value.substring(0, 8) + '01' + value.substring(10);
+            }
+        }
+        
+        // 시간 검증 (00-23)
+        if (timeParts.length > 0 && timeParts[0].length === 2) {
+            const hours = parseInt(timeParts[0]);
             if (hours > 23) {
-                value = '23' + value.slice(2);
+                value = value.substring(0, 11) + '23' + value.substring(13);
             }
         }
-        if (value.length >= 5) {
-            const minutes = parseInt(value.slice(3, 5));
+        
+        // 분 검증 (00-59)
+        if (timeParts.length > 1 && timeParts[1].length === 2) {
+            const minutes = parseInt(timeParts[1]);
             if (minutes > 59) {
-                value = value.slice(0, 3) + '59';
+                value = value.substring(0, 14) + '59';
             }
         }
-        timeInput.value = value.slice(0, 5);
+        
+        timeInput.value = value;
     };
 
     const triggerFileInput = () => {
