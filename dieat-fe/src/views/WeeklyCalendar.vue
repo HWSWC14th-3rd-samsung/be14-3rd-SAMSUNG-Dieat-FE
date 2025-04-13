@@ -1,24 +1,54 @@
 <template>
-  <div>
+  <div class="weekly-calendar">
     <div class="week-range-container">
       <button class="arrow-button" @click="previousWeek">
         <LeftArrowIcon />
       </button>
       <div class="week-range" @click="isCalendarVisible = !isCalendarVisible">
         <div class="week-range-text">{{ getWeekRangeText() }}</div>
-        <Calendar
-        v-if="isCalendarVisible"
-        v-model="selectedDate"
-        :attributes="getAttributes()"
-        @dayclick="onDayClick"
-        class="calendar-popup"
-        :show-nav="false"
-        />
       </div>
       <button class="arrow-button" @click="nextWeek">
         <RightArrowIcon />
       </button>
     </div>
+    
+
+    <div v-if="isCalendarVisible" class="modal-overlay" @click="isCalendarVisible = false">
+      <div class="modal-content" @click.stop>
+        <div class="calendar-wrapper">
+          <Calendar
+            v-model="selectedDate"
+            :initial-date="new Date(selectedDate)"
+            :attributes="getAttributes()"
+            @dayclick="onDayClick"
+            :show-nav="true"
+            :first-day-of-week="0"
+            :min-date="null"
+            :max-date="null"
+            :show-iso-weeknumbers="false"
+            :expanded="true"
+            :trim-weeks="false"
+            :show-weeknumbers="false"
+            :masks="calendarOptions.masks"
+            :is-expanded="true"
+            color="black"
+            :columns="1"
+            :rows="1"
+            :is-range="false"
+            transparent
+            :from-page="{ month: new Date().getMonth() + 1, year: new Date().getFullYear() }"
+            :disable-page-swipe="false"
+            nav-visibility="visible"
+            :disable-days="null"
+            :pages-transition-class="'slide-h'"
+            :can-move-page="true"
+            show-adjacent-months
+            hide-out-of-range-days="false"
+          />
+        </div>
+      </div>
+    </div>
+
     <div class="calendar-grid">
       <div
         v-for="day in getWeekDays()"
@@ -46,6 +76,20 @@ import RightArrowIcon from './icons/RightArrowIcon.vue'
 const selectedDate = inject('selectedDate')
 const currentWeekOffset = ref(0)
 const isCalendarVisible = ref(false)
+
+// 캘린더 설정
+const calendarOptions = ref({
+  firstDayOfWeek: 0,
+  minDate: null,
+  maxDate: null,
+  showWeeknumbers: false,
+  masks: {
+    title: 'YYYY년 M월',
+    weekdays: 'WW'
+  },
+  locale: 'ko',
+  timezone: 'local'
+})
 
 function isToday(date) {
   const today = new Date().toISOString().split('T')[0]
@@ -80,16 +124,14 @@ function getWeekRangeText() {
 }
 
 function getAttributes() {
-  return [
-    {
-      key: 'today',
-      highlight: {
-        color: 'blue',
-        fillMode: 'light'
-      },
-      dates: new Date()
-    }
-  ]
+  const currentDate = new Date(selectedDate.value)
+  return [{
+    highlight: {
+      color: 'blue',
+      fillMode: 'light'
+    },
+    dates: { start: currentDate, end: currentDate }
+  }]
 }
 
 const selectDate = (date) => {
@@ -97,11 +139,22 @@ const selectDate = (date) => {
 }
 
 const onDayClick = (day) => {
-  selectedDate.value = day.id
+  console.log('Day clicked:', day);
+  const selectedDay = new Date(day.date)
+  
+  // 날짜 포맷팅
+  const year = selectedDay.getFullYear()
+  const month = String(selectedDay.getMonth() + 1).padStart(2, '0')
+  const date = String(selectedDay.getDate()).padStart(2, '0')
+  const formattedDate = `${year}-${month}-${date}`
+  
+  // 선택한 날짜 설정
+  selectedDate.value = formattedDate
   isCalendarVisible.value = false
-  const clickedDate = new Date(day.id)
+  
+  // 주간 offset 계산하여 달력 업데이트
   const today = new Date()
-  const diffTime = clickedDate - today
+  const diffTime = selectedDay - today
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
   currentWeekOffset.value = Math.floor(diffDays / 7)
 }
@@ -116,11 +169,14 @@ const nextWeek = () => {
 </script>
 
 <style scoped>
+.weekly-calendar {
+  position: relative;
+}
+
 .week-range-container {
   width: 582px;
   position: relative;
   border-radius: 10px;
-  overflow: hidden;
   height: 67px;
   background: #EFEFEF;
   display: flex;
@@ -159,15 +215,29 @@ const nextWeek = () => {
   align-items: center;
   justify-content: center;
   height: 100%;
+  z-index: 1;
 }
 
-.calendar-popup {
-  background: yellow;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 718px;
+  height: 541px;
+  overflow: hidden;
 }
 
 .arrow-button {
@@ -184,6 +254,8 @@ const nextWeek = () => {
 }
 
 .calendar-grid {
+  position: relative;
+  z-index: 1;
   width: 580px;
   margin: 20px auto 0;
   display: grid;
@@ -238,5 +310,197 @@ const nextWeek = () => {
 
 .selected .day-date {
   color: white;
+}
+
+:deep(.vc-container) {
+  border: none;
+  font-family: Inter, sans-serif;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.vc-header) {
+  padding: 0 30px;
+  background: #F8F8F8;
+  margin: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  border-bottom: 1px solid #EEEEEE;
+  margin-bottom: 27px;
+}
+
+:deep(.vc-title) {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', sans-serif !important;
+  color: #000;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+:deep(.vc-title:hover) {
+  background: none;
+}
+
+:deep(.vc-arrow) {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  background: none;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  z-index: 2;
+}
+
+:deep(.vc-weeks) {
+  padding: 0;
+  width: 100%;
+  height: 437.8px;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.vc-week) {
+  width: 100%;
+  display: flex;
+  height: 88.16px;
+  border-bottom: 1px solid #EEEEEE;
+}
+
+:deep(.vc-week:last-child) {
+  border-bottom: none;
+}
+
+:deep(.vc-weekdays) {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-bottom: 1px solid #EEEEEE;
+  padding: 0px 0 10px 0;
+  margin: 0;
+}
+
+:deep(.vc-weekday) {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666666;
+  flex: 1;
+  text-align: center;
+}
+
+:deep(.vc-weekday:first-child) {
+  color: #FF0000;
+}
+
+:deep(.vc-nav-container) {
+  z-index: 100;
+}
+
+:deep(.vc-popover-content) {
+  z-index: 100;
+}
+
+:deep(.vc-day) {
+  flex: 1;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-right: 1px solid #EEEEEE;
+  position: relative;
+}
+
+:deep(.vc-day:last-child) {
+  border-right: none;
+}
+
+:deep(.vc-day-content) {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 16px;
+  left: 10px;
+}
+
+:deep(.vc-day:first-child .vc-day-content) {
+  color: #FF0000;
+}
+
+:deep(.vc-day.is-not-in-month) {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 10;
+  display: flex !important;
+  cursor: pointer !important;
+}
+
+:deep(.vc-day.is-not-in-month .vc-day-content) {
+  color: #CCCCCC !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+:deep(.vc-day.is-today .vc-day-content) {
+  background: none;
+  color: #333333;
+  font-weight: 600;
+}
+
+:deep(.vc-day.is-selected .vc-day-content) {
+  background: none;
+  color: #333333;
+}
+
+:deep(.vc-day-container) {
+  margin: 0;
+  padding: 0;
+}
+
+:deep(.calendar-wrapper) {
+  width: 100%;
+  height: 100%;
+}
+
+:deep(.highlight-selected) {
+  position: absolute !important;
+  top: 16px !important;
+  left: 10px !important;
+  width: 24px !important;
+  height: 24px !important;
+  background-color: #4CAF50 !important;
+  border-radius: 50% !important;
+  z-index: 1 !important;
 }
 </style> 
