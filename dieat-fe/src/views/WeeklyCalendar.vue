@@ -126,11 +126,13 @@ function getWeekRangeText() {
 function getAttributes() {
   const currentDate = new Date(selectedDate.value)
   return [{
+    key: 'selected',
     highlight: {
-      color: 'blue',
-      fillMode: 'light'
+      fillMode: 'solid',
+      color: '#4CAF50',
+      contentClass: 'day-content-selected'
     },
-    dates: { start: currentDate, end: currentDate }
+    dates: currentDate
   }]
 }
 
@@ -435,24 +437,6 @@ const nextWeek = () => {
   border-right: none;
 }
 
-:deep(.vc-day-content) {
-  width: 24px;
-  height: 24px;
-  font-size: 14px;
-  font-weight: 400;
-  color: #333333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 16px;
-  left: 10px;
-}
-
-:deep(.vc-day:first-child .vc-day-content) {
-  color: #FF0000;
-}
-
 :deep(.vc-day.is-not-in-month) {
   visibility: visible !important;
   opacity: 1 !important;
@@ -481,6 +465,8 @@ const nextWeek = () => {
 :deep(.vc-day.is-selected .vc-day-content) {
   background: none;
   color: #333333;
+  position: relative;
+  z-index: 2;
 }
 
 :deep(.vc-day-container) {
@@ -495,12 +481,74 @@ const nextWeek = () => {
 
 :deep(.highlight-selected) {
   position: absolute !important;
-  top: 16px !important;
-  left: 10px !important;
+  top: 8px !important;
+  left: 8px !important;
   width: 24px !important;
   height: 24px !important;
   background-color: #4CAF50 !important;
   border-radius: 50% !important;
   z-index: 1 !important;
+}
+
+:deep(.vc-highlights) {
+  position: absolute !important;
+  width: 26px !important;
+  height: 26px !important;
+  top: 7px !important;
+  left: 7px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+:deep(.vc-highlight) {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  background-color: #4CAF50 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+:deep(.vc-day-content) {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+}
+
+:deep(.vc-day.weekday-0.is-selected .vc-day-content),
+:deep(.vc-weekday:first-child) {
+  color: #FF0000 !important;
+}
+
+:deep(.vc-day.is-not-in-month.is-selected .vc-day-content) {
+  color: #CCCCCC !important;
+}
+
+:deep(.day-content-selected) {
+  color: white !important;
+  font-weight: 800 !important;
+}
+
+:deep(.vc-day:first-child .day-content-selected) {
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+:deep(.vc-day.is-not-in-month .day-content-selected) {
+  color: white !important;
+  font-weight: 500 !important;
 }
 </style> 
