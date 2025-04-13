@@ -12,20 +12,22 @@ import QnaLayout from '../views/QnaLayout.vue';
 // import About from '@/pages/About.vue';
 // import Contact from '@/pages/Contact.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
+import RegistFood from '@/features/registerFood/pages/FoodRegisterPage.vue'
 // import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
 
-    {path: '/', name: Home, component: Home},
-    {path: '/signup', component: Signup},
-    {path: '/login', component: Login},
-    {path: '/meal', component: MealLayout},
-    {path: '/searchFood', component: SearchFood },
+    { path: '/', name: Home, component: Home },
+    { path: '/signup', component: Signup },
+    { path: '/login', component: Login },
+    { path: '/meal', component: MealLayout },
+    { path: '/searchFood', component: SearchFood },
+    { path: '/registerFood', component: RegistFood },
     // {path: '/readFree', component: ReadFree },
-    {path: '/noticeLayout', component: NoticeLayout},
-    {path: '/qnaLayout', component: QnaLayout}
+    { path: '/noticeLayout', component: NoticeLayout },
+    { path: '/qnaLayout', component: QnaLayout }
   ]
 });
 
