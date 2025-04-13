@@ -110,7 +110,7 @@
             </div>
             <div class="registmeal-footer">
                 <button class="registmeal-load-dietpost">식단 불러오기</button>
-                <button class="registmeal-load-meal">식사 불러오기</button>
+                <button class="registmeal-load-meal" @click="openLoadMealModal">식사 불러오기</button>
                 <button class="registmeal-regist" @click="handleSubmit">등록</button>
                 <button class="registmeal-cancel" @click="goToMeal">취소</button>
             </div>
@@ -121,14 +121,21 @@
         message="음식이 등록되지 않았습니다."
         @confirm="closeNoFoodModal"
     />
+    <LoadMealModal
+        :show="showLoadMealModal"
+        @close="closeLoadMealModal"
+        @confirm="handleLoadMealConfirm"
+    />
 </template>
 
 <script setup>
     import RegistMealCard from '@/components/meal/RegistMealCard.vue';
     import Header from '@/components/common/Header.vue';
     import AlertModal from '@/components/meal/AlertModal.vue';
+    import LoadMealModal from '@/components/meal/LoadMealModal.vue';
     import { ref, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
+    import { useRegistMealStore } from '@/stores/registMeal';
 
     const router = useRouter();
     const timeInput = ref('');
@@ -140,7 +147,10 @@
     const errorMessage = ref('');
     const showNoFoodModal = ref(false);
     const showMealCard = ref(false);
+    const showLoadMealModal = ref(false);
     const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
+
+    const mealStore = useRegistMealStore();
 
     // JSON 서버 기본 URL
     const API_URL = 'http://localhost:3000/meals';
@@ -230,8 +240,18 @@
     };
 
     const addMealCard = () => {
-        showMealCard.value = true;
-        registeredFoods.value.push({});  // 빈 객체로 음식 추가
+        // 현재 입력된 식사 정보를 store에 저장
+        const mealInfo = {
+            meal_name: document.querySelector('.registmeal-name-input').value,
+            meal_description: document.querySelector('.registmeal-desc-input').value,
+            meal_time: timeInput.value,
+            file: selectedImageInfo.value
+        };
+        
+        mealStore.setTempMealInfo(mealInfo);
+        
+        // /searchFood 경로로 이동
+        router.push('/searchFood');
     };
 
     const removeMealCard = () => {
@@ -312,6 +332,19 @@
 
     const closeNoFoodModal = () => {
         showNoFoodModal.value = false;
+    };
+
+    const openLoadMealModal = () => {
+        showLoadMealModal.value = true;
+    };
+
+    const closeLoadMealModal = () => {
+        showLoadMealModal.value = false;
+    };
+
+    const handleLoadMealConfirm = () => {
+        // 선택된 식사 데이터 처리 로직 구현 예정
+        closeLoadMealModal();
     };
 </script>
 
