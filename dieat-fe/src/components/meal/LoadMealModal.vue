@@ -389,6 +389,7 @@ const fetchMealsByDate = async (date) => {
     justify-content: space-between;
     align-items: center;
     margin-top: 0;
+    padding: 0 5px;  /* 양쪽에 5px 패딩 추가 */
 }
 
 .calendar-navigation button {
@@ -396,6 +397,7 @@ const fetchMealsByDate = async (date) => {
     border: none;
     cursor: pointer;
     padding: 5px;
+    margin: 0 -5px;  /* 양쪽으로 -5px 마진으로 원래 위치에서 안쪽으로 이동 */
 }
 
 .arrow {
