@@ -176,3 +176,12 @@
     text-align: left;
     padding-left: 1rem;
 }
+
+.clickable-row .title-cell {
+    cursor: pointer;
+    color: #007bff;
+}
+
+.clickable-row .title-cell:hover {
+    text-decoration: underline;
+}

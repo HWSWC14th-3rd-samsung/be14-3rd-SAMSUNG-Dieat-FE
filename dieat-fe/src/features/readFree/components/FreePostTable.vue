@@ -1,4 +1,3 @@
-<!-- FreePostTable.vue -->
 <template>
     <table class="post-table">
         <thead>
@@ -13,7 +12,9 @@
         </thead>
         <tbody>
             <tr v-for="(post, index) in posts" :key="index" class="clickable-row">
-                <td class="title-cell">{{ post.title }}</td>
+                <td class="title-cell" @click="goToDetail(post.id)">
+                    {{ post.title }}
+                </td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.date }}</td>
                 <td>{{ post.comments }}</td>
@@ -25,10 +26,17 @@
 </template>
 
 <script setup>
-defineProps({
+import { useRouter } from 'vue-router';
+const props = defineProps({
     posts: {
         type: Array,
         required: true
     }
 });
+
+const router = useRouter();
+
+function goToDetail(postId) {
+    router.push(`/readFree/${postId}`);
+}
 </script>

@@ -65,3 +65,5 @@ function handlePageChange(page) {
   }
 }
 </script>
+
+<style src="../assets/style.css"></style>
