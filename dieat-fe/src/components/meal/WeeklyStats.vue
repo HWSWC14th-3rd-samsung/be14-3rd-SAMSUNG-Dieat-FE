@@ -54,13 +54,11 @@ const getNutrientColor = (current, target) => {
 
 const fetchWeeklyStats = async (date) => {
     try {
-
         const currentDate = new Date(date)
         const startOfWeek = new Date(currentDate)
         startOfWeek.setDate(currentDate.getDate() - currentDate.getDay())
         const endOfWeek = new Date(startOfWeek)
         endOfWeek.setDate(startOfWeek.getDate() + 6)
-
 
         const startDate = startOfWeek.toISOString().split('T')[0]
         const endDate = endOfWeek.toISOString().split('T')[0]
@@ -76,34 +74,38 @@ const fetchWeeklyStats = async (date) => {
             return mealDate >= startDate && mealDate <= endDate
         })
     } catch (error) {
-        console.error('주간 통계 조회 오류:', error)
+        console.log('주간 식사 데이터가 없습니다.')
         weeklyMeals.value = []
     }
 }
 
 const calculateDailyAverage = (meals, nutrientKey) => {
-    if (meals.length === 0) return 0
+    if (!meals || meals.length === 0) return 0
 
-    const dailyTotals = meals.reduce((acc, meal) => {
-        const date = new Date(meal.meal_dt).toISOString().split('T')[0]
-        if (!acc[date]) {
-            acc[date] = 0
-        }
-        acc[date] += meal[nutrientKey] || 0
-        return acc
-    }, {})
+    try {
+        const dailyTotals = meals.reduce((acc, meal) => {
+            const date = new Date(meal.meal_dt).toISOString().split('T')[0]
+            if (!acc[date]) {
+                acc[date] = 0
+            }
+            acc[date] += meal[nutrientKey] || 0
+            return acc
+        }, {})
 
-    const daysWithMeals = Object.keys(dailyTotals).length
+        const daysWithMeals = Object.keys(dailyTotals).length
+        if (daysWithMeals === 0) return 0
 
-    const total = Object.values(dailyTotals).reduce((sum, daily) => sum + daily, 0)
-    return Math.round(total / daysWithMeals)
+        const total = Object.values(dailyTotals).reduce((sum, daily) => sum + daily, 0)
+        return Math.round(total / daysWithMeals)
+    } catch (error) {
+        console.log(`${nutrientKey} 계산 중 오류 발생.`)
+        return 0
+    }
 }
-
 
 const averageCalories = computed(() => {
     return calculateDailyAverage(weeklyMeals.value, 'meal_calories')
 })
-
 
 const caloriesColor = computed(() => getNutrientColor(averageCalories.value, TARGET_VALUES.calories))
 

@@ -11,19 +11,46 @@
                 </div>
                 <div class="registmeal-desc-div">
                     <h3 class="registmeal-desc">식사 설명</h3>
-                    <input type="text" class="registmeal-desc-input">
+                    <textarea class="registmeal-desc-input"></textarea>
                 </div>
                 <div class="registmeal-time-wrapper">
                     <div class="registmeal-time-div">
                         <h3 class="registmeal-time">식사 시간</h3>
-                        <input type="text" class="registmeal-time-input">
+                        <input 
+                            type="text" 
+                            class="registmeal-time-input" 
+                            placeholder="00:00"
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            maxlength="5"
+                            @input="formatTimeInput"
+                            v-model="timeInput"
+                        >
+                        <p v-if="timeError" class="time-error-message">숫자를 입력해주세요.</p>
                     </div>
                     <div class="registmeal-img-div">
                         <h3 class="registmeal-img-title">대표 이미지</h3>
-                        <div class="registmeal-img-bg">
-                            <h5 class="registmeal-img-i">대표 이미지 등록</h5>
-                            <div class="registmeal-img-plus"></div>
+                        <div class="registmeal-img-bg" @click="triggerFileInput">
+                            <template v-if="!previewImage">
+                                <h5 class="registmeal-img-i">대표 이미지 등록</h5>
+                                <div class="registmeal-img-plus"></div>
+                            </template>
+                            <template v-else>
+                                <img :src="previewImage" class="preview-image" alt="선택된 이미지">
+                                <div class="image-overlay">
+                                    <button class="remove-image" @click.stop="removeImage">×</button>
+                                </div>
+                                <span class="image-name">{{ selectedImageInfo?.originalName }}</span>
+                            </template>
+                            <input 
+                                type="file" 
+                                ref="fileInput" 
+                                class="file-input" 
+                                @change="handleFileUpload"
+                                accept="image/*"
+                            >
                         </div>
+                        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+                        <p v-if="isLoading" class="loading-message">저장 중...</p>
                     </div>
                 </div>
                 <div>
@@ -71,8 +98,8 @@
             <div class="registmeal-footer">
                 <button>식단 불러오기</button>
                 <button>식사 불러오기</button>
-                <button>등록</button>
-                <button>취소</button>
+                <button @click="handleSubmit">등록</button>
+                <button @click="goToMeal">취소</button>
             </div>
         </div>
     </div>
@@ -81,8 +108,146 @@
 <script setup>
     import RegistMealCard from '@/components/meal/RegistMealCard.vue';
     import Header from '@/components/common/Header.vue';
+    import { ref, onMounted } from 'vue';
+    import { useRouter } from 'vue-router';
 
+    const router = useRouter();
+    const timeInput = ref('');
+    const timeError = ref(false);
+    const fileInput = ref(null);
+    const previewImage = ref(null);
+    const selectedImageInfo = ref(null);
+    const isLoading = ref(false);
+    const errorMessage = ref('');
 
+    // JSON 서버 기본 URL
+    const API_URL = 'http://localhost:3000/meals';
+
+    // 고유한 파일명 생성 함수
+    const generateUniqueFileName = (originalName) => {
+        const timestamp = Date.now();
+        const random = Math.random().toString(36).substring(2, 8);
+        const extension = originalName.split('.').pop();
+        const baseName = originalName.split('.')[0];
+        return `${baseName}_${timestamp}_${random}.${extension}`;
+    };
+
+    const formatTimeInput = (event) => {
+        const originalValue = event.target.value;
+        if (/[^\d:]/.test(originalValue)) {  // 숫자나 콜론이 아닌 문자가 있는지 체크
+            timeError.value = true;
+            return;
+        }
+        timeError.value = false;
+        
+        let value = originalValue.replace(/[^\d]/g, ''); // 숫자만 남김
+        if (value.length > 2) {
+            value = value.slice(0, 2) + ':' + value.slice(2);
+        }
+        // 24시간 형식 검증
+        if (value.length >= 2) {
+            const hours = parseInt(value.slice(0, 2));
+            if (hours > 23) {
+                value = '23' + value.slice(2);
+            }
+        }
+        if (value.length >= 5) {
+            const minutes = parseInt(value.slice(3, 5));
+            if (minutes > 59) {
+                value = value.slice(0, 3) + '59';
+            }
+        }
+        timeInput.value = value.slice(0, 5);
+    };
+
+    const triggerFileInput = () => {
+        fileInput.value.click();
+    };
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imageData = e.target.result;
+                const uniqueFileName = generateUniqueFileName(file.name);
+                
+                // 미리보기와 파일 정보만 저장
+                previewImage.value = imageData;
+                selectedImageInfo.value = {
+                    originalName: file.name,
+                    uniqueName: uniqueFileName,
+                    type: file.type,
+                    size: file.size
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            if (!selectedImageInfo.value || !previewImage.value) {
+                console.error('이미지가 선택되지 않았습니다.');
+                errorMessage.value = '이미지를 선택해주세요.';
+                return;
+            }
+
+            isLoading.value = true;
+            errorMessage.value = '';
+
+            const mealData = {
+                id: Date.now(),
+                meal_name: document.querySelector('.registmeal-name-input').value,
+                meal_description: document.querySelector('.registmeal-desc-input').value,
+                meal_time: timeInput.value,
+                meal_image: {
+                    originalName: selectedImageInfo.value.originalName,
+                    uniqueName: selectedImageInfo.value.uniqueName,
+                    imageData: previewImage.value,
+                    type: selectedImageInfo.value.type,
+                    size: selectedImageInfo.value.size
+                },
+                uploadDate: new Date().toISOString()
+            };
+
+            // 저장될 데이터 콘솔에 출력
+            console.log('저장될 데이터:', JSON.stringify(mealData, null, 2));
+
+            // fetch를 사용하여 데이터 저장
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(mealData)
+            });
+
+            if (!response.ok) throw new Error('서버 응답 오류');
+            
+            // 저장 성공 시 /meal 경로로 이동
+            await router.push('/meal');
+
+        } catch (error) {
+            console.error('저장 중 오류 발생:', error);
+            errorMessage.value = '저장에 실패했습니다.';
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    const removeImage = () => {
+        // 로컬 상태만 초기화
+        previewImage.value = null;
+        selectedImageInfo.value = null;
+        if (fileInput.value) {
+            fileInput.value.value = '';  // 파일 input 초기화
+        }
+    };
+
+    const goToMeal = () => {
+        router.push('/meal');
+    };
 </script>
 
 <style scoped>
@@ -155,6 +320,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
+    resize: none; /* 크기 조절 비활성화 */
+    font-family: inherit; /* 폰트 상속 */
 }
 
 .registmeal-time-input {
@@ -163,7 +330,13 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    text-align: center;  /* 입력 텍스트 중앙 정렬 */
+}
+
+.registmeal-time-input::placeholder {
+    color: #999;
+    text-align: center;  /* placeholder 중앙 정렬 */
 }
 
 .registmeal-img-div {
@@ -174,12 +347,13 @@
     width: 145px;
     height: 116px;
     background-color: #CDCDCD;
-    border-radius: 5px;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     cursor: pointer;
+    overflow: hidden;  /* 이미지가 영역을 벗어나지 않도록 */
 }
 
 .registmeal-img-i {
@@ -348,5 +522,99 @@
 
 .registmeal-img-div {
     margin-bottom: 20px;
+}
+
+.time-error-message {
+    color: #FF4B4B;
+    font-size: 12px;
+    margin-top: 2px;
+    margin-bottom: 6px;
+    margin-left: 5px;
+}
+
+.registmeal-time-input.error {
+    border-color: #FF4B4B;
+}
+
+.file-input {
+    display: none;  /* 실제 input 숨기기 */
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    display: none;
+}
+
+.registmeal-img-bg:hover .image-overlay {
+    display: block;
+}
+
+.remove-image {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 0;
+}
+
+.remove-image:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.image-name {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 12px;
+    color: #666;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.error-message {
+    color: #FF4B4B;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.loading-message {
+    color: #666;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.registmeal-cancel-btn {
+    padding: 10px 20px;
+    background-color: #6B6B6B;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.registmeal-cancel-btn:hover {
+    background-color: #555555;
 }
 </style>
