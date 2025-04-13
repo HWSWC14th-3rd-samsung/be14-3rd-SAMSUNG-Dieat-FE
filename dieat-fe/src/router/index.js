@@ -12,6 +12,7 @@ import QnaLayout from '../views/QnaLayout.vue';
 // import About from '@/pages/About.vue';
 // import Contact from '@/pages/Contact.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
+import RegistFree from '@/features/registerFree/FreePostWritePage.vue'
 // import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
 
 const router = createRouter({
@@ -24,6 +25,7 @@ const router = createRouter({
     {path: '/meal', component: MealLayout},
     {path: '/searchFood', component: SearchFood },
     // {path: '/readFree', component: ReadFree },
+    { path: '/registerFree', component: RegistFree },
     {path: '/noticeLayout', component: NoticeLayout},
     {path: '/qnaLayout', component: QnaLayout}
   ]
