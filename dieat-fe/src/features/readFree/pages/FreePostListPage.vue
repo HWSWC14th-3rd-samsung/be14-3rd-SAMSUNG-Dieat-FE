@@ -37,12 +37,14 @@ watch(searchKeyword, () => {
 });
 
 onMounted(async () => {
-  posts.value = await fetchPosts();
+  try {
+    posts.value = await fetchPosts();
+  } catch (err) {
+    console.error('게시글 불러오기 실패:', err);
+  }
 });
 
-const posts = ref([
-  // 실제 데이터 배열 (동일한 내용 생략)
-]);
+const posts = ref([]);
 
 const filtered = computed(() =>
   posts.value.filter(p => p.title.includes(searchKeyword.value))
