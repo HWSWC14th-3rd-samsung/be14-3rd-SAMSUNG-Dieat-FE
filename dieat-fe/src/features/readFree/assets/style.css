@@ -121,6 +121,11 @@
     background-color: #eee;
 }
 
+.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
 /* === 자유게시글 조회 테이블 === */
 .post-table {
     width: 100%;

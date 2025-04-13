@@ -1,3 +1,4 @@
+<!-- FreePostTable.vue -->
 <template>
     <table class="post-table">
         <thead>
@@ -11,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="post in posts" :key="post.title">
+            <tr v-for="(post, index) in posts" :key="index" class="clickable-row">
                 <td class="title-cell">{{ post.title }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.date }}</td>
