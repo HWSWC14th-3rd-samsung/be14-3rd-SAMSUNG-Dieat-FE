@@ -88,12 +88,25 @@
                 </div>
             </div>
             <div class="registmeal-rightsection">
-                <h3 class="registmeal-mealtitle">음식</h3>
-                <div class="registmeal-mealplus" @click="RegistMealCard">+버튼</div>
-                <div class="registmeal-mealminus">-버튼</div>
+                <div class="registmeal-header">
+                    <h3 class="registmeal-mealtitle">음식</h3>
+                    <div class="registmeal-buttons">
+                        <button class="registmeal-mealplus" @click="addMealCard">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 4V20" stroke="black" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M4 12H20" stroke="black" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <button class="registmeal-mealminus" @click="removeMealCard">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 12H20" stroke="black" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div>
-                <MealCard />
+                <RegistMealCard v-if="showMealCard" />
             </div>
             <div class="registmeal-footer">
                 <button>식단 불러오기</button>
@@ -103,11 +116,17 @@
             </div>
         </div>
     </div>
+    <AlertModal 
+        :show="showNoFoodModal"
+        message="음식이 등록되지 않았습니다."
+        @confirm="closeNoFoodModal"
+    />
 </template>
 
 <script setup>
     import RegistMealCard from '@/components/meal/RegistMealCard.vue';
     import Header from '@/components/common/Header.vue';
+    import AlertModal from '@/components/meal/AlertModal.vue';
     import { ref, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
 
@@ -119,6 +138,9 @@
     const selectedImageInfo = ref(null);
     const isLoading = ref(false);
     const errorMessage = ref('');
+    const showNoFoodModal = ref(false);
+    const showMealCard = ref(false);
+    const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
 
     // JSON 서버 기본 URL
     const API_URL = 'http://localhost:3000/meals';
@@ -185,7 +207,23 @@
         }
     };
 
+    const addMealCard = () => {
+        showMealCard.value = true;
+        registeredFoods.value.push({});  // 빈 객체로 음식 추가
+    };
+
+    const removeMealCard = () => {
+        showMealCard.value = false;
+        registeredFoods.value = [];  // 음식 목록 초기화
+    };
+
     const handleSubmit = async () => {
+        // 등록된 음식이 없는 경우 모달 표시
+        if (!showMealCard.value || registeredFoods.value.length === 0) {
+            showNoFoodModal.value = true;
+            return;
+        }
+
         try {
             if (!selectedImageInfo.value || !previewImage.value) {
                 console.error('이미지가 선택되지 않았습니다.');
@@ -247,6 +285,10 @@
 
     const goToMeal = () => {
         router.push('/meal');
+    };
+
+    const closeNoFoodModal = () => {
+        showNoFoodModal.value = false;
     };
 </script>
 
@@ -495,17 +537,56 @@
     color: white;
 }
 
-.registmeal-mealplus,
-.registmeal-mealminus {
-    display: inline-block;
-    margin: 0 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 4px;
+.registmeal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .registmeal-mealtitle {
-    margin-bottom: 15px;
+    margin: 0;
+}
+
+.registmeal-buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.registmeal-mealplus,
+.registmeal-mealminus {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+    background-color: transparent;
+    padding: 0;
+}
+
+.registmeal-mealminus {
+    background-color: transparent;
+    margin-right: 5px;
+}
+
+.registmeal-mealplus:hover {
+    background-color: transparent;
+}
+
+.registmeal-mealminus:hover {
+    background-color: transparent;
+}
+
+/* SVG 스타일 */
+.registmeal-mealplus svg,
+.registmeal-mealminus svg {
+    width: 24px;
+    height: 24px;
 }
 
 .registmeal-time-wrapper {
@@ -616,5 +697,53 @@
 
 .registmeal-cancel-btn:hover {
     background-color: #555555;
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    width: 300px;
+}
+
+.modal-content h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.modal-content p {
+    margin: 0 0 20px 0;
+    color: #666;
+}
+
+.modal-confirm-btn {
+    background-color: #155b45;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.modal-confirm-btn:hover {
+    background-color: #0f4433;
 }
 </style>
