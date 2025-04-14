@@ -19,19 +19,19 @@
                 <div class="registmeal-card-nutr-div">
                     <div class="registmeal-card-nutr-cal">
                         <h3 class="registmeal-card-nutr-cal-value">{{ food.kcal }}</h3>
-                        <h5 class="registmeal-card-nutr-cal-unit">칼로리</h5>
+                        <h5 class="registmeal-card-nutr-cal-unit">kcal</h5>
                     </div>
                     <div class="registmeal-card-nutr-carb">
                         <h3 class="registmeal-card-nutr-carb-value">{{ food.carb }}</h3>
-                        <h5 class="registmeal-card-nutr-carb-unit">탄수화물</h5>
+                        <h5 class="registmeal-card-nutr-carb-unit">탄</h5>
                     </div>
                     <div class="registmeal-card-nutr-protein">
                         <h3 class="registmeal-card-nutr-protein-value">{{ food.protein }}</h3>
-                        <h5 class="registmeal-card-nutr-protein-unit">단백질</h5>
+                        <h5 class="registmeal-card-nutr-protein-unit">단</h5>
                     </div>
                     <div class="registmeal-card-nutr-fat">
                         <h3 class="registmeal-card-nutr-fat-value">{{ food.fat }}</h3>
-                        <h5 class="registmeal-card-nutr-fat-unit">지방</h5>
+                        <h5 class="registmeal-card-nutr-fat-unit">지    </h5>
                     </div>
                     <div class="registmeal-card-nutr-sugar">
                         <h3 class="registmeal-card-nutr-sugar-value">{{ food.sugar }}</h3>
@@ -83,7 +83,7 @@ const getFoodType = (type) => {
     background: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     position: relative;
@@ -93,8 +93,9 @@ const getFoodType = (type) => {
 .card-left {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;  /* 하단 정렬로 변경 */
     width: 40%;
+    padding: 16px;
 }
 
 .card-right {
@@ -102,19 +103,20 @@ const getFoodType = (type) => {
     flex-direction: column;
     justify-content: space-between;
     width: 60%;
+    padding: 16px;
 }
 
-/* 카테고리 영역 */
 .regstmeal-card-category {
-    display: flex;
-    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 15px;
 }
 
 .registmeal-card-category-name {
     background: #98DCC6;
     width: 41px;
-    height: 22px;
-    border-radius: 5px;
+    height: 18px;
+    border-radius: 0 0 5px 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,37 +124,55 @@ const getFoodType = (type) => {
     font-weight: 600;
     font-size: 10px;
     color: #000000;
+    padding: 0;
+    line-height: 1;
 }
 
 .registmeal-card-category-name.opendata {
     background: rgba(255, 126, 126, 0.6);
 }
 
-/* 음식 이름 영역 */
 .registmeal-card-name {
-    font-size: 16px;
+    position: absolute;
+    top: -73px;
+    left: 50px;
+    font-family: 'Inter';
+    font-size: 14px;
     font-weight: 600;
     color: #333333;
-    margin: 8px 0;
+    margin: 0;
+    height: 18px;
+    display: flex;
+    align-items: center;
 }
 
-/* 단위 표시 영역 */
+.registmeal-card-name-div {
+    position: relative;
+    margin-top: 30px;
+}
+
 .registmeal-card-unit {
     position: absolute;
-    top: 24px;
-    right: 24px;
+    top: -5px;
+    right: 15px;
 }
 
 .registmeal-card-unit-name {
-    color: #666666;
-    font-size: 12px;
+    font-family: 'Inter';
+    font-size: 10px;
+    font-weight: 600;  /* semi bold */
+    color: #676767;
+    text-align: right;
 }
 
 /* 영양소 정보 영역 */
 .registmeal-card-nutr-div {
     display: flex;
     gap: 12px;
-    justify-content: flex-end;
+    position: absolute;
+    z-index: 1;
+    top: -65px; 
+    left: 15px;
 }
 
 .registmeal-card-nutr-cal,
@@ -161,6 +181,16 @@ const getFoodType = (type) => {
 .registmeal-card-nutr-fat,
 .registmeal-card-nutr-sugar {
     text-align: center;
+    background: rgba(233, 233, 233, 0.54);
+    padding: 4px 8px;
+    border-radius: 4px;
+    width: 42px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
 }
 
 .registmeal-card-nutr-cal-value,
@@ -168,10 +198,12 @@ const getFoodType = (type) => {
 .registmeal-card-nutr-protein-value,
 .registmeal-card-nutr-fat-value,
 .registmeal-card-nutr-sugar-value {
+    font-family: 'Inter';
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;  /* bold */
     color: #333333;
-    margin-bottom: 2px;
+    margin: 0;
+    line-height: 1;
 }
 
 .registmeal-card-nutr-cal-unit,
@@ -179,8 +211,12 @@ const getFoodType = (type) => {
 .registmeal-card-nutr-protein-unit,
 .registmeal-card-nutr-fat-unit,
 .registmeal-card-nutr-sugar-unit {
-    font-size: 12px;
-    color: #666666;
+    font-family: 'Inter';
+    font-size: 10px;
+    font-weight: 600;  /* semi bold */
+    color: #787878;
+    margin: 0;
+    line-height: 1;
 }
 
 /* 수량 영역 */
