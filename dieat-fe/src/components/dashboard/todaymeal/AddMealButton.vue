@@ -1,5 +1,5 @@
 <template>
-    <button class="add-meal-button" @click="goToHome">식사 추가</button>
+    <button class="add-meal-button" @click="addMeal">식사 추가</button>
   </template>
   
   <script setup>
@@ -7,8 +7,8 @@
   
   const router = useRouter()
   
-  const goToHome = () => {
-    router.push('/')
+  const addMeal = () => {
+    router.push('/RegistMeal')
   }
   </script>
   

@@ -40,7 +40,7 @@
           <h2 class="section-title">주간 식사</h2>
         </div>
         <div class="dashboard-box">
-          <!-- 내용 들어갈 자리 -->
+          <WeeklyMealSection/>
         </div>
       </div>
     </div>
@@ -53,6 +53,7 @@ import SummarySection from '@/components/dashboard/summary/SummarySection.vue'
 import TodayMealSection from '@/components/dashboard/todaymeal/TodayMealSection.vue'
 import AddMealButton from '@/components/dashboard/todaymeal/AddMealButton.vue'
 import WeightSection from '@/components/dashboard/weight/WeightSection.vue'
+import WeeklyMealSection from '@/components/dashboard/weeklymeal/WeeklyMealSection.vue'
 </script>
 
 <style scoped>

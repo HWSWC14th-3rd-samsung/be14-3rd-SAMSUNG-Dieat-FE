@@ -72,14 +72,14 @@
         margin: 0;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         z-index: 2000;
-        min-width: 200px;
+        min-width: 250px;
         border-radius: 10px;
         border: 1.5px solid #155b45;
     }
   
     .dropdown-item {
         display: block;
-        padding: 8px 16px;
+        padding: 8px 10px;
         color: #333;
         text-decoration: none;
         text-align: center;
