@@ -11,18 +11,22 @@
         FOOD
         <MenuDrop :menuItems="menu1" :visible="activeMenu === 'FOOD'" />
       </div>
+
       <div class="menu-item" @click="toggleDropdown('MEAL')">
         MEAL
         <MenuDrop :menuItems="menu2" :visible="activeMenu === 'MEAL'" />
       </div>
+
       <div class="menu-item" @click="toggleDropdown('POST')">
         POST
         <MenuDrop :menuItems="menu3" :visible="activeMenu === 'POST'" />
       </div>
+
       <div class="menu-item" @click="toggleDropdown('MYPAGE')">
         MYPAGE
         <MenuDrop :menuItems="menu4" :visible="activeMenu === 'MYPAGE'" />
       </div>
+
       <div class="menu-item" @click="toggleDropdown('SERVICE')">
         SERVICE
         <MenuDrop :menuItems="menu5" :visible="activeMenu === 'SERVICE'" />
