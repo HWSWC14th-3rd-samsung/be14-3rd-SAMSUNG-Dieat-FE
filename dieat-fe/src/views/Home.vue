@@ -36,11 +36,8 @@
 </template>
 
 <script setup>
-import {ref, onMounted, onBeforeUnmount} from 'vue';
+import {ref} from 'vue';
 import Header from '@/components/common/Header.vue';
-
-import { Carousel, Slide } from 'vue3-carousel';
-import 'vue3-carousel/dist/carousel.css'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Autoplay } from 'swiper/modules'
