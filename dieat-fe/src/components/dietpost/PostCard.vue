@@ -31,18 +31,18 @@
     <div class="meta">
       <span class="date">{{ post.date }}</span>
       <div class="right-meta">
-        <LikeButton :initialCount="post.likes" />
+        <LikeButton :count="post.likes" @update="(val) => post.likes = val" />
         <span>💬 {{ post.comments }}</span>
       </div>
     </div>
 
     <!-- 🔥 영양 정보 -->
     <div class="nutrition-tags">
-      <span class="tag">열량 <br> {{ post.calories }} kcal</span>
-      <span class="tag">탄수화물 <br> {{ post.carbs }} g</span>
-      <span class="tag">단백질 <br> {{ post.protein }} g</span>
-      <span class="tag">지방 <br> {{ post.fat }} g</span>
-      <span class="tag">당 <br> {{ post.sugar }} g</span>
+      <span class="tag">열량 <br />{{ post.total.kcal }} kcal</span>
+      <span class="tag">탄수화물 <br />{{ post.total.carbs }} g</span>
+      <span class="tag">단백질 <br />{{ post.total.protein }} g</span>
+      <span class="tag">지방 <br />{{ post.total.fat }} g</span>
+      <span class="tag">당 <br />{{ post.total.sugar }} g</span>
     </div>
   </div>
 </template>

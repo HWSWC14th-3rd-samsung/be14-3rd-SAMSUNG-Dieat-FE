@@ -1,0 +1,511 @@
+{
+    "posts": [
+        {
+        "id": 1,
+        "title": "닭가슴살 도시락",
+        "nickname": "헬스킹",
+        "date": "2025-03-26",
+        "likes": 42,
+        "comments": 6,
+        "views": 123,
+        "img": "/img/dietpost/diet_post_img.png",
+        "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png",
+            "/img/dietpost/diet_sub_img3.png"
+        ],
+        "description": "닭가슴살과 야채, 고구마를 곁들인 건강한 식단입니다.",
+        "items": [
+            {
+            "name": "닭가슴살",
+            "kcal": 120,
+            "carbs": 0,
+            "protein": 25,
+            "fat": 2,
+            "sugar": 0
+            },
+            {
+            "name": "고구마",
+            "kcal": 100,
+            "carbs": 23,
+            "protein": 1,
+            "fat": 0,
+            "sugar": 5
+            }
+        ],
+        "total": {
+            "kcal": 450,
+            "carbs": 40,
+            "protein": 35,
+            "fat": 10,
+            "sugar": 8
+        },
+        "commentsList": [
+            {
+            "writer": "열치열",
+            "content": "정말 맛있어 보여요!"
+            },
+            {
+            "writer": "피트니스맨",
+            "content": "탄단지 비율 최고!"
+            }
+        ]
+        },
+        {
+        "id": 2,
+        "title": "스크램블 에그와 토스트",
+        "nickname": "웰시킹",
+        "date": "2025-04-02",
+        "likes": 59,
+        "comments": 2,
+        "views": 50,
+        "img": "/img/dietpost/diet_post_img.png",
+        "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+        ],
+        "description": "담백하면서도 고소한 스크램블 에그와 토스트입니다.",
+        "items": [
+            {
+            "name": "스크램블 에그",
+            "kcal": 177,
+            "carbs": 1.9,
+            "protein": 12,
+            "fat": 13,
+            "sugar": 1
+            },
+            {
+            "name": "토스트",
+            "kcal": 148,
+            "carbs": 16,
+            "protein": 10,
+            "fat": 7,
+            "sugar": 1
+            }
+        ],
+        "total": {
+            "kcal": 325,
+            "carbs": 17.9,
+            "protein": 22,
+            "fat": 20,
+            "sugar": 2
+        },
+        "commentsList": [
+            {
+            "writer": "열치열",
+            "content": "얼치 143g 피스 미쳤다.."
+            },
+            {
+            "writer": "헬도리군",
+            "content": "상상보다 헬치!"
+            }
+        ]
+        },
+        {
+        "id": 3,
+        "title": "샐러드 도시락",
+        "nickname": "다이어터",
+        "date": "2025-04-01",
+        "likes": 33,
+        "comments": 4,
+        "views": 80,
+        "img": "/img/dietpost/diet_post_img.png",
+        "subImages": [
+            "/img/dietpost/diet_sub_img1.png"
+        ],
+        "description": "신선한 채소와 삶은 달걀로 구성된 다이어트 도시락.",
+        "items": [
+            {
+            "name": "샐러드 채소",
+            "kcal": 50,
+            "carbs": 10,
+            "protein": 2,
+            "fat": 0,
+            "sugar": 2
+            },
+            {
+            "name": "삶은 달걀",
+            "kcal": 78,
+            "carbs": 1,
+            "protein": 6,
+            "fat": 5,
+            "sugar": 1
+            }
+        ],
+        "total": {
+            "kcal": 128,
+            "carbs": 11,
+            "protein": 8,
+            "fat": 5,
+            "sugar": 3
+        },
+        "commentsList": [
+            {
+            "writer": "식단조아",
+            "content": "깔끔하고 좋아요!"
+            },
+            {
+            "writer": "초보다이어터",
+            "content": "참고할게요!"
+            }
+        ]
+        },
+        {
+        "id": 4,
+        "title": "연어 아보카도 샐러드",
+        "nickname": "샐러더",
+        "date": "2025-04-02",
+        "likes": 77,
+        "views": 182,
+        "comments": 4,
+        "img": "/img/dietpost/diet_post_img4.png",
+        "subImages": [
+            "/img/dietpost/diet_sub_img4_1.png",
+            "/img/dietpost/diet_sub_img4_2.png",
+            "/img/dietpost/diet_sub_img4_3.png"
+        ],
+        "description": "연어와 아보카도가 듬뿍 들어간 건강한 샐러드입니다.",
+        "items": [
+            {
+            "name": "연어",
+            "kcal": 200,
+            "carbs": 0,
+            "protein": 23,
+            "fat": 12,
+            "sugar": 0
+            },
+            {
+            "name": "아보카도",
+            "kcal": 160,
+            "carbs": 8,
+            "protein": 2,
+            "fat": 15,
+            "sugar": 0
+            },
+            {
+            "name": "채소",
+            "kcal": 40,
+            "carbs": 8,
+            "protein": 2,
+            "fat": 0,
+            "sugar": 2
+            }
+        ],
+        "total": {
+            "kcal": 400,
+            "carbs": 16,
+            "protein": 27,
+            "fat": 27,
+            "sugar": 2
+        },
+        "commentsList": [
+            {
+            "writer": "헬린이",
+            "content": "연어 최고!"
+            },
+            {
+            "writer": "다이어터",
+            "content": "비주얼도 맛도 굿!"
+            }
+        ]
+        },
+        {
+        "id": 5,
+        "title": "불고기 쌈밥",
+        "nickname": "한식매니아",
+        "date": "2025-04-03",
+        "likes": 89,
+        "views": 250,
+        "comments": 6,
+        "img": "/img/dietpost/diet_post_img5.png",
+        "subImages": [
+            "/img/dietpost/diet_sub_img5_1.png",
+            "/img/dietpost/diet_sub_img5_2.png",
+            "/img/dietpost/diet_sub_img5_3.png"
+        ],
+        "description": "한식 다이어트 식단의 정석, 불고기 쌈밥을 소개합니다!",
+        "items": [
+            {
+            "name": "불고기",
+            "kcal": 220,
+            "carbs": 10,
+            "protein": 25,
+            "fat": 12,
+            "sugar": 3
+            },
+            {
+            "name": "상추",
+            "kcal": 15,
+            "carbs": 3,
+            "protein": 1,
+            "fat": 0,
+            "sugar": 1
+            },
+            {
+            "name": "밥",
+            "kcal": 150,
+            "carbs": 35,
+            "protein": 3,
+            "fat": 1,
+            "sugar": 0
+            }
+        ],
+        "total": {
+            "kcal": 385,
+            "carbs": 48,
+            "protein": 29,
+            "fat": 13,
+            "sugar": 4
+        },
+        "commentsList": [
+            {
+            "writer": "삼시세끼",
+            "content": "한식이 최고죠!"
+            },
+            {
+            "writer": "불고기킹",
+            "content": "맛있겠다~"
+            }
+        ]
+        },
+        {
+        "id": 6,
+        "title": "두부 스테이크",
+        "nickname": "비건도전",
+        "date": "2025-04-04",
+        "likes": 65,
+        "views": 120,
+        "comments": 3,
+        "img": "/img/dietpost/diet_post_img6.png",
+        "subImages": [
+            "/img/dietpost/diet_sub_img6_1.png",
+            "/img/dietpost/diet_sub_img6_2.png",
+            "/img/dietpost/diet_sub_img6_3.png"
+        ],
+        "description": "식물성 단백질로 가득 찬 두부 스테이크!",
+        "items": [
+            {
+            "name": "두부",
+            "kcal": 150,
+            "carbs": 4,
+            "protein": 15,
+            "fat": 10,
+            "sugar": 1
+            },
+            {
+            "name": "야채볶음",
+            "kcal": 60,
+            "carbs": 10,
+            "protein": 2,
+            "fat": 2,
+            "sugar": 2
+            }
+        ],
+        "total": {
+            "kcal": 210,
+            "carbs": 14,
+            "protein": 17,
+            "fat": 12,
+            "sugar": 3
+        },
+        "commentsList": [
+            {
+            "writer": "두부조아",
+            "content": "담백하니 좋아요"
+            },
+            {
+            "writer": "헬시잇",
+            "content": "다이어트에 딱!"
+            }
+        ]
+        },
+        {
+            "id": 7,
+            "title": "닭가슴살 샐러드 플레이트",
+            "nickname": "샐러디언",
+            "date": "2025-04-05",
+            "likes": 42,
+            "views": 95,
+            "comments": 3,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "닭가슴살과 아보카도, 방울토마토가 들어간 영양 만점 샐러드 플레이트입니다.",
+            "items": [
+            { "name": "닭가슴살", "kcal": 165, "carbs": 0, "protein": 31, "fat": 3.6, "sugar": 0 },
+            { "name": "방울토마토", "kcal": 30, "carbs": 7, "protein": 1, "fat": 0.2, "sugar": 4 },
+            { "name": "아보카도", "kcal": 160, "carbs": 9, "protein": 2, "fat": 15, "sugar": 1 }
+            ],
+            "total": { "kcal": 355, "carbs": 16, "protein": 34, "fat": 18.8, "sugar": 5 },
+            "commentsList": [
+            { "writer": "헬창킹", "content": "이거 진짜 다이어트식 최고예요!" },
+            { "writer": "다이어터", "content": "오늘 저녁은 이거다" }
+            ]
+        },
+        {
+            "id": 8,
+            "title": "연어 스테이크 정식",
+            "nickname": "피쉬러버",
+            "date": "2025-04-06",
+            "likes": 67,
+            "views": 112,
+            "comments": 5,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "연어 스테이크와 채소구이, 현미밥으로 구성된 고단백 식사입니다.",
+            "items": [
+            { "name": "연어 스테이크", "kcal": 240, "carbs": 0, "protein": 25, "fat": 15, "sugar": 0 },
+            { "name": "채소구이", "kcal": 60, "carbs": 10, "protein": 2, "fat": 3, "sugar": 2 },
+            { "name": "현미밥", "kcal": 180, "carbs": 40, "protein": 4, "fat": 1.5, "sugar": 0 }
+            ],
+            "total": { "kcal": 480, "carbs": 50, "protein": 31, "fat": 19.5, "sugar": 2 },
+            "commentsList": [
+            { "writer": "트레이너민", "content": "연어는 늘 옳죠!" }
+            ]
+        },
+        {
+            "id": 9,
+            "title": "단호박 닭죽 한그릇",
+            "nickname": "웰빙족",
+            "date": "2025-04-07",
+            "likes": 35,
+            "views": 88,
+            "comments": 2,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "소화도 잘 되고 포만감 높은 단호박 닭죽으로 하루 마무리!",
+            "items": [
+            { "name": "닭가슴살", "kcal": 165, "carbs": 0, "protein": 31, "fat": 3.6, "sugar": 0 },
+            { "name": "단호박", "kcal": 90, "carbs": 22, "protein": 2, "fat": 0.2, "sugar": 5 },
+            { "name": "찹쌀", "kcal": 160, "carbs": 36, "protein": 3, "fat": 0.5, "sugar": 0 }
+            ],
+            "total": { "kcal": 415, "carbs": 58, "protein": 36, "fat": 4.3, "sugar": 5 },
+            "commentsList": [
+            { "writer": "죽마니아", "content": "소화도 잘되고 완전 좋아요!" }
+            ]
+        },
+        {
+            "id": 10,
+            "title": "닭가슴살 파프리카 볶음",
+            "nickname": "헬시헬시",
+            "date": "2025-04-08",
+            "likes": 82,
+            "views": 155,
+            "comments": 4,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "알록달록 파프리카와 닭가슴살을 볶아낸 고단백 저칼로리 식단!",
+            "items": [
+            { "name": "닭가슴살", "kcal": 165, "carbs": 0, "protein": 31, "fat": 3.6, "sugar": 0 },
+            { "name": "파프리카", "kcal": 30, "carbs": 6, "protein": 1, "fat": 0.3, "sugar": 2 }
+            ],
+            "total": { "kcal": 195, "carbs": 6, "protein": 32, "fat": 3.9, "sugar": 2 },
+            "commentsList": [
+            { "writer": "맛있닭", "content": "색감도 좋고 맛있어 보여요!" }
+            ]
+        },
+        {
+            "id": 11,
+            "title": "계란 스크램블 현미밥 정식",
+            "nickname": "건강지킴이",
+            "date": "2025-04-09",
+            "likes": 60,
+            "views": 140,
+            "comments": 3,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "간단하지만 영양 가득한 계란과 현미밥 한 끼!",
+            "items": [
+            { "name": "계란", "kcal": 140, "carbs": 1, "protein": 12, "fat": 10, "sugar": 1 },
+            { "name": "현미밥", "kcal": 180, "carbs": 40, "protein": 4, "fat": 1.5, "sugar": 0 }
+            ],
+            "total": { "kcal": 320, "carbs": 41, "protein": 16, "fat": 11.5, "sugar": 1 },
+            "commentsList": [
+            { "writer": "꾸준러", "content": "이런 식단이 오래가기 좋죠" }
+            ]
+        },
+        {
+            "id": 12,
+            "title": "소고기 브로콜리 볶음",
+            "nickname": "단백질러버",
+            "date": "2025-04-10",
+            "likes": 74,
+            "views": 178,
+            "comments": 6,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "근육에 좋다는 브로콜리와 소고기를 볶아 담백하게!",
+            "items": [
+            { "name": "소고기", "kcal": 250, "carbs": 0, "protein": 28, "fat": 17, "sugar": 0 },
+            { "name": "브로콜리", "kcal": 55, "carbs": 11, "protein": 4, "fat": 0.6, "sugar": 2 }
+            ],
+            "total": { "kcal": 305, "carbs": 11, "protein": 32, "fat": 17.6, "sugar": 2 },
+            "commentsList": [
+            { "writer": "브로러버", "content": "브로콜리 진짜 최고!" }
+            ]
+        },
+        {
+            "id": 13,
+            "title": "고구마 닭가슴살 도시락",
+            "nickname": "헬조선식단러",
+            "date": "2025-04-11",
+            "likes": 90,
+            "views": 210,
+            "comments": 8,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "달콤한 고구마와 닭가슴살, 심플하지만 꾸준히 먹는 다이어트 도시락!",
+            "items": [
+            { "name": "고구마", "kcal": 100, "carbs": 23, "protein": 2, "fat": 0.2, "sugar": 5 },
+            { "name": "닭가슴살", "kcal": 165, "carbs": 0, "protein": 31, "fat": 3.6, "sugar": 0 }
+            ],
+            "total": { "kcal": 265, "carbs": 23, "protein": 33, "fat": 3.8, "sugar": 5 },
+            "commentsList": [
+            { "writer": "식단고수", "content": "꾸준함이 최고!" }
+            ]
+        },
+        {
+            "id": 14,
+            "title": "샌드위치와 바나나 한 끼",
+            "nickname": "간편식러버",
+            "date": "2025-04-12",
+            "likes": 49,
+            "views": 100,
+            "comments": 2,
+            "img": "/img/dietpost/diet_post_img.png",
+            "subImages": [
+            "/img/dietpost/diet_sub_img1.png",
+            "/img/dietpost/diet_sub_img2.png"
+            ],
+            "description": "아침이나 점심으로 간단하게 먹기 좋은 샌드위치와 바나나!",
+            "items": [
+            { "name": "샌드위치", "kcal": 220, "carbs": 28, "protein": 8, "fat": 8, "sugar": 3 },
+            { "name": "바나나", "kcal": 89, "carbs": 23, "protein": 1, "fat": 0.3, "sugar": 12 }
+            ],
+            "total": { "kcal": 309, "carbs": 51, "protein": 9, "fat": 8.3, "sugar": 15 },
+            "commentsList": [
+            { "writer": "모닝러버", "content": "아침대용으로 딱!" }
+            ]
+        }
+        ]
+    }
