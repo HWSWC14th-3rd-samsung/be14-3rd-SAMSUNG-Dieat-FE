@@ -22,7 +22,6 @@ import RegistFree from '@/views/post/FreePostWritePage.vue';
 import NoticeLayout from '@/views/service/NoticeLayout.vue';
 import QnaLayout from '@/views/service/QnaLayout.vue';
 import personalUserInfo from '@/components/member/personalUserInfo.vue';
-import userEdit from '@/components/member/userEdit.vue';
 import SubscribeList from '@/components/subscribe/SubscribeList.vue';
 import BlockUserList from '@/components/block/BlockUserList.vue';
 
@@ -40,7 +39,6 @@ import ReadSuccess from '@/views/succpost/SuccessLayout.vue';
 import RegisterSuccPost from '@/views/succpost/RegisterSucc.vue'
 
 import userEdit from '@/components/member/userEdit.vue';
-import personalUserInfo from '@/components/member/personalUserInfo.vue';
 import DailyPoint from '@/components/point/DailyPoint.vue';
 
 const router = createRouter({
@@ -82,7 +80,7 @@ const router = createRouter({
     { path: '/qnaDetail/:id', name: 'QnaDetail', component: QnaDetail, props: true },
     { path: '/registQna', component: RegistQna },
 
-    { path: '/bookmarkLayout', component: BookMarkLayout },
+    { path: '/category', component: BookMarkLayout },
     { path: '/readSuccess', component: ReadSuccess },
     { path: '/registerSuccess', component: RegisterSuccPost },
   ]

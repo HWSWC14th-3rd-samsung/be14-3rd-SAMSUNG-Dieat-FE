@@ -65,7 +65,7 @@
                                         </svg>
                                     </div>
                                     <div class="diet-image">
-                                        <img :src="getImagePath(diet)" alt="음식 이미지">
+                                        <img :src="diet.image" alt="음식 이미지">
                                     </div>
                                     <div class="diet-title">{{ diet.title }}</div>
                                     <div class="diet-nutrients">
@@ -165,8 +165,8 @@ const selectedDiet = ref(null);
 const bookmarkedDiets = ref([
     {
         id: 1,
-        title: '쉽게 따라하는 사과 다이어트',
-        img: '/img/meal/img1.png',
+        title: '쉽게 따라하는 샐러드',
+        image: 'https://via.placeholder.com/150',
         time: '12:30',
         kcal: 279,
         carbs: 33,
@@ -178,7 +178,7 @@ const bookmarkedDiets = ref([
     {
         id: 2,
         title: '스크램블 에그',
-        img: '/img/meal/img2.png',
+        image: 'https://via.placeholder.com/150',
         time: '18:00',
         kcal: 180,
         carbs: 2,
@@ -190,7 +190,7 @@ const bookmarkedDiets = ref([
     {
         id: 3,
         title: '마라탕 (대)',
-        img: '/img/meal/img3.png',
+        image: 'https://via.placeholder.com/150',
         time: '19:30',
         kcal: 900,
         carbs: 45,
@@ -202,7 +202,7 @@ const bookmarkedDiets = ref([
     {
         id: 4,
         title: '소곱창',
-        img: '/img/meal/img4.png',
+        image: 'https://via.placeholder.com/150',
         time: '20:00',
         kcal: 1800,
         carbs: 10,
@@ -214,7 +214,7 @@ const bookmarkedDiets = ref([
     {
         id: 5,
         title: '닭가슴살 볶음밥',
-        img: '/img/meal/img5.png',
+        image: 'https://via.placeholder.com/150',
         time: '13:00',
         kcal: 550,
         carbs: 60,
@@ -226,7 +226,7 @@ const bookmarkedDiets = ref([
     {
         id: 6,
         title: '닭고야',
-        img: '/img/meal/img6.png',
+        image: 'https://via.placeholder.com/150',
         time: '14:30',
         kcal: 450,
         carbs: 40,
@@ -238,7 +238,7 @@ const bookmarkedDiets = ref([
     {
         id: 7,
         title: '돈부리 (규동)',
-        img: '/img/meal/img7.png',
+        image: 'https://via.placeholder.com/150',
         time: '12:00',
         kcal: 700,
         carbs: 80,
@@ -250,7 +250,7 @@ const bookmarkedDiets = ref([
     {
         id: 8,
         title: '쉽게 따라하는 사과 다이어트',
-        img: '/img/meal/img8.png',
+        image: 'https://via.placeholder.com/150',
         time: '10:00',
         kcal: 850,
         carbs: 15,
@@ -262,7 +262,7 @@ const bookmarkedDiets = ref([
     {
         id: 9,
         title: '쉽게 따라하는 사과 다이어트',
-        img: '/img/meal/img9.png',
+        image: 'https://via.placeholder.com/150',
         time: '09:00',
         kcal: 1400,
         carbs: 120,
@@ -368,11 +368,6 @@ const confirmRemoveBookmark = () => {
     }
     confirmBookmarkRemoval.value = false;
     dietToRemoveBookmark.value = null;
-};
-
-// 이미지 경로를 처리하는 함수 추가
-const getImagePath = (diet) => {
-    return diet.img || '/img/meal/default.png';
 };
 </script>
 

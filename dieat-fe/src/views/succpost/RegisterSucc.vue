@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
     <div class="register-page">
   
       <div class="form-container">

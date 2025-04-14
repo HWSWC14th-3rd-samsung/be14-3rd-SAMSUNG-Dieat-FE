@@ -75,7 +75,7 @@
   
   onMounted(async () => {
     try {
-      const res = await fetch('http://localhost:8080/pointList')
+      const res = await fetch('http://localhost:3000/pointList')
       const json = await res.json()
       pointList.value = json.map((item, index) => ({ id: index + 1, ...item }))
     } catch (error) {
