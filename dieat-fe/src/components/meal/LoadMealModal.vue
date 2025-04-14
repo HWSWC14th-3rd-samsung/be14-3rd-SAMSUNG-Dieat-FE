@@ -52,7 +52,13 @@
                             <h4>식사 목록</h4>
                         </div>
                         <div class="meal-list">
-                            <div v-for="meal in selectedDateMeals" :key="meal.id" class="meal-card">
+                            <div 
+                                v-for="meal in selectedDateMeals" 
+                                :key="meal.id" 
+                                class="meal-card"
+                                :class="{ 'selected-meal': selectedMeal?.id === meal.id }"
+                                @click="selectMeal(meal)"
+                            >
                                 <div class="meal-card-content">
                                     <div class="meal-info">
                                         <div class="meal-name">{{ meal.name }}</div>
@@ -110,6 +116,7 @@ const currentDate = ref(new Date());
 const selectedDate = ref(null);
 const mealsData = ref([]);
 const selectedDateMeals = ref([]);
+const selectedMeal = ref(null);
 
 const API_URL = 'http://localhost:3000/meals';
 
@@ -360,6 +367,10 @@ const fetchMealsByDate = async (date) => {
         selectedDateMeals.value = [];
     }
 };
+
+const selectMeal = (meal) => {
+    selectedMeal.value = meal;
+};
 </script>
 
 <style scoped>
@@ -590,8 +601,8 @@ const fetchMealsByDate = async (date) => {
 .meal-list {
     flex: 1;
     overflow-y: auto;
-    padding: 0 8px;
-    margin-right: -8px;
+    padding: 0 0 0 0;
+    margin: 0;
     display: flex;
     flex-direction: column-reverse;
 }
@@ -603,14 +614,21 @@ const fetchMealsByDate = async (date) => {
     justify-content: flex-end;
     gap: 10px;
     height: 40px;
+    margin-bottom: 15px;
 }
 
 .cancel-button {
     padding: 8px 20px;
-    border: 1px solid #ddd;
+    border: none;
     border-radius: 4px;
-    background-color: white;
+    background-color: #BEBEBE;
+    color: white;
     cursor: pointer;
+    font-family: 'Inter';
+    font-weight: 400;
+    font-size: 14px;
+    position: relative;
+    right: 40px;
 }
 
 .confirm-button {
@@ -620,6 +638,8 @@ const fetchMealsByDate = async (date) => {
     background-color: #FF4B4B;
     color: white;
     cursor: pointer;
+    position: relative;
+    right: 200px;
 }
 
 .confirm-button:hover {
@@ -627,7 +647,7 @@ const fetchMealsByDate = async (date) => {
 }
 
 .cancel-button:hover {
-    background-color: #f5f5f5;
+    background-color: #d3d3d3;
 }
 
 .calendar-grid {
@@ -653,15 +673,23 @@ const fetchMealsByDate = async (date) => {
 .meal-card {
     background: white;
     border-radius: 8px;
-    padding: 16px;
+    padding: 0;
     margin-bottom: 12px;
+    margin-left: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.selected-meal {
+    border: 2px solid #FFA18E;
 }
 
 .meal-card-content {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 16px;
 }
 
 .meal-info {

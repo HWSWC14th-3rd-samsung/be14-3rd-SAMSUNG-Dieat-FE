@@ -3237,7 +3237,7 @@
         {
           "meal_food_code": 1,
           "meal_food_type": "USERDATA",
-          "meal_food_cnt": 1.0
+          "meal_food_cnt": 1
         }
       ],
       "file": [
@@ -3251,7 +3251,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "a796"
     },
     {
       "meal_code": 2,
@@ -3268,7 +3269,7 @@
         {
           "meal_food_code": 2,
           "meal_food_type": "USERDATA",
-          "meal_food_cnt": 1.0
+          "meal_food_cnt": 1
         }
       ],
       "file": [
@@ -3282,7 +3283,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "31d9"
     },
     {
       "meal_code": 3,
@@ -3299,7 +3301,7 @@
         {
           "meal_food_code": 3,
           "meal_food_type": "USERDATA",
-          "meal_food_cnt": 1.0
+          "meal_food_cnt": 1
         }
       ],
       "file": [
@@ -3313,7 +3315,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "2ca6"
     },
     {
       "meal_code": 4,
@@ -3330,7 +3333,7 @@
         {
           "meal_food_code": 4,
           "meal_food_type": "USERDATA",
-          "meal_food_cnt": 1.0
+          "meal_food_cnt": 1
         }
       ],
       "file": [
@@ -3344,7 +3347,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "e3c9"
     },
     {
       "meal_code": 1002,
@@ -3375,7 +3379,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "1014"
     },
     {
       "meal_code": 1003,
@@ -3406,7 +3411,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "921f"
     },
     {
       "meal_code": 1004,
@@ -3437,7 +3443,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "7206"
     },
     {
       "meal_code": 79,
@@ -4020,7 +4027,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "4e93"
     },
     {
       "meal_code": 92,
@@ -4051,7 +4059,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "1691"
     },
     {
       "meal_code": 93,
@@ -4082,8 +4091,8 @@
           "path": "/src/img/meal/",
           "uploadDate": ""
         }
-      ]
+      ],
+      "id": "99ad"
     }
-    
   ]
 }

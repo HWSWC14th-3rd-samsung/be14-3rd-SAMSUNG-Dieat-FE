@@ -33,8 +33,8 @@ const router = createRouter({
 
     // { path: '/meal', component: MealLayout },
     // { path: '/registmeal', component: RegistMeal },
-    { path: '/MealLayout', component: MealLayout },
-    { path: '/RegistMeal', component: RegistMeal },
+    { path: '/meal', component: MealLayout },
+    { path: '/registmeal', component: RegistMeal },
 
     { path: '/dietPost', component: DietPostLayout },
     { path: '/dietPost/:id', component: DietPostDetail },

@@ -80,34 +80,67 @@ const fetchTodayMeals = async () => {
         }
         const allMeals = await response.json()
         
+        // 날짜 형식을 정확하게 맞추어 필터링
         todayMeals.value = allMeals.filter(meal => {
-            const mealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
+            const mealDate = meal.meal_dt.split(' ')[0] // "2025-04-13 21:00" -> "2025-04-13"
             return mealDate === selectedDate.value
         })
+
+        console.log(`${selectedDate.value} 날짜의 식사 데이터:`, {
+            식사_수: todayMeals.value.length,
+            총_칼로리: calculateTotalCalories(),
+            총_탄수화물: calculateTotalCarbs(),
+            총_단백질: calculateTotalProtein(),
+            총_지방: calculateTotalFat()
+        })
     } catch (error) {
-        console.log('오늘의 식사 데이터가 없습니다.')
+        console.error('오늘의 식사 데이터 조회 오류:', error)
         todayMeals.value = []
     }
 }
 
 const calculateTotalCalories = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_calories || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const calories = meal.meal_calories || 0
+        return sum + calories
+    }, 0)
+    return Math.round(total)
 }
 
 const calculateTotalCarbs = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_carbs || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const carbs = meal.meal_carbs || 0
+        return sum + carbs
+    }, 0)
+    return Math.round(total)
 }
 
 const calculateTotalProtein = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_protein || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const protein = meal.meal_protein || 0
+        return sum + protein
+    }, 0)
+    return Math.round(total)
 }
 
 const calculateTotalFat = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_fat || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const fat = meal.meal_fat || 0
+        return sum + fat
+    }, 0)
+    return Math.round(total)
 }
 
 const getNutrientColor = (current, target, isProtein = false) => {

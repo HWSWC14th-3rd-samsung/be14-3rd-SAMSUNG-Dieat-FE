@@ -108,7 +108,7 @@
                 <RegistMealCard v-if="showMealCard" />
             </div>
             <div class="registmeal-footer">
-                <button class="registmeal-load-dietpost">식단 불러오기</button>
+                <button class="registmeal-load-dietpost" @click="openLoadDietPostModal">식단 불러오기</button>
                 <button class="registmeal-load-meal" @click="openLoadMealModal">식사 불러오기</button>
                 <button class="registmeal-regist" @click="handleSubmit">등록</button>
                 <button class="registmeal-cancel" @click="goToMeal">취소</button>
@@ -125,6 +125,11 @@
         @close="closeLoadMealModal"
         @confirm="handleLoadMealConfirm"
     />
+    <LoadDietPostModal
+        :show="showLoadDietPostModal"
+        @close="closeLoadDietPostModal"
+        @confirm="handleLoadDietPostConfirm"
+    />
 </template>
 
 <script setup>
@@ -132,6 +137,7 @@
     import Header from '@/components/common/Header.vue';
     import AlertModal from '@/components/meal/AlertModal.vue';
     import LoadMealModal from '@/components/meal/LoadMealModal.vue';
+    import LoadDietPostModal from '@/components/meal/LoadDietPostModal.vue';
     import { ref, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
     import { useRegistMealStore } from '@/stores/registMeal';
@@ -147,6 +153,7 @@
     const showNoFoodModal = ref(false);
     const showMealCard = ref(false);
     const showLoadMealModal = ref(false);
+    const showLoadDietPostModal = ref(false);
     const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
 
     const mealStore = useRegistMealStore();
@@ -252,47 +259,44 @@
         const file = event.target.files[0];
         if (file) {
             try {
+                const uniqueFileName = generateUniqueFileName(file.name);
+                
+
+                selectedImageInfo.value = {
+                    id: -1,
+                    originalName: file.name,
+                    uniqueName: uniqueFileName,
+                    imageData: '',
+                    type: file.type,
+                    size: file.size,
+                    path: `/src/img/meal/${uniqueFileName}`,
+                    uploadDate: new Date().toISOString()
+                };
+
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const imageData = e.target.result;
-                    const uniqueFileName = generateUniqueFileName(file.name);
-                    
-                    // 미리보기와 파일 정보 저장
                     previewImage.value = imageData;
-                    selectedImageInfo.value = {
-                        originalName: file.name,
-                        uniqueName: uniqueFileName,
-                        type: file.type,
-                        size: file.size,
-                        path: `/src/img/meal/${uniqueFileName}` // 저장될 경로 추가
-                    };
                 };
                 reader.readAsDataURL(file);
 
-                // FormData를 사용하여 파일 업로드
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('filename', selectedImageInfo.value.uniqueName);
-
-                // 파일 업로드 API 호출
-                const response = await fetch('/api/upload', {
-                    method: 'POST',
-                    body: formData
+                console.log('파일 업로드 성공:', {
+                    fileInfo: selectedImageInfo.value
                 });
-
-                if (!response.ok) {
-                    throw new Error('파일 업로드 실패');
-                }
 
             } catch (error) {
                 console.error('파일 업로드 중 오류 발생:', error);
                 errorMessage.value = '파일 업로드에 실패했습니다.';
+                previewImage.value = null;
+                selectedImageInfo.value = null;
+                if (fileInput.value) {
+                    fileInput.value.value = '';
+                }
             }
         }
     };
 
     const addMealCard = () => {
-        // 현재 입력된 식사 정보를 store에 저장
         const mealInfo = {
             meal_name: document.querySelector('.registmeal-name-input').value,
             meal_description: document.querySelector('.registmeal-desc-input').value,
@@ -302,17 +306,15 @@
         
         mealStore.setTempMealInfo(mealInfo);
         
-        // /searchFood 경로로 이동
         router.push('/searchFood');
     };
 
     const removeMealCard = () => {
         showMealCard.value = false;
-        registeredFoods.value = [];  // 음식 목록 초기화
+        registeredFoods.value = [];
     };
 
     const handleSubmit = async () => {
-        // 등록된 음식이 없는 경우 모달 표시
         if (!showMealCard.value || registeredFoods.value.length === 0) {
             showNoFoodModal.value = true;
             return;
@@ -333,21 +335,11 @@
                 meal_name: document.querySelector('.registmeal-name-input').value,
                 meal_description: document.querySelector('.registmeal-desc-input').value,
                 meal_time: timeInput.value,
-                file: [{
-                    id: -1,
-                    originalName: selectedImageInfo.value.originalName,
-                    uniqueName: selectedImageInfo.value.uniqueName,
-                    path: selectedImageInfo.value.path,
-                    type: selectedImageInfo.value.type,
-                    size: selectedImageInfo.value.size,
-                    uploadDate: new Date().toISOString()
-                }]
+                file: [selectedImageInfo.value]
             };
 
-            // 저장될 데이터 콘솔에 출력
             console.log('저장될 데이터:', JSON.stringify(mealData, null, 2));
 
-            // fetch를 사용하여 데이터 저장
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -358,7 +350,6 @@
 
             if (!response.ok) throw new Error('서버 응답 오류');
             
-            // 저장 성공 시 /meal 경로로 이동
             await router.push('/meal');
 
         } catch (error) {
@@ -370,11 +361,10 @@
     };
 
     const removeImage = () => {
-        // 로컬 상태만 초기화
         previewImage.value = null;
         selectedImageInfo.value = null;
         if (fileInput.value) {
-            fileInput.value.value = '';  // 파일 input 초기화
+            fileInput.value.value = '';
         }
     };
 
@@ -395,8 +385,19 @@
     };
 
     const handleLoadMealConfirm = () => {
-        // 선택된 식사 데이터 처리 로직 구현 예정
         closeLoadMealModal();
+    };
+
+    const openLoadDietPostModal = () => {
+        showLoadDietPostModal.value = true;
+    };
+
+    const closeLoadDietPostModal = () => {
+        showLoadDietPostModal.value = false;
+    };
+
+    const handleLoadDietPostConfirm = () => {
+        closeLoadDietPostModal();
     };
 </script>
 

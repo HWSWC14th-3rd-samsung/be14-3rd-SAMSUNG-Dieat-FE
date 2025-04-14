@@ -6,43 +6,45 @@
                 <button class="close-button" @click="closeModal">×</button>
             </div>
             <div class="modal-body">
-                <div class="calendar-section">
-                    <div class="calendar-header">
-                        <div class="calendar-navigation">
-                            <button @click="prevMonth">
-                                <span class="arrow left"></span>
-                            </button>
-                            <span class="current-month">{{ loadDietMonth }}</span>
-                            <button @click="nextMonth">
-                                <span class="arrow right"></span>
-                            </button>
-                        </div>
+                <div class="bookmark-section">
+                    <div class="bookmark-header">
+                        <h3>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            북마크
+                        </h3>
                     </div>
-                    <div class="calendar-grid">
-                        <div class="weekdays">
-                            <span>일</span>
-                            <span>월</span>
-                            <span>화</span>
-                            <span>수</span>
-                            <span>목</span>
-                            <span>금</span>
-                            <span>토</span>
+                    <div class="bookmark-categories">
+                        <div class="category-item" 
+                            :class="{ 'active': selectedCategory === 'all' }"
+                            @click="selectCategory('all')">
+                            <span>모든 게시물</span>
+                            <span class="count">103</span>
                         </div>
-                        <div class="days">
-                            <div
-                                v-for="day in calendarDays"
-                                :key="day.date"
-                                :class="[
-                                    'day',
-                                    { 'current-month': day.currentMonth },
-                                    { 'other-month': !day.currentMonth },
-                                    { 'selected': isSelectedDate(day.date) },
-                                    { 'has-diet': hasDiet(day.date) }
-                                ]"
-                                @click="selectDate(day.date)"
-                            >
-                                {{ day.dayNumber }}
-                            </div>
+                        <div class="category-item"
+                            :class="{ 'active': selectedCategory === 'diet' }"
+                            @click="selectCategory('diet')">
+                            <span>다이어트</span>
+                            <span class="count">16</span>
+                        </div>
+                        <div class="category-item"
+                            :class="{ 'active': selectedCategory === 'meat' }"
+                            @click="selectCategory('meat')">
+                            <span>고기 먹고 싶을 때</span>
+                            <span class="count">8</span>
+                        </div>
+                        <div class="category-item"
+                            :class="{ 'active': selectedCategory === 'home' }"
+                            @click="selectCategory('home')">
+                            <span>집에 살 빼야 할 때</span>
+                            <span class="count">19</span>
+                        </div>
+                        <div class="category-item"
+                            :class="{ 'active': selectedCategory === 'night' }"
+                            @click="selectCategory('night')">
+                            <span>야식</span>
+                            <span class="count">60</span>
                         </div>
                     </div>
                 </div>
@@ -52,7 +54,7 @@
                             <h4>식단 목록</h4>
                         </div>
                         <div class="diet-list">
-                            <div v-for="diet in selectedDateDiets" :key="diet.id" 
+                            <div v-for="diet in bookmarkedDiets" :key="diet.id" 
                                 class="diet-card"
                                 :class="{ 'selected-diet': selectedDiet && selectedDiet.id === diet.id }"
                                 @click="selectDiet(diet)">
@@ -98,7 +100,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, computed, onMounted, watch } from 'vue';
+import { defineProps, defineEmits, ref } from 'vue';
 
 const props = defineProps({
     show: {
@@ -108,192 +110,44 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close', 'confirm']);
-
-const currentDate = ref(new Date());
-const selectedDate = ref(null);
-const dietsData = ref([]);
-const selectedDateDiets = ref([]);
+const selectedCategory = ref('all');
 const selectedDiet = ref(null);
-
-const API_URL = 'http://localhost:3000/diets'; // API 엔드포인트는 실제 서버에 맞게 수정 필요
-
-const fetchMonthlyDiets = async () => {
-    try {
-        const response = await fetch(API_URL);
-        
-        if (!response.ok) {
-            throw new Error('서버 응답 오류');
-        }
-        
-        const data = await response.json();
-        
-        if (Array.isArray(data) && data.length > 0) {
-            const currentYear = currentDate.value.getFullYear();
-            const currentMonth = String(currentDate.value.getMonth() + 1).padStart(2, '0');
-            const yearMonth = `${currentYear}-${currentMonth}`;
-            
-            dietsData.value = data
-                .filter(diet => diet.diet_dt.startsWith(yearMonth))
-                .map(diet => diet.diet_dt);
-        } else {
-            dietsData.value = [];
-        }
-    } catch (error) {
-        console.error('식단 데이터 조회 중 오류 발생:', error);
-        dietsData.value = [];
+const bookmarkedDiets = ref([
+    {
+        id: 1,
+        title: '토마토 파스타',
+        time: '12:30',
+        kcal: 650,
+        carbs: 85,
+        protein: 18,
+        fat: 22,
+        sodium: 10
+    },
+    {
+        id: 2,
+        title: '고구마피자(도미노)',
+        time: '18:00',
+        kcal: 900,
+        carbs: 85,
+        protein: 30,
+        fat: 40,
+        sodium: 15
     }
-};
-
-watch(currentDate, () => {
-    fetchMonthlyDiets();
-});
-
-onMounted(() => {
-    if (props.show) {
-        fetchMonthlyDiets();
-    }
-});
-
-watch(() => props.show, (newValue) => {
-    if (newValue) {
-        fetchMonthlyDiets();
-    }
-});
-
-const loadDietMonth = computed(() => {
-    return `${currentDate.value.getFullYear()}년 ${currentDate.value.getMonth() + 1}월`;
-});
-
-const calendarDays = computed(() => {
-    const year = currentDate.value.getFullYear();
-    const month = currentDate.value.getMonth();
-    
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const prevMonthLastDay = new Date(year, month, 0);
-    
-    const days = [];
-    
-    const firstDayWeekday = firstDay.getDay();
-    for (let i = firstDayWeekday - 1; i >= 0; i--) {
-        days.push({
-            date: new Date(year, month - 1, prevMonthLastDay.getDate() - i),
-            dayNumber: prevMonthLastDay.getDate() - i,
-            currentMonth: false
-        });
-    }
-    
-    for (let i = 1; i <= lastDay.getDate(); i++) {
-        days.push({
-            date: new Date(year, month, i),
-            dayNumber: i,
-            currentMonth: true
-        });
-    }
-    
-    const remainingDays = 42 - days.length;
-    for (let i = 1; i <= remainingDays; i++) {
-        days.push({
-            date: new Date(year, month + 1, i),
-            dayNumber: i,
-            currentMonth: false
-        });
-    }
-    
-    return days;
-});
-
-const isSelectedDate = (date) => {
-    if (!selectedDate.value) return false;
-    return date.toDateString() === selectedDate.value.toDateString();
-};
-
-const selectDate = async (date) => {
-    selectedDate.value = date;
-    await fetchDietsByDate(date);
-};
-
-const prevMonth = () => {
-    currentDate.value = new Date(
-        currentDate.value.getFullYear(),
-        currentDate.value.getMonth() - 1,
-        1
-    );
-};
-
-const nextMonth = () => {
-    currentDate.value = new Date(
-        currentDate.value.getFullYear(),
-        currentDate.value.getMonth() + 1,
-        1
-    );
-};
+    // 더미 데이터 추가 가능
+]);
 
 const closeModal = () => {
     emit('close');
 };
 
 const confirmSelection = () => {
-    emit('confirm', selectedDate.value);
+    if (selectedDiet.value) {
+        emit('confirm', selectedDiet.value);
+    }
 };
 
-const hasDiet = (date) => {
-    if (!dietsData.value || dietsData.value.length === 0) {
-        return false;
-    }
-    
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const targetDate = `${year}-${month}-${day}`;
-    
-    return dietsData.value.some(dietDate => {
-        const dietDateStr = dietDate.split(' ')[0];
-        return dietDateStr === targetDate;
-    });
-};
-
-const fetchDietsByDate = async (date) => {
-    try {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const targetDate = `${year}-${month}-${day}`;
-        
-        const response = await fetch(API_URL);
-        
-        if (!response.ok) {
-            throw new Error('서버 응답 오류');
-        }
-        
-        const allData = await response.json();
-        
-        const filteredData = allData.filter(diet => {
-            const dietDate = new Date(diet.diet_dt);
-            const dietDateStr = dietDate.toISOString().split('T')[0];
-            return dietDateStr === targetDate;
-        });
-
-        if (filteredData.length === 0) {
-            alert('선택한 날짜에 등록된 식단 정보가 없습니다.');
-            selectedDateDiets.value = [];
-            return;
-        }
-
-        selectedDateDiets.value = filteredData.map(diet => ({
-            id: diet.diet_code,
-            title: diet.diet_title || '식단 이름 없음',
-            time: new Date(diet.diet_dt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
-            kcal: Math.round(diet.total_calories) || 0,
-            carbs: Math.round(diet.total_carbs) || 0,
-            protein: Math.round(diet.total_protein) || 0,
-            fat: Math.round(diet.total_fat) || 0,
-            sodium: Math.round(diet.total_sugar) || 0
-        }));
-    } catch (error) {
-        console.error('식단 데이터 조회 중 오류 발생:', error);
-        selectedDateDiets.value = [];
-    }
+const selectCategory = (category) => {
+    selectedCategory.value = category;
 };
 
 const selectDiet = (diet) => {
@@ -303,10 +157,6 @@ const selectDiet = (diet) => {
         selectedDiet.value = diet;
     }
 };
-
-watch(selectedDate, () => {
-    selectedDiet.value = null;
-});
 </script>
 
 <style scoped>
@@ -326,9 +176,9 @@ watch(selectedDate, () => {
 .modal-content {
     background-color: white;
     border-radius: 8px;
-    width: 1225px;
-    height: 611px;
-    max-height: 611px;
+    width: 759px;
+    height: 636px;
+    max-height: 636px;
     display: flex;
     flex-direction: column;
 }
@@ -359,150 +209,82 @@ watch(selectedDate, () => {
     padding: 0;
     display: flex;
     gap: 20px;
-    height: calc(611px - 70px);
+    height: calc(636px - 70px);
 }
 
-.calendar-section {
-    flex: 2;
-    border: none;
+.bookmark-section {
+    flex: none;
+    width: 220px;
+    height: 492px;
     border-right: 1px solid #eee;
-    border-radius: 0;
-    padding: 0;
-    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.bookmark-header {
+    margin-bottom: 20px;
+}
+
+.bookmark-header h3 {
+    font-size: 18px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bookmark-header svg {
+    color: #2C2C2C;
+}
+
+.bookmark-categories {
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
-.calendar-header {
-    margin-bottom: 0;
-    background-color: #F6F6F6;
-    padding: 15px;
-    border-radius: 0;
-}
-
-.calendar-navigation {
+.category-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0;
-    padding: 0 5px;
-}
-
-.calendar-navigation button {
-    background: none;
-    border: none;
+    padding: 12px 16px;
+    background-color: #F8F8F8;
+    border-radius: 3px;
     cursor: pointer;
-    padding: 5px;
-    margin: 0 -5px;
-}
-
-.arrow {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-top: 2px solid #333;
-    border-right: 2px solid #333;
-}
-
-.arrow.left {
-    transform: rotate(-135deg);
-}
-
-.arrow.right {
-    transform: rotate(45deg);
-}
-
-.current-month {
-    font-weight: bold;
-}
-
-.weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.weekdays span {
-    font-family: 'Inter';
-    font-weight: 600;
-    font-size: 14px;
-    color: #555555;
-}
-
-.weekdays span:first-child {
-    color: #FF4B4B;
-}
-
-.weekdays span:last-child {
-    color: #333;
-}
-
-.day:nth-child(7n+1) {
-    color: #FF4B4B;
-}
-
-.day:nth-child(7n) {
-    color: #333;
-}
-
-.other-month.day:nth-child(7n+1),
-.other-month.day:nth-child(7n) {
-    color: #ccc;
-}
-
-.days {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6, 72px);
-    gap: 0.5px;
-    background-color: #f5f5f5;
-    padding: 0.5px;
-}
-
-.day {
-    height: 72px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    background-color: transparent;
-    cursor: pointer;
-    position: relative;
+    transition: all 0.2s ease;
     font-family: 'Inter';
     font-weight: 400;
-    font-size: 14px;
-    padding: 8px 0 0 12px;
+    font-size: 12px;
 }
 
-.day:hover {
-    background-color: #f8f8f8;
+.category-item:hover {
+    background-color: #EEEEEE;
 }
 
-.current-month {
-    color: #000000;
-    background-color: white;
+.category-item.active {
+    background-color: #FFA18E;
+    color: white;
 }
 
-.other-month {
-    color: #ccc;
-    background-color: #fafafa;
+.category-item.active:hover {
+    background-color: #FFA18E;
 }
 
-.selected {
-    background-color: #FFA18E !important;
-    color: white !important;
+.category-item span {
     font-family: 'Inter';
-    font-weight: 800;
-    font-size: 14px;
+    font-weight: 400;
+    font-size: 12px;
 }
 
-.selected:hover {
-    background-color: #ff9277 !important;
+.category-item .count {
+    font-size: 8px;
+    color: #909090;
+    font-family: 'Inter';
+    font-weight: 700;
 }
 
-.selected.has-diet {
-    background-color: #FFA18E !important;
+.category-item.active .count {
+    color: white;
 }
 
 .right-section {
@@ -518,7 +300,7 @@ watch(selectedDate, () => {
     flex: 1;
     border: 1px solid #eee;
     border-radius: 8px;
-    padding: 17px 17px 17px 17px;
+    padding: 17px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
@@ -539,17 +321,13 @@ watch(selectedDate, () => {
     overflow-y: auto;
     padding: 0 8px;
     margin-right: -8px;
-    display: flex;
-    flex-direction: column;
 }
 
 .modal-footer {
     padding: 0;
-    border-top: none;
     display: flex;
-    position: relative;
-    height: 40px;
-    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
     margin-bottom: 15px;
 }
 
@@ -559,8 +337,6 @@ watch(selectedDate, () => {
     border-radius: 4px;
     background-color: white;
     cursor: pointer;
-    position: absolute;
-    right: 110px;
 }
 
 .confirm-button {
@@ -570,8 +346,6 @@ watch(selectedDate, () => {
     background-color: #FF4B4B;
     color: white;
     cursor: pointer;
-    position: absolute;
-    right: 220px;
 }
 
 .confirm-button:hover {
@@ -582,22 +356,6 @@ watch(selectedDate, () => {
     background-color: #f5f5f5;
 }
 
-.calendar-grid {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-}
-
-.has-diet {
-    background-color: #FFF8ED !important;
-    z-index: 1;
-}
-
-.has-diet:hover {
-    background-color: #FFF0DB !important;
-}
-
 .diet-card {
     background: white;
     border-radius: 8px;
@@ -606,6 +364,7 @@ watch(selectedDate, () => {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     border: 1px solid transparent;
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .diet-card:hover {
