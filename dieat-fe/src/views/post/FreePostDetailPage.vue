@@ -3,7 +3,7 @@
         <Header />
     </header>
 
-    <main class="post-detail-page">
+    <main class="post-detail-page-container">
         <h2 class="page-title">자유 게시글</h2>
         
         <div class="container" v-if="post">
