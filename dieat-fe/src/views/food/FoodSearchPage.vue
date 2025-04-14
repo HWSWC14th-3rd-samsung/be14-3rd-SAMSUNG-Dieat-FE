@@ -27,17 +27,25 @@
 
 <script setup>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 import Header from '@/components/common/Header.vue';
-import FoodTable from '../components/FoodTable.vue';
-import BasketPanel from '../components/BasketPanel.vue';
-import SearchResultList from '../components/SearchResultList.vue';
-import SearchBar from '../components/SearchBar.vue';
+import FoodTable from '@/components/food/searchFood/FoodTable.vue';
+import BasketPanel from '@/components/food/searchFood/BasketPanel.vue';
+import SearchResultList from '@/components/food/searchFood/SearchResultList.vue';
+import SearchBar from '@/components/food/searchFood/SearchBar.vue';
 
 const searchKeyword = ref('');
 const searchResults = ref([]);
 const selectedFood = ref(null);
 const basket = ref([]);
 const isManuallySelected = ref(false);
+
+const router = useRouter();
+
+function onAddFood() {
+    router.push('/food/register');
+}
 
 // 🔍 검색어 변경 감지
 watch(searchKeyword, (newKeyword) => {
@@ -141,11 +149,9 @@ function updateBasketQuantity({ index, quantity }) {
     }
 }
 
-function onAddFood() {
-    alert('음식 추가 버튼 클릭됨 (추후 기능 추가)');
-}
-
 function onSettingsClick() {
     alert('설정 버튼 클릭됨 (추후 기능 추가)');
 }
 </script>
+
+<style src="@/assets/food/searchFood.css"></style>
