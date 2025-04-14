@@ -1,7 +1,4 @@
 <template>
-  <header>
-    <Header />
-  </header>
 
   <div class="food-search-page">
     <h2>음식 데이터 검색</h2>
