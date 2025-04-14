@@ -22,6 +22,8 @@ import NoticeDetail from '@/views/service/NoticeDetail.vue';
 import QnaDetail from '@/views/service/QnaDetail.vue';
 import RegistQna from '@/views/service/RegistQna.vue';
 
+import BookMarkLayout from '@/views/bookmark/BookMarkLayout.vue';
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -37,11 +39,12 @@ const router = createRouter({
     { path: '/dietPost/:id', component: DietPostDetail },
     { path: '/MealLayout', component: MealLayout},
     {path: '/RegistMeal', component: RegistMeal},
-    // {path: '/readFree', component: ReadFree },
-    {path: '/dashboard', component: Dashboard},
     { path: '/noticeDetail/:id', name: 'NoticeDetail', component: NoticeDetail, props: true},
     { path: '/qnaDetail/:id', name: 'QnaDetail', component: QnaDetail, props: true},
-    { path: '/registQna', component: RegistQna}
+    { path: '/registQna', component: RegistQna},
+    // {path: '/readFree', component: ReadFree },
+    {path: '/dashboard', component: Dashboard},
+    {path: '/bookmarkLayout', component: BookMarkLayout},
 
   ]
 });
