@@ -1,5 +1,4 @@
 <template>
-  
   <div class="today-meal-section">
     <div class="meal-list">
       <MealCard v-for="(meal, index) in meals" :key="index" :meal="meal" />
@@ -11,8 +10,13 @@
 import { ref } from 'vue'
 import MealCard from './MealCard.vue'
 import { sampleMeals } from '../data/sampleMeals'
+import dayjs from 'dayjs'
 
-const meals = ref(sampleMeals)
+// ✅ 오늘 날짜 (형식: YYYY-MM-DD)
+const today = dayjs().format('YYYY-MM-DD')
+
+// ✅ 오늘 날짜에 해당하는 식사만 필터링
+const meals = ref(sampleMeals.filter(meal => meal.date === today))
 </script>
 
 <style scoped>
