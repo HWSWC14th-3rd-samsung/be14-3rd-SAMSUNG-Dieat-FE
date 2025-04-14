@@ -27,17 +27,25 @@
 
 <script setup>
 import { ref, watch } from 'vue';
+
 import Header from '@/components/common/Header.vue';
 import FoodTable from '../components/FoodTable.vue';
 import BasketPanel from '../components/BasketPanel.vue';
 import SearchResultList from '../components/SearchResultList.vue';
 import SearchBar from '../components/SearchBar.vue';
+import { useRouter } from 'vue-router';
 
 const searchKeyword = ref('');
 const searchResults = ref([]);
 const selectedFood = ref(null);
 const basket = ref([]);
 const isManuallySelected = ref(false);
+
+const router = useRouter();
+
+function onAddFood() {
+    router.push('/food/register');
+}
 
 // 🔍 검색어 변경 감지
 watch(searchKeyword, (newKeyword) => {

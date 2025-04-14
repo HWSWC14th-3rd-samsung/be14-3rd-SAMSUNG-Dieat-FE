@@ -12,8 +12,9 @@ import QnaLayout from '../views/QnaLayout.vue';
 // import About from '@/pages/About.vue';
 // import Contact from '@/pages/Contact.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
+import RegistFood from '@/features/registerFood/pages/FoodRegisterPage.vue'
 import RegistFree from '@/features/registerFree/FreePostWritePage.vue'
-// import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
+import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
 
 import FreePostListPage from '@/features/readFree/pages/FreePostListPage.vue';
 import FreePostDetailPage from '@/features/readFree/pages/FreePostDetailPage.vue';
@@ -31,7 +32,6 @@ const router = createRouter({
       name: 'FreePostList',
       component: FreePostListPage
     },
-
     // 자유 게시글 상세
     {
       path: '/readFree/:postId',
