@@ -19,7 +19,7 @@
 
       <div class="basket-panel">
         <BasketPanel :items="basket" @remove-item="removeFromBasket" @update-quantity="updateBasketQuantity" />
-        <button class="complete-button" @click="goToRegisterMeal">완료</button>
+        <button class="complete-button" @click="goToRegisterMeal" id="completeButton">완료</button>
       </div>
     </div>
   </div>
@@ -30,6 +30,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useRegistMealStore } from '@/stores/registMeal'
 
 import Header from '@/components/common/Header.vue'
 import FoodTable from '@/components/food/searchFood/FoodTable.vue'
@@ -47,6 +48,7 @@ const showModal = ref(false)
 
 const allFoods = ref([])
 const router = useRouter()
+const registMealStore = useRegistMealStore()
 
 function onAddFood() {
   showModal.value = true;
@@ -62,12 +64,28 @@ function handleRegisterFood(food) {
 }
 
 function goToRegisterMeal() {
+  console.log('완료 버튼 클릭됨')
+  
   if (basket.value.length === 0) {
     alert('장바구니에 담긴 음식이 없습니다.')
     return
   }
 
-  router.push({ path: '/RegistMeal', state: { basket: basket.value } })
+  console.log('장바구니 데이터:', basket.value)
+  
+  try {
+    console.log('Pinia store에 데이터 저장 시도')
+    registMealStore.setSelectedFoods(basket.value)
+    console.log('Pinia store에 데이터 저장 성공:', registMealStore.selectedFoods)
+    
+    console.log('라우터 이동 시도: /registmeal')
+    router.push('/registmeal')
+    console.log('라우터 이동 명령 실행 완료')
+  } catch (error) {
+    console.error('오류 발생:', error)
+  }
+  
+  return
 }
 
 watch(searchKeyword, (newKeyword) => {
@@ -90,10 +108,28 @@ onMounted(async () => {
     if (!res.ok) throw new Error('음식 데이터를 불러오지 못 했습니다.')
     allFoods.value = await res.json()
 
-    const receivedBasket = window.history.state?.basket
-    if (receivedBasket && Array.isArray(receivedBasket)) {
-      basket.value = receivedBasket
+    const savedFoods = registMealStore.selectedFoods
+    if (savedFoods && savedFoods.length > 0) {
+      basket.value = savedFoods
     }
+    
+    // 완료 버튼에 직접 이벤트 리스너 추가 (테스트용)
+    setTimeout(() => {
+      const completeButton = document.getElementById('completeButton')
+      if (completeButton) {
+        console.log('완료 버튼 찾음, 이벤트 리스너 추가')
+        completeButton.addEventListener('click', () => {
+          console.log('완료 버튼 직접 클릭 이벤트 발생')
+          if (basket.value.length > 0) {
+            registMealStore.setSelectedFoods(basket.value)
+            console.log('직접 라우터 이동 시도')
+            window.location.href = '/registmeal'
+          }
+        })
+      } else {
+        console.log('완료 버튼을 찾을 수 없음')
+      }
+    }, 1000)
   } catch (e) {
     console.error(e)
   }

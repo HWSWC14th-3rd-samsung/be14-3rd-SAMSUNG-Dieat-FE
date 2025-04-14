@@ -1,45 +1,55 @@
 <template>
-    <div class="registmeal-card">
+    <div v-for="food in foods" :key="food.id" class="registmeal-card">
         <div class="regstmeal-card-category">
-            <h3 class="registmeal-card-category-name">회원</h3>
+            <h3 class="registmeal-card-category-name">{{ food.category || '일반' }}</h3>
         </div>
         <div class="registmeal-card-name-div">
-            <h3 class="registmeal-card-name">불닭 볶음면 큰 컵</h3>
+            <h3 class="registmeal-card-name">{{ food.name }}</h3>
         </div>
-        <div class="registmeal-card-unit"><h5 class="registmeal-card-unit-name">140 g / 1 컵</h5></div>
+        <div class="registmeal-card-unit">
+            <h5 class="registmeal-card-unit-name">{{ food.unit }}</h5>
+        </div>
         <div class="registmeal-card-nutr-div">
             <div class="registmeal-card-nutr-cal">
-                <h3 class="registmeal-card-nutr-cal-value">530</h3>
+                <h3 class="registmeal-card-nutr-cal-value">{{ food.calorie }}</h3>
                 <h5 class="registmeal-card-nutr-cal-unit">칼로리</h5>
             </div>
             <div class="registmeal-card-nutr-carb">
-                <h3 class="registmeal-card-nutr-carb-value">85</h3>
+                <h3 class="registmeal-card-nutr-carb-value">{{ food.carbohydrate }}</h3>
                 <h5 class="registmeal-card-nutr-carb-unit">탄수화물</h5>
             </div>
             <div class="registmeal-card-nutr-protein">
-                <h3 class="registmeal-card-nutr-protein-value">12</h3>
+                <h3 class="registmeal-card-nutr-protein-value">{{ food.protein }}</h3>
                 <h5 class="registmeal-card-nutr-protein-unit">단백질</h5>
             </div>
             <div class="registmeal-card-nutr-fat">
-                <h3 class="registmeal-card-nutr-fat-value">16</h3>
+                <h3 class="registmeal-card-nutr-fat-value">{{ food.fat }}</h3>
                 <h5 class="registmeal-card-nutr-fat-unit">지방</h5>
             </div>
             <div class="registmeal-card-nutr-sugar">
-                <h3 class="registmeal-card-nutr-sugar-value">7</h3>
+                <h3 class="registmeal-card-nutr-sugar-value">{{ food.sugar }}</h3>
                 <h5 class="registmeal-card-nutr-sugar-unit">당</h5>
             </div>
         </div>
         <div class="registmeal-card-amout-div"> 
             <h3 class="registmeal-card-amout-title">수량</h3>
             <div class="registmeal-card-amout">
-                1
+                {{ food.quantity }}
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { defineProps } from 'vue';
 
+const props = defineProps({
+    foods: {
+        type: Array,
+        required: true,
+        default: () => []
+    }
+});
 </script>
 
 <style scoped>

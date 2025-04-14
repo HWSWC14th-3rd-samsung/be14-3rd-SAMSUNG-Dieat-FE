@@ -7,7 +7,8 @@ export const useRegistMealStore = defineStore('registMeal', {
       meal_description: '',
       meal_time: '',
       file: null
-    }
+    },
+    selectedFoods: []
   }),
   actions: {
     setTempMealInfo(info) {
@@ -43,6 +44,12 @@ export const useRegistMealStore = defineStore('registMeal', {
         meal_time: '',
         file: null
       };
+    },
+    setSelectedFoods(foods) {
+      this.selectedFoods = foods;
+    },
+    clearSelectedFoods() {
+      this.selectedFoods = [];
     }
   }
 }); 

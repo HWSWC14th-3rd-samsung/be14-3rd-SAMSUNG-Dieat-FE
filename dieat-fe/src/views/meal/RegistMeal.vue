@@ -103,9 +103,9 @@
                         </button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <RegistMealCard v-if="showMealCard" />
+                <div class="meal-cards-container">
+                    <RegistMealCard v-if="registeredFoods.length > 0" :foods="registeredFoods" />
+                </div>
             </div>
             <div class="registmeal-footer">
                 <button class="registmeal-load-dietpost" @click="openLoadDietPostModal">식단 불러오기</button>
@@ -157,6 +157,15 @@
     const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
 
     const mealStore = useRegistMealStore();
+
+    onMounted(() => {
+        // Pinia store에서 선택된 음식 데이터 가져오기
+        const selectedFoods = mealStore.selectedFoods;
+        if (selectedFoods && selectedFoods.length > 0) {
+            registeredFoods.value = selectedFoods;
+            showMealCard.value = true;
+        }
+    });
 
     // JSON 서버 기본 URL
     const API_URL = 'http://localhost:3000/meals';
@@ -305,13 +314,14 @@
         };
         
         mealStore.setTempMealInfo(mealInfo);
-        
+        mealStore.clearSelectedFoods(); // 기존 음식 데이터 초기화
         router.push('/searchFood');
     };
 
     const removeMealCard = () => {
         showMealCard.value = false;
         registeredFoods.value = [];
+        mealStore.clearSelectedFoods(); // Pinia store의 음식 데이터도 초기화
     };
 
     const handleSubmit = async () => {
@@ -369,6 +379,9 @@
     };
 
     const goToMeal = () => {
+        // Pinia store의 데이터 초기화
+        mealStore.clearSelectedFoods();
+        mealStore.clearTempMealInfo();
         router.push('/meal');
     };
 
@@ -909,5 +922,19 @@
 
 .modal-confirm-btn:hover {
     background-color: #0f4433;
+}
+
+.meal-cards-container {
+    overflow-y: auto;
+    max-height: calc(100% - 60px);
+    padding: 10px;
+}
+
+.meal-cards-container .registmeal-card {
+    margin-bottom: 20px;
+}
+
+.meal-cards-container .registmeal-card:last-child {
+    margin-bottom: 0;
 }
 </style>
