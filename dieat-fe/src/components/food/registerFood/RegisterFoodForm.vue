@@ -34,6 +34,14 @@
                 <button class="gray-button" @click="cancel">취소</button>
             </div>
         </div>
+
+        <!-- ✅ 등록 완료 모달 (페이지 모드에서만 표시) -->
+        <div v-if="showCompleteModal" class="complete-modal">
+            <div class="modal-content">
+                <p>음식 등록 완료</p>
+                <button class="primary-button" @click="showCompleteModal = false">확인</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -43,34 +51,29 @@ import { ref } from 'vue'
 const emit = defineEmits(['register', 'close'])
 const props = defineProps({ isModal: Boolean })
 
+// ✅ 입력 상태
 const foodTitle = ref('')
 const amount = ref(100)
 const unit = ref('g')
 const serveUnit = ref('1개')
 const nutrition = ref({ kcal: 0, carb: 0, protein: 0, fat: 0, sugar: 0 })
 
+// ✅ 모달 상태
+const showCompleteModal = ref(false)
+
+// ✅ 단위 및 라벨
 const unitMap = { kcal: 'kcal', carb: 'g', protein: 'g', fat: 'g', sugar: 'g' }
 const labelMap = { kcal: '열량', carb: '탄수화물', protein: '단백질', fat: '지방', sugar: '당류' }
 
-function isFormComplete() {
-    return (
-        foodTitle.value.trim() !== '' &&
-        unit.value.trim() !== '' &&
-        serveUnit.value.trim() !== '' &&
-        Object.values(nutrition.value).every(v => v !== null && v !== '')
-    )
-}
-
-function resetForm() {
-    foodTitle.value = ''
-    amount.value = 100
-    unit.value = 'g'
-    serveUnit.value = '1개'
-    nutrition.value = { kcal: 0, carb: 0, protein: 0, fat: 0, sugar: 0 }
-}
-
+// ✅ 등록 처리
 function submit() {
-    if (!isFormComplete()) {
+    if (
+        !foodTitle.value.trim() ||
+        !amount.value ||
+        !unit.value.trim() ||
+        !serveUnit.value.trim() ||
+        Object.values(nutrition.value).some(v => v === null || v === '')
+    ) {
         alert('입력이 완료되지 않았습니다.')
         return
     }
@@ -87,15 +90,26 @@ function submit() {
         nickname: '사용자'
     }
 
+    emit('register', food)
+
     if (props.isModal) {
-        emit('register', food)
         emit('close')
     } else {
-        alert('등록이 완료되었습니다.')
+        showCompleteModal.value = true
         resetForm()
     }
 }
 
+// ✅ 입력 초기화
+function resetForm() {
+    foodTitle.value = ''
+    amount.value = 100
+    unit.value = 'g'
+    serveUnit.value = '1개'
+    nutrition.value = { kcal: 0, carb: 0, protein: 0, fat: 0, sugar: 0 }
+}
+
+// ✅ 취소 버튼
 function cancel() {
     if (props.isModal) emit('close')
 }
@@ -115,6 +129,30 @@ function cancel() {
 .modal-style {
     max-width: 600px !important;
     width: 100%;
+}
+
+.complete-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    width: 300px;
+}
+
+.modal-content p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
 }
 </style>
 
