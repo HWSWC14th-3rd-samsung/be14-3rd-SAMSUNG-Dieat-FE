@@ -54,9 +54,6 @@
         font-weight: bold;
         padding: 12px;
         text-align: center;
-        /* border: none; */
-        /* border-top-left-radius: 12px;
-        border-top-right-radius: 12px; */
         border-bottom: 2px solid gray;
     }
 

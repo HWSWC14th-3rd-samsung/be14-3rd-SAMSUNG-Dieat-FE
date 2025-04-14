@@ -5,8 +5,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Signup from '@/views/Signup.vue';
 import Login from '@/views/Login.vue';
-import NoticeLayout from '@/views/ServiceViews/NoticeLayout.vue';
-import QnaLayout from '@/views/ServiceViews/QnaLayout.vue';
+import NoticeLayout from '@/views/service/NoticeLayout.vue';
+import QnaLayout from '@/views/service/QnaLayout.vue';
 
 // import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
 // import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'

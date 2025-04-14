@@ -7,7 +7,7 @@
             <RouterLink to="/noticeLayout" class="text-link">공지 사항</RouterLink>
         </div>
         <h1>공지 사항</h1>
-        <img src="@/assets/img_dy/searching.png" alt="searching bar" class="searchingBar-img">
+        <img src="@/assets/service_img/searching.png" alt="searching bar" class="searchingBar-img">
 
         <ul class="post-list">
             <li v-for="(post, index) in posts" :key="index" class="post-item">
@@ -26,7 +26,7 @@
 <script setup>
     import Header from '@/components/common/Header.vue';
     import ServiceTable from './ServiceTable.vue';
-    import { ref, computed } from 'vue';
+    import { ref } from 'vue';
     
     const noticePosts = ref([
         { title: '공지사항입니다. 공지사항', date: '2025-03-27', count: '18' },
