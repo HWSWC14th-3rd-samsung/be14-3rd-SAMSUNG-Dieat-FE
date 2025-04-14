@@ -16,7 +16,7 @@
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import DietPostCard from './PostCard.vue';
+  import DietPostCard from './dietpost/PostCard.vue';
   import Pagination from './Pagination.vue';
   
   const posts = ref([]);
