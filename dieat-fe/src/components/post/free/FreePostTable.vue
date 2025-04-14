@@ -17,7 +17,7 @@
                 </td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.date }}</td>
-                <td>{{ post.comments }}</td>
+                <td>{{ post.comments?.length || 0 }}</td>
                 <td>{{ post.views }}</td>
                 <td>{{ post.likes }}</td>
             </tr>

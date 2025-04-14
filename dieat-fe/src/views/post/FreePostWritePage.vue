@@ -69,7 +69,6 @@ async function submitPost() {
     }
 
     const newPost = {
-        id: Date.now(),
         title: title.value,
         author: user.nickname,
         date: new Date().toISOString().slice(0, 10),

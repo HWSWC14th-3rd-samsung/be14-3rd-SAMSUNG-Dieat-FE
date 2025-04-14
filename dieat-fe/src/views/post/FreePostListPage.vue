@@ -40,8 +40,11 @@ function goToWrite() {
 onMounted(async () => {
   try {
     const data = await fetchPosts();
-    // ✅ 날짜 기준 내림차순 정렬
-    posts.value = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+    posts.value = data.sort((a, b) => {
+      const dateDiff = new Date(b.date) - new Date(a.date);
+      if (dateDiff !== 0) return dateDiff;
+      return b.id - a.id;
+    });
   } catch (err) {
     console.error('게시글 불러오기 실패:', err);
   }
