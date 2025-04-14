@@ -66,7 +66,7 @@ const unitMap = { kcal: 'kcal', carb: 'g', protein: 'g', fat: 'g', sugar: 'g' }
 const labelMap = { kcal: '열량', carb: '탄수화물', protein: '단백질', fat: '지방', sugar: '당류' }
 
 // ✅ 등록 처리
-function submit() {
+async function submit() {
     if (
         !foodTitle.value.trim() ||
         !amount.value ||
@@ -83,20 +83,31 @@ function submit() {
         name: foodTitle.value,
         unit: `${amount.value}${unit.value} / ${serveUnit.value}`,
         ...nutrition.value,
-        count: 1,
+        count: 1.0,
         accurate: 0,
         inaccurate: 0,
         type: 'USER',
         nickname: '사용자'
     }
 
-    emit('register', food)
+    try {
+        await fetch('http://localhost:3000/food', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(food)
+        })
 
-    if (props.isModal) {
-        emit('close')
-    } else {
-        showCompleteModal.value = true
-        resetForm()
+        emit('register', food)
+
+        if (props.isModal) {
+            emit('close')
+        } else {
+            showCompleteModal.value = true
+            resetForm()
+        }
+    } catch (err) {
+        alert('저장 중 오류가 발생했습니다.')
+        console.error(err)
     }
 }
 
