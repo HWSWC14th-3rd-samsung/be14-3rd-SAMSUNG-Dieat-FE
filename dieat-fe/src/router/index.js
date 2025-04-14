@@ -23,9 +23,9 @@ import NoticeLayout from '@/views/service/NoticeLayout.vue';
 import QnaLayout from '@/views/service/QnaLayout.vue';
 
 import MyReportLayout from '@/views/service/MyReportLayout.vue';
-import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue';
+// import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue';
 // import ReadFree from '@/features/readFree/pages/FreePostListPage.vue';
-import DietPostDetail from '@/views/dietpost/DietPostDetail.vue';
+// import DietPostDetail from '@/views/dietpost/DietPostDetail.vue';
 
 import Dashboard from '@/views/dashboard/Dashboard.vue';
 
