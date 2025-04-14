@@ -51,7 +51,6 @@
                 <div class="right-section">
                     <div class="diet-list-section">
                         <div class="diet-list-header">
-                            <h4>식단 목록</h4>
                         </div>
                         <div class="diet-list">
                             <div v-for="diet in bookmarkedDiets" :key="diet.id" 
@@ -216,7 +215,6 @@ const selectDiet = (diet) => {
     flex: none;
     width: 220px;
     height: 492px;
-    border-right: 1px solid #eee;
     padding: 20px;
     overflow-y: auto;
 }
@@ -226,15 +224,15 @@ const selectDiet = (diet) => {
 }
 
 .bookmark-header h3 {
-    font-size: 18px;
     margin: 0;
+    font-size: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 .bookmark-header svg {
-    color: #2C2C2C;
+    color: #909090;
 }
 
 .bookmark-categories {
@@ -292,14 +290,12 @@ const selectDiet = (diet) => {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding-right: 20px;
     overflow: hidden;
 }
 
 .diet-list-section {
     flex: 1;
-    border: 1px solid #eee;
-    border-radius: 8px;
+    border-left: 1px solid #eee;
     padding: 17px;
     margin-bottom: 20px;
     display: flex;
@@ -325,27 +321,38 @@ const selectDiet = (diet) => {
 
 .modal-footer {
     padding: 0;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-bottom: 15px;
+    position: relative;
+    margin: 20px;
 }
 
 .cancel-button {
-    padding: 8px 20px;
-    border: 1px solid #ddd;
+    padding: 11px 23px;
+    border: none;
     border-radius: 4px;
-    background-color: white;
+    background-color: #D9D9D9;
+    color: white;
     cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    right: 150px;
+    top: -30px;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .confirm-button {
-    padding: 8px 20px;
+    padding: 11px 23px;
     border: none;
     border-radius: 4px;
     background-color: #FF4B4B;
     color: white;
     cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    right: 250px;
+    top: -30px;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .confirm-button:hover {

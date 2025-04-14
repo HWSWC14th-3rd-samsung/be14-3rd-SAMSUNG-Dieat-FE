@@ -340,8 +340,7 @@ const fetchMealsByDate = async (date) => {
         filteredData.sort((a, b) => {
             const timeA = extractMinutes(a.meal_dt);
             const timeB = extractMinutes(b.meal_dt);
-            // 내림차순으로 변경 (값이 반대로 되는지 확인)
-            return timeB - timeA;
+            return timeA - timeB;  // 오름차순으로 변경
         });
         
         // 데이터 정렬 후 로그
@@ -604,7 +603,7 @@ const selectMeal = (meal) => {
     padding: 0 0 0 0;
     margin: 0;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 
 .modal-footer {
