@@ -16,106 +16,132 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, nextTick, ref } from 'vue'
 import {
   Chart, BarController, BarElement, CategoryScale,
   LinearScale, Tooltip
 } from 'chart.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
 import dayjs from 'dayjs'
-import { sampleMeals } from '../data/sampleMeals'
-import { nutritionGoals } from '../data/nutritionGoals'
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, annotationPlugin)
 
+// nutritionGoals를 로컬 모듈 대신 API를 통해 받아오기 위한 reactive 변수 선언
+const nutritionGoals = ref({ calories: 0 })
+
 const chartRef = ref(null)
 const scrollAreaRef = ref(null)
+const canvasWidth = ref(0)
+const yAxisTicks = ref([])
 
-const sortedMeals = [...sampleMeals].sort((a, b) => a.date.localeCompare(b.date))
-const minDate = dayjs(sortedMeals[0].date)
-const maxDate = dayjs(sortedMeals[sortedMeals.length - 1].date)
+onMounted(async () => {
+  // 1. meals 데이터 fetch
+  const response = await fetch('http://localhost:8080/meals')
+  const meals = await response.json()
+  console.log('받아온 meals:', meals)
 
-const dateRange = []
-let current = minDate
-while (current.isSame(maxDate) || current.isBefore(maxDate)) {
-  dateRange.push(current.format('YYYY-MM-DD'))
-  current = current.add(1, 'day')
-}
+  // 2. nutritionGoals 데이터 fetch
+  const goalsResponse = await fetch('http://localhost:8080/nutritionGoals')
+  const fetchedNutritionGoals = await goalsResponse.json()
+  nutritionGoals.value = fetchedNutritionGoals
+  console.log('받아온 nutritionGoals:', nutritionGoals.value)
 
-// 날짜별 칼로리와 이름
-const groupedCalories = {}
-const groupedNames = {}
+  // 3. 날짜 포맷 변환 및 정렬
+  const parsedMeals = meals.map(meal => {
+    const dateObj = dayjs(meal.meal_dt)
+    return {
+      name: meal.meal_title,
+      date: dateObj.format('YYYY-MM-DD'),
+      calories: meal.meal_calories
+    }
+  }).sort((a, b) => a.date.localeCompare(b.date))
 
-dateRange.forEach(date => {
-  groupedCalories[date] = []
-  groupedNames[date] = []
-})
-
-sampleMeals.forEach(meal => {
-  if (groupedCalories[meal.date]) {
-    groupedCalories[meal.date].push(meal.calories)
-    groupedNames[meal.date].push(meal.name)
+  // 4. 최소/최대 날짜 구하기 및 dateRange 생성
+  const minDate = dayjs(parsedMeals[0].date)
+  const maxDate = dayjs(parsedMeals[parsedMeals.length - 1].date)
+  const dateRange = []
+  let current = minDate
+  while (current.isSame(maxDate) || current.isBefore(maxDate)) {
+    dateRange.push(current.format('YYYY-MM-DD'))
+    current = current.add(1, 'day')
   }
-})
 
-const maxStackSize = Math.max(...Object.values(groupedCalories).map(v => v.length))
-const fixedColors = ['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF']
-
-const datasets = []
-for (let i = 0; i < maxStackSize; i++) {
-  datasets.push({
-    data: dateRange.map(date => groupedCalories[date][i]),
-    backgroundColor: fixedColors[i % fixedColors.length],
-    stack: 'calories',
-    barThickness: 8,
-    borderRadius: 6,
-    mealNames: dateRange.map(date => groupedNames[date][i]) // ✅ 추가
+  // 5. 날짜별 칼로리 및 식사이름 그룹핑
+  const groupedCalories = {}
+  const groupedNames = {}
+  dateRange.forEach(date => {
+    groupedCalories[date] = []
+    groupedNames[date] = []
   })
-}
+  parsedMeals.forEach(meal => {
+    if (groupedCalories[meal.date]) {
+      groupedCalories[meal.date].push(meal.calories)
+      groupedNames[meal.date].push(meal.name)
+    }
+  })
 
-datasets.push({
-  type: 'line',
-  label: '목표 섭취 칼로리',
-  data: new Array(dateRange.length).fill(nutritionGoals.calories),
-  borderColor: '#FFA500',
-  borderWidth: 2,
-  borderDash: [6, 4],
-  pointRadius: 0,
-  fill: false
-})
+  // 6. 최대 stack 크기 계산 후 datasets 구성
+  const maxStackSize = Math.max(...Object.values(groupedCalories).map(arr => arr.length))
+  const fixedColors = ['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF']
 
-const canvasWidth = dateRange.length * 60
+  const datasets = []
+  for (let i = 0; i < maxStackSize; i++) {
+    datasets.push({
+      data: dateRange.map(date => groupedCalories[date][i]),
+      backgroundColor: fixedColors[i % fixedColors.length],
+      stack: 'calories',
+      barThickness: 8,
+      borderRadius: 6,
+      mealNames: dateRange.map(date => groupedNames[date][i])
+    })
+  }
 
-const maxCalorieSum = Math.max(
-  ...Object.values(groupedCalories).map(arr => arr.reduce((a, b) => a + b, 0)),
-  nutritionGoals.calories
-) + 200
+  // 7. 목표 섭취 칼로리 라인 추가 (nutritionGoals는 fetch된 값 사용)
+  datasets.push({
+    type: 'line',
+    label: '목표 섭취 칼로리',
+    data: new Array(dateRange.length).fill(nutritionGoals.value.calories),
+    borderColor: '#FFA500',
+    borderWidth: 2,
+    borderDash: [6, 4],
+    pointRadius: 0,
+    fill: false
+  })
 
-const maxYValue = Math.ceil(maxCalorieSum)
-const numYTicks = 6
-const yAxisStep = Math.ceil(maxYValue / (numYTicks - 1) / 10) * 10
-const yAxisMax = yAxisStep * (numYTicks - 1)
+  // 8. 캔버스 폭 계산 (1일당 60px)
+  canvasWidth.value = dateRange.length * 60
 
-const yAxisTicks = []
-for (let y = yAxisMax; y >= 0; y -= yAxisStep) {
-  yAxisTicks.push(y)
-}
+  // DOM에 canvasWidth 반영을 위해 nextTick 대기
+  await nextTick()
 
-onMounted(() => {
+  // 9. y축 최대값 및 티크 설정
+  const maxCalorieSum = Math.max(
+    ...Object.values(groupedCalories).map(arr => arr.reduce((a, b) => a + b, 0)),
+    nutritionGoals.value.calories
+  ) + 200
+
+  const maxYValue = Math.ceil(maxCalorieSum)
+  const numYTicks = 6
+  const yAxisStep = Math.ceil(maxYValue / (numYTicks - 1) / 10) * 10
+  const yAxisMax = yAxisStep * (numYTicks - 1)
+
+  yAxisTicks.value = []
+  for (let y = yAxisMax; y >= 0; y -= yAxisStep) {
+    yAxisTicks.value.push(y)
+  }
+
+  // 10. 막대 위 총 칼로리 라벨 플러그인
   const topValueLabelPlugin = {
     id: 'topValueLabel',
     afterDatasetsDraw(chart) {
       const { ctx, scales: { x, y } } = chart
-
       chart.data.labels.forEach((label, index) => {
         const total = chart.data.datasets
           .filter(ds => ds.type !== 'line')
           .map(ds => ds.data[index])
           .reduce((sum, val) => sum + (val || 0), 0)
-
         const xPos = x.getPixelForValue(index)
         const yPos = y.getPixelForValue(total)
-
         ctx.save()
         ctx.fillStyle = '#444'
         ctx.font = 'bold 10px sans-serif'
@@ -126,12 +152,13 @@ onMounted(() => {
     }
   }
 
+  // 11. Chart.js 차트 생성
   const ctx = chartRef.value.getContext('2d')
-  new Chart(ctx, {
+  const chartInstance = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: dateRange.map(d => `${dayjs(d).format('M월 D')}일`),
-      datasets
+      datasets: datasets
     },
     options: {
       responsive: false,
@@ -151,8 +178,8 @@ onMounted(() => {
         annotation: {
           goalLine: {
             type: 'line',
-            yMin: nutritionGoals.calories,
-            yMax: nutritionGoals.calories,
+            yMin: nutritionGoals.value.calories,
+            yMax: nutritionGoals.value.calories,
             borderColor: '#F4A100',
             borderWidth: 2,
             borderDash: [6, 6],
@@ -162,9 +189,7 @@ onMounted(() => {
               position: 'start',
               backgroundColor: '#F4A100',
               color: '#fff',
-              font: {
-                weight: 'bold'
-              }
+              font: { weight: 'bold' }
             },
             xScaleID: 'x',
             xMin: -0.5,
@@ -194,6 +219,12 @@ onMounted(() => {
       }
     },
     plugins: [topValueLabelPlugin]
+  })
+  chartInstance.update()
+
+  console.log('차트에 전달되는 데이터:', {
+    labels: dateRange.map(d => `${dayjs(d).format('M월 D')}일`),
+    datasets: datasets
   })
 
   requestAnimationFrame(() => {
@@ -228,6 +259,7 @@ onMounted(() => {
   overflow-x: auto;
   overflow-y: hidden;
 }
+
 canvas {
   display: block;
 }
