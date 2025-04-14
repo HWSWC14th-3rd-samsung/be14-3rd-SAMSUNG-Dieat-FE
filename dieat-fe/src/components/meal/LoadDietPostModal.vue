@@ -37,7 +37,7 @@
                         <div class="category-item"
                             :class="{ 'active': selectedCategory === 'home' }"
                             @click="selectCategory('home')">
-                            <span>집에 살 빼야 할 때</span>
+                            <span>진짜 살 빼야 돼</span>
                             <span class="count">19</span>
                         </div>
                         <div class="category-item"
@@ -51,48 +51,79 @@
                 <div class="right-section">
                     <div class="diet-list-section">
                         <div class="diet-list-header">
+                            <h4>추천 식단</h4>
                         </div>
                         <div class="diet-list">
-                            <div v-for="diet in bookmarkedDiets" :key="diet.id" 
-                                class="diet-card"
-                                :class="{ 'selected-diet': selectedDiet && selectedDiet.id === diet.id }"
-                                @click="selectDiet(diet)">
-                                <button v-if="showDeleteButton" class="diet-card-delete-btn" @click.stop="$emit('delete', diet.id)">
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1 1L11 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                                        <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                                    </svg>
-                                </button>
-                                <div class="diet-card-content">
-                                    <div class="diet-info">
-                                        <div class="diet-name">{{ diet.title }}</div>
-                                        <div class="diet-time">{{ diet.time }}</div>
+                            <div class="diet-grid">
+                                <div v-for="diet in paginatedDiets" :key="diet.id" 
+                                    class="diet-card"
+                                    :class="{ 'selected-diet': selectedDiet && selectedDiet.id === diet.id }"
+                                    @click="selectDiet(diet)">
+                                    <div class="bookmark-icon" @click.stop="showRemoveBookmarkConfirm(diet)">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#505050" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z" stroke="#505050" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                     </div>
+                                    <div class="diet-image">
+                                        <img :src="diet.image" alt="음식 이미지">
+                                    </div>
+                                    <div class="diet-title">{{ diet.title }}</div>
                                     <div class="diet-nutrients">
                                         <div class="nutrient">
                                             <span class="value">{{ diet.kcal }}</span>
-                                            <span class="unit">kcal</span>
+                                            <span class="unit">칼</span>
                                         </div>
                                         <div class="nutrient">
                                             <span class="value">{{ diet.carbs }}</span>
-                                            <span class="unit">탄수화물</span>
+                                            <span class="unit">탄</span>
                                         </div>
                                         <div class="nutrient">
                                             <span class="value">{{ diet.protein }}</span>
-                                            <span class="unit">단백질</span>
+                                            <span class="unit">단</span>
                                         </div>
                                         <div class="nutrient">
                                             <span class="value">{{ diet.fat }}</span>
-                                            <span class="unit">지방</span>
+                                            <span class="unit">지</span>
                                         </div>
                                         <div class="nutrient">
                                             <span class="value">{{ diet.sodium }}</span>
-                                            <span class="unit">나트륨</span>
+                                            <span class="unit">나</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="pagination">
+                        <button 
+                            :disabled="currentPage === 1" 
+                            @click="changePage(currentPage - 1)"
+                            class="page-btn prev"
+                        >
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="page-numbers">
+                            <span 
+                                v-for="page in totalPages" 
+                                :key="page" 
+                                @click="changePage(page)"
+                                :class="{ active: currentPage === page }"
+                                class="page-number"
+                            >
+                                {{ page }}
+                            </span>
+                        </div>
+                        <button 
+                            :disabled="currentPage === totalPages" 
+                            @click="changePage(currentPage + 1)"
+                            class="page-btn next"
+                        >
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </div>
                     <div class="modal-footer">
                         <button class="cancel-button" @click="closeModal">취소</button>
@@ -102,10 +133,20 @@
             </div>
         </div>
     </div>
+
+    <div v-if="confirmBookmarkRemoval" class="bookmark-confirm-modal">
+        <div class="bookmark-confirm-content">
+            <p>북마크에서 제거하시겠습니까?</p>
+            <div class="bookmark-confirm-buttons">
+                <button class="bookmark-confirm-btn" @click="confirmRemoveBookmark">확인</button>
+                <button class="bookmark-cancel-btn" @click="cancelRemoveBookmark">취소</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue';
+import { defineProps, defineEmits, ref, computed } from 'vue';
 
 const props = defineProps({
     show: {
@@ -124,26 +165,162 @@ const selectedDiet = ref(null);
 const bookmarkedDiets = ref([
     {
         id: 1,
-        title: '토마토 파스타',
+        title: '쉽게 따라하는 샐러드',
+        image: 'https://via.placeholder.com/150',
         time: '12:30',
-        kcal: 650,
-        carbs: 85,
-        protein: 18,
-        fat: 22,
-        sodium: 10
+        kcal: 279,
+        carbs: 33,
+        protein: 8,
+        fat: 13,
+        sodium: 25,
+        bookmarked: true
     },
     {
         id: 2,
-        title: '고구마피자(도미노)',
+        title: '스크램블 에그',
+        image: 'https://via.placeholder.com/150',
         time: '18:00',
+        kcal: 180,
+        carbs: 2,
+        protein: 11,
+        fat: 15,
+        sodium: 1,
+        bookmarked: false
+    },
+    {
+        id: 3,
+        title: '마라탕 (대)',
+        image: 'https://via.placeholder.com/150',
+        time: '19:30',
         kcal: 900,
-        carbs: 85,
+        carbs: 45,
+        protein: 40,
+        fat: 60,
+        sodium: 8,
+        bookmarked: true
+    },
+    {
+        id: 4,
+        title: '소곱창',
+        image: 'https://via.placeholder.com/150',
+        time: '20:00',
+        kcal: 1800,
+        carbs: 10,
+        protein: 75,
+        fat: 170,
+        sodium: 4,
+        bookmarked: true
+    },
+    {
+        id: 5,
+        title: '닭가슴살 볶음밥',
+        image: 'https://via.placeholder.com/150',
+        time: '13:00',
+        kcal: 550,
+        carbs: 60,
         protein: 30,
-        fat: 40,
-        sodium: 15
+        fat: 18,
+        sodium: 3,
+        bookmarked: false
+    },
+    {
+        id: 6,
+        title: '닭고야',
+        image: 'https://via.placeholder.com/150',
+        time: '14:30',
+        kcal: 450,
+        carbs: 40,
+        protein: 35,
+        fat: 10,
+        sodium: 7,
+        bookmarked: true
+    },
+    {
+        id: 7,
+        title: '돈부리 (규동)',
+        image: 'https://via.placeholder.com/150',
+        time: '12:00',
+        kcal: 700,
+        carbs: 80,
+        protein: 25,
+        fat: 22,
+        sodium: 12,
+        bookmarked: false
+    },
+    {
+        id: 8,
+        title: '쉽게 따라하는 사과 다이어트',
+        image: 'https://via.placeholder.com/150',
+        time: '10:00',
+        kcal: 850,
+        carbs: 15,
+        protein: 40,
+        fat: 65,
+        sodium: 20,
+        bookmarked: true
+    },
+    {
+        id: 9,
+        title: '쉽게 따라하는 사과 다이어트',
+        image: 'https://via.placeholder.com/150',
+        time: '09:00',
+        kcal: 1400,
+        carbs: 120,
+        protein: 40,
+        fat: 65,
+        sodium: 20,
+        bookmarked: true
     }
-    // 더미 데이터 추가 가능
 ]);
+
+const currentPage = ref(1);
+const itemsPerPage = 9;
+
+// 카테고리에 따른 식단 필터링
+const filteredDiets = computed(() => {
+    if (selectedCategory.value === 'all') {
+        return bookmarkedDiets.value;
+    } else {
+        // 여기서는 예시로 카테고리별 필터링을 구현할 수 있습니다
+        // 실제 데이터 구조에 맞게 필터링 로직을 작성해야 합니다
+        return bookmarkedDiets.value.filter(diet => {
+            if (selectedCategory.value === 'diet') return diet.kcal < 500;
+            if (selectedCategory.value === 'meat') return diet.protein > 30;
+            if (selectedCategory.value === 'home') return diet.kcal < 300;
+            if (selectedCategory.value === 'night') return diet.id > 5;
+            return true;
+        });
+    }
+});
+
+// 페이지네이션된 식단 목록
+const paginatedDiets = computed(() => {
+    const startIndex = (currentPage.value - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredDiets.value.slice(startIndex, endIndex);
+});
+
+// 전체 페이지 수 계산
+const totalPages = computed(() => {
+    // '모든 게시물' 카테고리에서는 10개의 페이지로 고정
+    if (selectedCategory.value === 'all') {
+        return 10;
+    }
+    return Math.ceil(filteredDiets.value.length / itemsPerPage);
+});
+
+// 페이지 변경 함수
+const changePage = (page) => {
+    if (page >= 1 && page <= totalPages.value) {
+        currentPage.value = page;
+    }
+};
+
+// 카테고리 선택 시 페이지 초기화
+const selectCategory = (category) => {
+    selectedCategory.value = category;
+    currentPage.value = 1;
+};
 
 const closeModal = () => {
     emit('close');
@@ -155,16 +332,42 @@ const confirmSelection = () => {
     }
 };
 
-const selectCategory = (category) => {
-    selectedCategory.value = category;
-};
-
 const selectDiet = (diet) => {
     if (selectedDiet.value && selectedDiet.value.id === diet.id) {
         selectedDiet.value = null;
     } else {
         selectedDiet.value = diet;
     }
+};
+
+const confirmBookmarkRemoval = ref(false);
+const dietToRemoveBookmark = ref(null);
+
+// 북마크 제거 확인 모달 표시
+const showRemoveBookmarkConfirm = (diet) => {
+    dietToRemoveBookmark.value = diet;
+    confirmBookmarkRemoval.value = true;
+};
+
+// 북마크 제거 취소
+const cancelRemoveBookmark = () => {
+    confirmBookmarkRemoval.value = false;
+    dietToRemoveBookmark.value = null;
+};
+
+// 북마크 제거 확인
+const confirmRemoveBookmark = () => {
+    if (dietToRemoveBookmark.value) {
+        // 북마크 제거 - 리스트에서 해당 아이템을 완전히 제거합니다
+        bookmarkedDiets.value = bookmarkedDiets.value.filter(d => d.id !== dietToRemoveBookmark.value.id);
+        
+        // 선택된 식단이 제거된 경우 선택 상태 초기화
+        if (selectedDiet.value && selectedDiet.value.id === dietToRemoveBookmark.value.id) {
+            selectedDiet.value = null;
+        }
+    }
+    confirmBookmarkRemoval.value = false;
+    dietToRemoveBookmark.value = null;
 };
 </script>
 
@@ -305,12 +508,11 @@ const selectDiet = (diet) => {
 
 .diet-list-section {
     flex: 1;
-    border-left: 1px solid #eee;
-    padding: 17px;
-    margin-bottom: 20px;
+    height: 100%;
+    padding: 20px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 .diet-list-header {
@@ -320,13 +522,108 @@ const selectDiet = (diet) => {
 .diet-list-header h4 {
     margin: 0;
     font-size: 16px;
+    font-weight: bold;
 }
 
 .diet-list {
     flex: 1;
     overflow-y: auto;
-    padding: 0 8px;
-    margin-right: -8px;
+}
+
+.diet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.diet-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #eee;
+}
+
+.diet-card:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.bookmark-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.bookmark-icon:hover {
+    transform: scale(1.15);
+}
+
+.bookmark-icon:active {
+    transform: scale(0.95);
+}
+
+.bookmark-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #505050;
+    fill: #505050;
+}
+
+.diet-image {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.diet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.diet-title {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.diet-nutrients {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #eee;
+}
+
+.nutrient {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+.nutrient .value {
+    font-weight: bold;
+}
+
+.nutrient .unit {
+    color: #777;
+    font-size: 10px;
+}
+
+.selected-diet {
+    border: 2px solid #FF4B4B;
 }
 
 .modal-footer {
@@ -373,104 +670,128 @@ const selectDiet = (diet) => {
     background-color: #f5f5f5;
 }
 
-.diet-card {
-    background: white;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.diet-card:hover {
-    background-color: #f9f9f9;
-}
-
-.selected-diet {
-    background-color: white !important;
-    border: 2px solid #FFA18E !important;
-}
-
-.diet-card-content {
+.pagination {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.diet-info {
-    display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    bottom: 50px;
 }
 
-.diet-name {
-    font-family: 'Inter';
-    font-weight: 600;
-    font-size: 16px;
-    color: #000000;
-}
-
-.diet-time {
-    font-family: 'Inter';
-    font-weight: 400;
-    font-size: 14px;
-    color: #666666;
-}
-
-.diet-nutrients {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #F8F8F8;
-    padding: 12px;
+.page-btn {
+    width: 30px;
+    height: 30px;
     border-radius: 4px;
-}
-
-.nutrient {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-.nutrient .value {
-    font-family: 'Inter';
-    font-weight: 600;
-    font-size: 14px;
-    color: #000000;
-}
-
-.nutrient .unit {
-    font-family: 'Inter';
-    font-weight: 400;
-    font-size: 12px;
-    color: #666666;
-}
-
-.diet-card-delete-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 20px;
-    height: 20px;
+    border: none;
+    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    z-index: 2;
-    background: none;
+    color: #777;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: transparent;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 5px;
+    margin: 0 10px;
+}
+
+.page-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    background-color: transparent;
     border: none;
-    padding: 0;
+    color: #777;
 }
 
-.diet-card-delete-btn:hover {
-    transform: scale(1.1);
+.page-number:hover {
+    background-color: transparent;
+    text-decoration: none;
+    color: #333;
 }
 
-.diet-card-delete-btn:hover svg path {
-    stroke: #333333;
+.page-number.active {
+    background-color: transparent;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* 북마크 제거 확인 모달 스타일 */
+.bookmark-confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.bookmark-confirm-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+}
+
+.bookmark-confirm-content p {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.bookmark-confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.bookmark-cancel-btn, .bookmark-confirm-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.bookmark-cancel-btn {
+    background-color: #D9D9D9;
+    color: #333;
+}
+
+.bookmark-confirm-btn {
+    background-color: #FF4B4B;
+    color: white;
+}
+
+.bookmark-cancel-btn:hover {
+    background-color: #ccc;
+}
+
+.bookmark-confirm-btn:hover {
+    background-color: #ff3333;
 }
 </style> 
