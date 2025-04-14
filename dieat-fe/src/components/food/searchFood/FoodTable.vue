@@ -74,44 +74,54 @@ function getVoteKey(foodId) {
 function canVote(item, type) {
     if (item.nickname === '공공 데이터') return false;
 
-    const key = getVoteKey(item.id);
-    const current = localVotes[key];
-
-    // 아무것도 누르지 않았으면 둘 다 가능
-    if (!current) return true;
-
-    // 이미 눌렀던 것과 다르면 바꿀 수 있음
-    return current !== type;
+    // ✅ 무조건 누를 수 있게 해 준다 (취소 or 전환 모두 가능)
+    return true;
 }
 
 function vote(foodId, type) {
     const key = getVoteKey(foodId);
     const prev = localVotes[key];
-
-    // 같은 걸 다시 누르는 경우 무시
-    if (prev === type) return;
-
-    // 프론트엔드 반영
     const item = props.items.find(f => f.id === foodId);
     if (!item) return;
 
-    // 이전 투표 반영 취소
+    // 1. 같은 버튼을 다시 누르면 "취소"
+    if (prev === type) {
+        item[type] = Math.max(item[type] - 1, 0);
+        delete localVotes[key];
+        localStorage.setItem('voteStatus', JSON.stringify(localVotes));
+
+        // 서버에도 반영
+        if (props.userId) {
+            fetch(`http://localhost:3000/food/${foodId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [type]: item[type] })
+            });
+        }
+
+        return;
+    }
+
+    // 2. 이전 투표가 있으면 감소
     if (prev && item[prev] > 0) item[prev]--;
 
-    // 새로운 투표 반영
+    // 3. 새로운 투표 반영
     item[type]++;
     localVotes[key] = type;
     localStorage.setItem('voteStatus', JSON.stringify(localVotes));
 
-    // 로그인된 사용자면 PATCH 요청
     if (props.userId) {
+        const updatePayload = {
+            [type]: item[type]
+        };
+        if (prev && prev !== type) {
+            updatePayload[prev] = item[prev];
+        }
+
         fetch(`http://localhost:3000/food/${foodId}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                [prev]: Math.max((item[prev] || 1) - 1, 0),
-                [type]: (item[type] || 0)
-            })
+            body: JSON.stringify(updatePayload)
         });
     }
 }
