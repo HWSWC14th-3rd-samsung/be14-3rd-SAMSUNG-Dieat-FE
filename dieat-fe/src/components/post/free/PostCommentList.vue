@@ -29,6 +29,10 @@ const props = defineProps({
 })
 
 const sortedComments = computed(() =>
-    [...props.comments].sort((a, b) => new Date(a.date) - new Date(b.date))
-)
+    [...props.comments].sort((a, b) => {
+        const dateCompare = new Date(a.date) - new Date(b.date);
+        if (dateCompare !== 0) return dateCompare;
+        return a.id - b.id; // 날짜 같으면 id 오름차순
+    })
+);
 </script>
