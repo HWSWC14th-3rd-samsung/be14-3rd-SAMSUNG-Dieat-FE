@@ -1,24 +1,13 @@
-:root {
-    --color-primary: #189b71;
-    --color-accent: #f85230;
-    --color-background: #fff8ed;
-    --color-header-bg: #155B45;
-}
-
-/* === 기본 페이지 레이아웃 === */
 .post-list-page {
     background-color: #fff;
     padding: 1.5rem;
-    /* 2rem → 1.5rem */
     max-width: 1024px;
-    /* 1440 → 1024 */
     margin: 0 auto;
     width: 100%;
 }
 
 .page-title {
     font-size: 1.6rem;
-    /* 2rem → 1.6rem */
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
@@ -30,9 +19,7 @@
     align-items: center;
     width: 100%;
     max-width: 960px;
-    /* 1400 → 960 */
     margin: 0 auto 1.2rem;
-    /* 1.5rem → 1.2rem */
     padding: 0 1rem;
 }
 
@@ -46,14 +33,11 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     border-radius: 2rem;
     padding: 0.4rem 0.8rem;
-    /* 조금 더 좁게 */
 
     width: 100%;
     max-width: 240px;
-    /* 280 → 240 */
 
     margin: 0 auto 1.2rem;
-    /* 1.5rem → 1.2rem */
 }
 
 .post-search-bar input {
@@ -86,7 +70,6 @@
 .create-button-wrapper {
     width: 100%;
     max-width: 960px;
-    /* 1300 → 960 */
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1rem;
@@ -116,7 +99,6 @@
     display: flex;
     justify-content: center;
     margin-top: 1.5rem;
-    /* 2rem → 1.5rem */
     gap: 0.4rem;
 }
 
@@ -141,22 +123,18 @@
 .post-table {
     width: 100%;
     max-width: 1024px;
-    /* 1400 → 1024 */
     background-color: white;
     border-radius: 1.2rem;
     padding: 0 0.8rem 0.8rem;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
     border-collapse: separate;
     border-spacing: 0 12px;
-    /* 16px → 12px */
     font-size: 0.95rem;
-    /* 1rem → 0.95rem */
 }
 
 .post-table thead th {
     text-align: center;
     padding: 1rem;
-    /* 1.2rem → 1rem */
     font-size: 1rem;
     font-weight: 700;
     color: #000;
@@ -194,7 +172,6 @@
 
 .clickable-row .title-cell {
     cursor: pointer;
-    color: #007bff;
 }
 
 .clickable-row .title-cell:hover {

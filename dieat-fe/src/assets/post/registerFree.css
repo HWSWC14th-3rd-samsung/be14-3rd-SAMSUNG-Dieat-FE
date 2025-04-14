@@ -112,7 +112,7 @@
 }
 
 .submit-button {
-    background-color: #189b71;
+    background-color: var(--color-primary);
     color: white;
 }
 

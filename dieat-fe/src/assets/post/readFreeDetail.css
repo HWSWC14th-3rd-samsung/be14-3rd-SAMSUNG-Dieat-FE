@@ -29,10 +29,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    /* 가운데 정렬 */
     gap: 10px;
     margin-bottom: 20px;
-    /* header ↔ content 간 여백 추가 */
 }
 
 .meta-item {
@@ -90,7 +88,7 @@
 }
 
 .like-button .liked {
-    color: #f85230;
+    color: var(--color-accent);
 }
 
 .comment-count {
