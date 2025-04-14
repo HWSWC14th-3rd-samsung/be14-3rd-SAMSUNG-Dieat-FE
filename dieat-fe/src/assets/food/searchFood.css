@@ -174,6 +174,7 @@
 
 /* SearchBar */
 .search-section {
+    position: relative;
     display: flex;
     align-items: center;
     background: var(--color-background);
@@ -193,7 +194,7 @@
     font-size: 0.95rem;
 }
 
-.search-section button {
+.icon-button {
     background-color: var(--color-accent);
     color: white;
     border: none;
@@ -248,4 +249,39 @@
 
 .clickable-row:hover {
     background-color: #f5fffa;
+}
+
+/* 🔥 드롭다운 위치를 ☰ 기준으로 바로 아래 */
+.dropdown-wrapper {
+    position: relative;
+}
+
+.filter-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background-color: #fff;
+    border: 1px solid var(--color-primary);
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 1rem;
+    z-index: 1000;
+    font-size: 0.9rem;
+    width: 120px;
+}
+
+.filter-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-dropdown li {
+    padding: 0.5rem 0;
+    cursor: pointer;
+}
+
+.filter-dropdown li:hover {
+    background-color: #f2f2f2;
 }
