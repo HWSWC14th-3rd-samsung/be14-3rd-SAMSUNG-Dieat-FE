@@ -86,7 +86,7 @@
   const menu2 = [
     { label: '식사 조회', href: '/MealLayout' },
     { label: '식사 등록', href: '/RegistMeal' },
-    { label: '식단 게시글 조회', href: '/DietPostDetail' },
+    { label: '식단 게시글 조회', href: '/dietPost' },
     { label: '식단 게시글 등록', href: '/registerDiet' }
   ]
   
