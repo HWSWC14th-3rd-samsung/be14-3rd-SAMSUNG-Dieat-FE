@@ -1,18 +1,9 @@
 <template>
   <div>
-    <TheHeader
-      @open-login="openLoginModal"
-      @logout="handleLogout"
-      class="header"
-    />
+    <TheHeader @open-login="openLoginModal" @logout="handleLogout" class="header" />
     <RouterView />
-    <LoginModal
-      :show="isLoginModalOpen"
-      @close="isLoginModalOpen = false"
-      @login-success="handleLoginSuccess"
-    />
+    <LoginModal :show="isLoginModalOpen" @close="isLoginModalOpen = false" @login-success="handleLoginSuccess" />
   </div>
-  <Footer></Footer>
 </template>
 
 <script setup>
@@ -21,7 +12,6 @@ import { RouterView, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import TheHeader from '@/components/common/Header.vue'
 import LoginModal from '@/components/member/LoginModal.vue'
-import Footer from './components/common/Footer.vue'
 
 const isLoginModalOpen = ref(false)
 const router = useRouter()
@@ -67,13 +57,16 @@ onUnmounted(() => {
 </script>
 
 <style>
-html, body, #app {
+html,
+body,
+#app {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-@media (min-width:1000px){
-  .header{
+
+@media (min-width:1000px) {
+  .header {
     display: none;
   }
 }
