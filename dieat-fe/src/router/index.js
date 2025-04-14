@@ -6,6 +6,8 @@ import Home from '@/views/Home.vue';
 import Signup from '@/views/Signup.vue';
 import Login from '@/views/Login.vue';
 import DietPostLayout from '@/views/dietpost/DietPostLayout.vue';
+import MealLayout from '@/views/meal/MealLayout.vue';
+import RegistMeal from '@/views/meal/RegistMeal.vue';
 import NoticeLayout from '../views/NoticeLayout.vue';
 import QnaLayout from '../views/QnaLayout.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue';
@@ -30,6 +32,7 @@ const router = createRouter({
     { path: '/qnaLayout', component: QnaLayout },
     { path: '/dietPost/:id', component: DietPostDetail },
     { path: '/meal', component: MealLayout},
+    {path: '/registmeal', component: RegistMeal},
     // {path: '/readFree', component: ReadFree },
     {path: '/dashboard', component: Dashboard}
 

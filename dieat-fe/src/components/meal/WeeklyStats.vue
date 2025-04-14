@@ -1,6 +1,6 @@
 <template>
     <div class="weekly-stats">
-        <h3>이번 주</h3>
+        <h3>한 주 평균</h3>
         <div class="stats-overview">
             <div class="main-stat">
                 <div class="stat-value" :style="{ color: caloriesColor }">{{ averageCalories }}</div>
@@ -38,7 +38,6 @@ import { ref, inject, watch, onMounted, computed } from 'vue'
 const selectedDate = inject('selectedDate')
 const weeklyMeals = ref([])
 
-// 목표치 상수 정의
 const TARGET_VALUES = {
     calories: 2000,
     carbs: 300,
@@ -46,23 +45,20 @@ const TARGET_VALUES = {
     fat: 50
 }
 
-// 영양성분 수치값 색상 계산
 const getNutrientColor = (current, target) => {
     const ratio = (current / target) * 100
-    if (ratio > 110) return '#D30E0E'  // 110% 초과
-    if (ratio > 100) return '#FF9D00'  // 100~110%
-    return '#000'  // 기본 색상
+    if (ratio > 110) return '#D30E0E'
+    if (ratio > 100) return '#FF9D00'
+    return '#000'
 }
 
 const fetchWeeklyStats = async (date) => {
     try {
-
         const currentDate = new Date(date)
         const startOfWeek = new Date(currentDate)
         startOfWeek.setDate(currentDate.getDate() - currentDate.getDay())
         const endOfWeek = new Date(startOfWeek)
         endOfWeek.setDate(startOfWeek.getDate() + 6)
-
 
         const startDate = startOfWeek.toISOString().split('T')[0]
         const endDate = endOfWeek.toISOString().split('T')[0]
@@ -78,39 +74,39 @@ const fetchWeeklyStats = async (date) => {
             return mealDate >= startDate && mealDate <= endDate
         })
     } catch (error) {
-        console.error('주간 통계 조회 오류:', error)
+        console.log('주간 식사 데이터가 없습니다.')
         weeklyMeals.value = []
     }
 }
 
-// 평균값 계산을 위한 유틸리티 함수
 const calculateDailyAverage = (meals, nutrientKey) => {
-    if (meals.length === 0) return 0
+    if (!meals || meals.length === 0) return 0
 
-    // 날짜별로 영양성분 합계를 구함
-    const dailyTotals = meals.reduce((acc, meal) => {
-        const date = new Date(meal.meal_dt).toISOString().split('T')[0]
-        if (!acc[date]) {
-            acc[date] = 0
-        }
-        acc[date] += meal[nutrientKey] || 0
-        return acc
-    }, {})
+    try {
+        const dailyTotals = meals.reduce((acc, meal) => {
+            const date = new Date(meal.meal_dt).toISOString().split('T')[0]
+            if (!acc[date]) {
+                acc[date] = 0
+            }
+            acc[date] += meal[nutrientKey] || 0
+            return acc
+        }, {})
 
-    // 식사가 등록된 날짜 수
-    const daysWithMeals = Object.keys(dailyTotals).length
+        const daysWithMeals = Object.keys(dailyTotals).length
+        if (daysWithMeals === 0) return 0
 
-    // 식사가 등록된 날짜들의 합계 평균
-    const total = Object.values(dailyTotals).reduce((sum, daily) => sum + daily, 0)
-    return Math.round(total / daysWithMeals)
+        const total = Object.values(dailyTotals).reduce((sum, daily) => sum + daily, 0)
+        return Math.round(total / daysWithMeals)
+    } catch (error) {
+        console.log(`${nutrientKey} 계산 중 오류 발생.`)
+        return 0
+    }
 }
 
-// 평균값 계산
 const averageCalories = computed(() => {
     return calculateDailyAverage(weeklyMeals.value, 'meal_calories')
 })
 
-// 칼로리 색상 계산
 const caloriesColor = computed(() => getNutrientColor(averageCalories.value, TARGET_VALUES.calories))
 
 const averageCarbs = computed(() => {
@@ -125,12 +121,10 @@ const averageFat = computed(() => {
     return calculateDailyAverage(weeklyMeals.value, 'meal_fat')
 })
 
-// 컴포넌트 마운트 시 초기 데이터 로드
 onMounted(() => {
     fetchWeeklyStats(selectedDate.value)
 })
 
-// selectedDate가 변경될 때마다 주간 통계 업데이트
 watch(selectedDate, (newDate) => {
     fetchWeeklyStats(newDate)
 })
