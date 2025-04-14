@@ -11,6 +11,10 @@ import QnaLayout from '../views/QnaLayout.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue';
 import ReadFree from '@/features/readFree/pages/FreePostListPage.vue';
 import DietPostDetail from '@/views/dietpost/DietPostDetail.vue';
+import MealLayout from '../views/MealLayout.vue';
+// import About from '@/pages/About.vue';
+// import Contact from '@/pages/Contact.vue';
+import Dashboard from '@/views/dashboard/Dashboard.vue';
 
 
 const router = createRouter({
@@ -25,6 +29,9 @@ const router = createRouter({
     { path: '/noticeLayout', component: NoticeLayout },
     { path: '/qnaLayout', component: QnaLayout },
     { path: '/dietPost/:id', component: DietPostDetail },
+    { path: '/meal', component: MealLayout},
+    // {path: '/readFree', component: ReadFree },
+    {path: '/dashboard', component: Dashboard}
 
   ]
 });
