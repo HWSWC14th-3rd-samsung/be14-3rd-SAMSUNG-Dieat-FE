@@ -8,7 +8,6 @@
                 <PostDetailHeader :post="post" :likes="likes" />
                 <PostContent :content="post.content" :imageUrl="post.imageUrl" />
             </div>
-
             <PostInteraction :initialLikes="likes" :commentCount="comments.length" :liked="likedByUser"
                 @toggle-like="handleLikeToggle" />
             <PostCommentInput @submit="handleAddComment" />
@@ -30,7 +29,7 @@ import PostCommentList from '@/components/post/free/PostCommentList.vue';
 import PostInteraction from '@/components/post/free/PostInteraction.vue';
 import { fetchPostById } from '@/api/freePostApi.js';
 
-// ✅ 로그인 사용자 정보
+// 로그인 사용자 (예시)
 const user = {
     id: 1,
     nickname: '50071'
@@ -48,10 +47,13 @@ onMounted(async () => {
     try {
         const fetched = await fetchPostById(postId);
         post.value = fetched;
-        comments.value = fetched.comments || [];
+        comments.value = (fetched.comments || []).map((c, i) => ({
+            id: c.id ?? i + 1, // 기존 댓글에 id가 없으면 채워줌
+            ...c
+        }));
         likes.value = fetched.likes || 0;
 
-        // ✅ localStorage에 user 기준으로 좋아요 여부 확인
+        // 좋아요 여부 localStorage 확인
         const likedKey = `liked_post_${postId}_user_${user.id}`;
         likedByUser.value = localStorage.getItem(likedKey) === 'true';
     } catch (err) {
@@ -60,17 +62,34 @@ onMounted(async () => {
 });
 
 function handleAddComment(newContent) {
+    // 가장 큰 id 찾기
+    const maxId = comments.value.length > 0
+        ? Math.max(...comments.value.map(c => c.id || 0))
+        : 0;
+
     const newComment = {
+        id: maxId + 1,
         author: user.nickname,
         content: newContent,
         date: new Date().toISOString().slice(0, 10)
     };
+
     comments.value.push(newComment);
+
+    // 날짜 → id 기준 정렬
+    comments.value.sort((a, b) => {
+        const dateDiff = new Date(b.date) - new Date(a.date);
+        if (dateDiff !== 0) return dateDiff;
+        return b.id - a.id;
+    });
 
     fetch(`http://localhost:3000/freeposts/${postId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ comments: comments.value })
+    }).catch(err => {
+        console.error('댓글 저장 실패:', err);
+        alert('댓글 저장 중 오류가 발생했습니다.');
     });
 }
 
@@ -78,12 +97,10 @@ function handleLikeToggle() {
     const likedKey = `liked_post_${postId}_user_${user.id}`;
 
     if (likedByUser.value) {
-        // 좋아요 취소
         likes.value--;
         likedByUser.value = false;
         localStorage.removeItem(likedKey);
     } else {
-        // 좋아요 추가
         likes.value++;
         likedByUser.value = true;
         localStorage.setItem(likedKey, 'true');
