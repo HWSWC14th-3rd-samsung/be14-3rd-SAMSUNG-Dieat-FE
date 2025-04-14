@@ -11,19 +11,21 @@
     </div>
 
     <!-- 🖼️ 썸네일 + 오버레이 + 제목 + 북마크 -->
-    <div class="image-container" @click="goToDetail" style="cursor: pointer;">
-      <img :src="dietImage" alt="식단 이미지" class="thumbnail" />
-      <div class="overlay"></div>
+<div class="image-container" @click="goToDetail">
+  <img :src="dietImage" alt="식단 이미지" class="thumbnail" />
+  <div class="overlay"></div>
 
-    <!-- 제목 + 북마크 버튼 부분 -->
-    <div class="title-bookmark">
-      <h3 class="image-title">{{ post.title }}</h3>
-    <BookmarkButton
-      :isActive="isBookmarked"
-      @toggle="toggleBookmark"
-    />
-</div>
+  <!-- 제목 + 북마크 버튼 부분 -->
+  <div class="title-bookmark">
+    <h3 class="image-title">{{ post.title }}</h3>
+    <div class="bookmark-wrapper" @click.stop>
+      <BookmarkButton
+        :isActive="isBookmarked"
+        @toggle="toggleBookmark"
+      />
     </div>
+  </div>
+</div>
 
     <!-- 📅 날짜 + ❤️ 좋아요 + 💬 댓글 -->
     <div class="meta">
@@ -160,8 +162,13 @@ function goToDetail() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 2;
+  z-index: 2; /* 이미지를 덮어쓰기 위해 */
   color: white;
+  pointer-events: none; /* 내부 요소 클릭 방지 해제 필요 */
+}
+
+.bookmark-wrapper {
+  pointer-events: auto; /* 북마크 버튼 클릭 가능하도록 설정 */
 }
 
 .image-title {
