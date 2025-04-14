@@ -1,9 +1,5 @@
 <template>
   <div>
-    <button class="login-btn" @click="isLoginModalOpen = true">로그인</button>
-    <RouterLink to="/register">회원가입</RouterLink>
-    <RouterLink to="/subscribeList">구독리스트</RouterLink>
-    <RouterLink to="/blockList">차단리스트</RouterLink>
     <main>
       <RouterView />
     </main>

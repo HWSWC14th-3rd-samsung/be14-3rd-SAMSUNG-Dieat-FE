@@ -12,23 +12,23 @@ import QnaLayout from '../views/QnaLayout.vue';
 
 // import About from '@/pages/About.vue';
 // import Contact from '@/pages/Contact.vue';
-import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
-import RegistFood from '@/features/registerFood/pages/FoodRegisterPage.vue'
-import RegistFree from '@/features/registerFree/FreePostWritePage.vue'
-import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
-import FreePostListPage from '@/features/readFree/pages/FreePostListPage.vue';
-import FreePostDetailPage from '@/features/readFree/pages/FreePostDetailPage.vue';
+import SearchFood from '@/views/food/FoodSearchPage.vue';
+import RegistFood from '@/views/food/FoodRegisterPage.vue';
+import FreePostListPage from '@/views/post/FreePostListPage.vue';
+import FreePostDetailPage from '@/views/post/FreePostDetailPage.vue';
+import RegistFree from '@/views/post/FreePostWritePage.vue';
 import Dashboard from '@/views/dashboard/Dashboard.vue';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    { path: '/', component: Home },
     { path: '/signup', component: Signup },
     { path: '/login', component: Login },
     { path: '/meal', component: MealLayout },
     { path: '/registmeal', component: RegistMeal },
     { path: '/searchFood', component: SearchFood },
-    { path: '/readFree', component: ReadFree },
+    { path: '/registerFood', component: RegistFood },
     // 자유 게시글 리스트
     {
       path: '/readFree',
