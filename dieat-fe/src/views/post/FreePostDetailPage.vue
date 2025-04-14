@@ -1,7 +1,7 @@
 <template>
 
     <main class="post-detail-page-container">
-        <h2 class="page-title">자유 게시글</h2>
+        <h2 class="page-title animated-title" @click="goToList">자유 게시글</h2>
 
         <div class="container" v-if="post">
             <div class="post-card">
@@ -21,7 +21,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import Header from '@/components/common/Header.vue'
 import PostDetailHeader from '@/components/post/free/PostHeader.vue'
@@ -34,6 +34,7 @@ import { fetchPostById } from '@/api/freePostApi.js'
 
 const user = { id: 1, nickname: '50071' }
 const route = useRoute()
+const router = useRouter()
 const postId = route.params.postId
 const isFromWrite = route.query.fromWrite === 'true'
 
@@ -41,6 +42,8 @@ const post = ref(null)
 const comments = ref([])
 const likes = ref(0)
 const likedByUser = ref(false)
+
+const goToList = () => router.push('/readFree')
 
 onMounted(async () => {
     try {
@@ -135,3 +138,29 @@ function handleLikeToggle() {
 </script>
 
 <style src="@/assets/post/readFreeDetail.css"></style>
+
+<style scoped>
+.animated-title {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.animated-title:hover {
+    transform: scale(1.05);
+    animation: pulseColor 1.2s infinite;
+}
+
+@keyframes pulseColor {
+    0% {
+        color: var(--color-primary);
+    }
+
+    50% {
+        color: var(--color-accent);
+    }
+
+    100% {
+        color: var(--color-primary);
+    }
+}
+</style>
