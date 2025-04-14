@@ -5,14 +5,18 @@
 
     <main class="post-detail-page-container">
         <h2 class="page-title">자유 게시글</h2>
-        
+
         <div class="container" v-if="post">
-            <PostDetailHeader :post="post" />
-            <PostContent :content="post.content" :imageUrl="post.imageUrl" />
+            <div class="post-card">
+                <PostDetailHeader :post="post" />
+                <PostContent :content="post.content" :imageUrl="post.imageUrl" />
+            </div>
+
             <PostInteraction :initialLikes="post.likes" :commentCount="comments.length" />
             <PostCommentInput @submit="handleAddComment" />
             <PostCommentList :comments="comments" />
         </div>
+
         <div v-else class="loading">게시글을 불러오는 중입니다...</div>
     </main>
 </template>
@@ -32,6 +36,8 @@ import { fetchPostById } from '@/api/freePostApi.js';
 const route = useRoute();
 const postId = route.params.postId;
 
+const post = ref(null);
+
 onMounted(async () => {
     try {
         post.value = await fetchPostById(postId);
@@ -40,28 +46,11 @@ onMounted(async () => {
     }
 });
 
-const post = ref(null);
-
-// 더미 데이터
-// const post = ref({
-//     title: '닭가슴살 레시피 공유합니다! 🍗',
-//     author: 'jerry0417',
-//     date: '2025-04-12',
-//     views: 123,
-//     likes: 15,
-//     content: `다들 닭가슴살 먹기 힘드시죠?  
-//   오늘은 제가 직접 해본 꿀 레시피를 공유해볼게요!  
-//   1. 닭가슴살을 슬라이스해서  
-//   2. 에어프라이어에 바삭하게  
-//   3. 스리라차 + 꿀 조합으로 마무리!!`
-// });
-
 const comments = ref([
     { author: 'rosie', content: '와 진짜 해볼게요!', date: '2025-04-12' },
     { author: 'M K', content: '스리라차 꿀팁 감사합니다~', date: '2025-04-13' }
 ]);
 
-// 댓글 추가
 function handleAddComment(newComment) {
     comments.value.push({
         author: '익명 사용자',
