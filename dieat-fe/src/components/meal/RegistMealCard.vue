@@ -87,8 +87,12 @@ const handleQuantityChange = (event, index) => {
 };
 
 const calculateNutrient = (value, quantity) => {
+    if (value === undefined || value === null) return 0;
+    const parsedValue = parseFloat(value);
+    if (isNaN(parsedValue)) return 0;
+    
     const qty = parseFloat(quantity) || 1;
-    return Math.floor(parseFloat(value) * qty);
+    return Math.floor(parsedValue * qty);
 };
 </script>
 

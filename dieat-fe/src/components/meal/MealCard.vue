@@ -9,7 +9,7 @@
         <div class="meal-image"></div>
         <div class="meal-content">
             <div class="meal-header">
-                <div class="meal-name">{{ meal.meal_title || meal.name }}</div>
+                <div class="meal-name">{{ meal.meal_title || meal.name || '제목 없음' }}</div>
                 <div class="meal-time">{{ formatTime(meal.meal_dt) }}</div>
             </div>
             <div class="meal-desc">{{ meal.meal_desc || meal.description }}</div>
@@ -54,18 +54,40 @@
     defineEmits(['delete'])
 
     const formatTime = (dateTimeStr) => {
-        if (!dateTimeStr) return ''
-        const date = new Date(dateTimeStr)
-        return date.toLocaleTimeString('ko-KR', { 
-            hour: '2-digit', 
-            minute: '2-digit',
-            hour12: false 
-        })
+        if (!dateTimeStr) return '';
+        
+        try {
+            // ISO 8601 형식 ('YYYY-MM-DDTHH:mm:ss' 또는 'YYYY-MM-DD HH:mm:ss')을 처리
+            const normalizedDateTime = dateTimeStr.replace(' ', 'T');
+            const date = new Date(normalizedDateTime);
+            
+            if (isNaN(date.getTime())) {
+                console.error('잘못된 날짜 형식:', dateTimeStr);
+                return '';
+            }
+            
+            // 한국 시간대(UTC+9)로 변환
+            const offset = date.getTimezoneOffset() * 60000;
+            const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+            
+            return koreanTime.toLocaleTimeString('ko-KR', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false 
+            });
+        } catch (error) {
+            console.error('날짜 변환 중 오류 발생:', error);
+            return '';
+        }
     }
 
     const calculateNutrient = (value, quantity) => {
+        if (value === undefined || value === null) return 0;
+        const parsedValue = parseFloat(value);
+        if (isNaN(parsedValue)) return 0;
+        
         const qty = parseFloat(quantity) || 1;
-        return Math.floor(parseFloat(value) * qty);
+        return Math.floor(parsedValue * qty);
     };
 </script>
 

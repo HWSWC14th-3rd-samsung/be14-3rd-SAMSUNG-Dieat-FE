@@ -56,54 +56,64 @@ const weeklyMeals = computed(() => {
     if (!meals.value || !selectedDate.value) return [];
 
     try {
-        const currentDate = new Date(selectedDate.value)
-        const startOfWeek = new Date(currentDate)
-        startOfWeek.setDate(currentDate.getDate() - currentDate.getDay())
-        const endOfWeek = new Date(startOfWeek)
-        endOfWeek.setDate(startOfWeek.getDate() + 6)
-
-        const startDate = startOfWeek.toISOString().split('T')[0]
-        const endDate = endOfWeek.toISOString().split('T')[0]
+        const currentDate = new Date(selectedDate.value + 'T00:00:00+09:00');
+        const dayOfWeek = currentDate.getDay(); // 0(일요일)~6(토요일)
+        
+        const startDate = new Date(currentDate);
+        startDate.setDate(currentDate.getDate() - dayOfWeek);
+        const startDateStr = startDate.toISOString().split('T')[0];
+        
+        const endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 6);
+        const endDateStr = endDate.toISOString().split('T')[0];
         
         return meals.value.filter(meal => {
             if (!meal.meal_dt) return false;
             try {
-                const mealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
-                return mealDate >= startDate && mealDate <= endDate
+                const date = new Date(meal.meal_dt);
+                const offset = date.getTimezoneOffset() * 60000;
+                const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+                const mealDateStr = koreanTime.toISOString().split('T')[0];
+                
+                return mealDateStr >= startDateStr && mealDateStr <= endDateStr;
             } catch (error) {
                 console.error('날짜 형식 오류:', error);
                 return false;
             }
-        })
+        });
     } catch (error) {
         console.error('주간 식사 데이터 필터링 오류:', error);
         return [];
     }
-})
+});
 
 const calculateDailyAverage = (meals, nutrientKey) => {
-    if (!meals || meals.length === 0) return 0
+    if (!meals || meals.length === 0) return 0;
 
     try {
         const dailyTotals = meals.reduce((acc, meal) => {
-            const date = new Date(meal.meal_dt).toISOString().split('T')[0]
-            if (!acc[date]) {
-                acc[date] = 0
+            const date = new Date(meal.meal_dt);
+            const offset = date.getTimezoneOffset() * 60000;
+            const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+            const dateStr = koreanTime.toISOString().split('T')[0];
+            
+            if (!acc[dateStr]) {
+                acc[dateStr] = 0;
             }
-            acc[date] += meal[nutrientKey] || 0
-            return acc
-        }, {})
+            acc[dateStr] += meal[nutrientKey] || 0;
+            return acc;
+        }, {});
 
-        const daysWithMeals = Object.keys(dailyTotals).length
-        if (daysWithMeals === 0) return 0
+        const daysWithMeals = Object.keys(dailyTotals).length;
+        if (daysWithMeals === 0) return 0;
 
-        const total = Object.values(dailyTotals).reduce((sum, daily) => sum + daily, 0)
-        return Math.round(total / daysWithMeals)
+        const total = Object.values(dailyTotals).reduce((sum, daily) => sum + daily, 0);
+        return Math.round(total / daysWithMeals);
     } catch (error) {
-        console.log(`${nutrientKey} 계산 중 오류 발생.`)
-        return 0
+        console.log(`${nutrientKey} 계산 중 오류 발생.`);
+        return 0;
     }
-}
+};
 
 const averageCalories = computed(() => {
     return calculateDailyAverage(weeklyMeals.value, 'meal_calories')

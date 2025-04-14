@@ -23,13 +23,22 @@
         if (!meals.value) return [];
         
         return meals.value.filter(meal => {
-            if (!meal.meal_dt) return false;
+            // 식사 날짜 필드가 여러 이름으로 존재함 (meal_dt 또는 meal_time)
+            const mealDateField = meal.meal_dt || meal.meal_time;
+            if (!mealDateField) {
+                return false;
+            }
+            
             try {
-                // DB date format: "2025-04-13 21:00"
-                const mealDateStr = meal.meal_dt.split(' ')[0]; // "2025-04-13"
+                // 한국 시간대로 변환하여 날짜 비교
+                const date = new Date(mealDateField);
+                const offset = date.getTimezoneOffset() * 60000;
+                const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+                const mealDateStr = koreanTime.toISOString().split('T')[0];
+                
                 return mealDateStr === selectedDate.value;
             } catch (error) {
-                console.error('날짜 형식 오류:', error);
+                console.error('날짜 형식 오류:', error, meal);
                 return false;
             }
         });

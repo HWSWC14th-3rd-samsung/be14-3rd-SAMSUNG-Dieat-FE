@@ -91,28 +91,42 @@ const calendarOptions = ref({
 })
 
 function isToday(date) {
-  const today = new Date().toISOString().split('T')[0]
-  return date === today
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000;
+  const koreanTime = new Date(now.getTime() + offset + (9 * 60 * 60 * 1000));
+  const today = koreanTime.toISOString().split('T')[0];
+  
+  return date === today;
 }
 
 function getWeekDays() {
-  const days = []
-  const today = new Date()
-  const lastSunday = new Date(today)
-  lastSunday.setDate(today.getDate() - today.getDay() + (currentWeekOffset.value * 7))
-  const dayNames = ['일', '월', '화', '수', '목', '금', '토']
+  const days = [];
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000;
+  const koreanTime = new Date(now.getTime() + offset + (9 * 60 * 60 * 1000));
+  
+  const lastSunday = new Date(koreanTime);
+  lastSunday.setDate(koreanTime.getDate() - koreanTime.getDay() + (currentWeekOffset.value * 7));
+  
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
 
   for (let i = 0; i < 7; i++) {
-    const currentDate = new Date(lastSunday)
-    currentDate.setDate(lastSunday.getDate() + i)
+    const currentDate = new Date(lastSunday);
+    currentDate.setDate(lastSunday.getDate() + i);
+    
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    
     days.push({
-      date: currentDate.toISOString().split('T')[0],
+      date: dateStr,
       day: String(currentDate.getDate()),
       dayName: dayNames[currentDate.getDay()]
-    })
+    });
   }
 
-  return days
+  return days;
 }
 
 function getWeekRangeText() {
@@ -141,20 +155,25 @@ const selectDate = (date) => {
 
 const onDayClick = (day) => {
   console.log('Day clicked:', day);
-  const selectedDay = new Date(day.date)
   
-  const year = selectedDay.getFullYear()
-  const month = String(selectedDay.getMonth() + 1).padStart(2, '0')
-  const date = String(selectedDay.getDate()).padStart(2, '0')
-  const formattedDate = `${year}-${month}-${date}`
+  const selectedDay = new Date(day.date);
+  selectedDay.setHours(selectedDay.getHours() + 9);
   
-  selectedDate.value = formattedDate
-  isCalendarVisible.value = false
+  const year = selectedDay.getFullYear();
+  const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
+  const date = String(selectedDay.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${date}`;
   
-  const today = new Date()
-  const diffTime = selectedDay - today
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  currentWeekOffset.value = Math.floor(diffDays / 7)
+  selectedDate.value = formattedDate;
+  isCalendarVisible.value = false;
+  
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000;
+  const koreanTime = new Date(now.getTime() + offset + (9 * 60 * 60 * 1000));
+  
+  const diffTime = selectedDay - koreanTime;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  currentWeekOffset.value = Math.floor(diffDays / 7);
 }
 
 const previousWeek = () => {

@@ -181,7 +181,28 @@
     import { useRegistMealStore } from '@/stores/registMeal';
 
     const router = useRouter();
-    const timeInput = ref('');
+    
+    // 한국 시간(UTC+9)로 현재 날짜 및 시간 가져오기
+    const getKoreanDateTime = () => {
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000;
+        const koreanTime = new Date(now.getTime() + offset + (9 * 60 * 60 * 1000));
+        
+        const year = koreanTime.getFullYear();
+        const month = String(koreanTime.getMonth() + 1).padStart(2, '0');
+        const day = String(koreanTime.getDate()).padStart(2, '0');
+        const hours = String(koreanTime.getHours()).padStart(2, '0');
+        const minutes = String(koreanTime.getMinutes()).padStart(2, '0');
+        
+        return {
+            date: `${year}-${month}-${day}`,
+            time: `${hours}:${minutes}`,
+            dateTime: `${year}-${month}-${day} ${hours}:${minutes}`
+        };
+    };
+    
+    const koreanDateTime = getKoreanDateTime();
+    const timeInput = ref(koreanDateTime.dateTime);
     const timeError = ref(false);
     const fileInput = ref(null);
     const previewImage = ref(null);
@@ -201,7 +222,7 @@
     const mealInfo = ref({
         meal_name: '',
         meal_description: '',
-        meal_time: '',
+        meal_time: koreanDateTime.dateTime,
         file: null
     });
 
@@ -452,11 +473,31 @@
             isLoading.value = true;
             errorMessage.value = '';
 
+            // 날짜와 시간을 한국 시간 기준으로 ISO 8601 형식으로 변환
+            const [datePart, timePart] = timeInput.value.split(' ');
+            const [year, month, day] = datePart.split('-');
+            const [hours, minutes] = timePart.split(':');
+            
+            // 한국 시간을 그대로 사용하여 ISO 8601 형식으로 변환
+            const mealDateTime = `${datePart}T${timePart}:00`;
+            
+            // 음식 관련 영양소 데이터 계산
             const mealData = {
                 id: Date.now(),
-                meal_name: document.querySelector('.registmeal-name-input').value,
-                meal_description: document.querySelector('.registmeal-desc-input').value,
-                meal_time: timeInput.value,
+                meal_code: Date.now(),
+                meal_title: document.querySelector('.registmeal-name-input').value,
+                meal_desc: document.querySelector('.registmeal-desc-input').value,
+                meal_dt: mealDateTime,  // ISO 8601 형식으로 저장
+                meal_calories: totalNutrients.value.calorie,
+                meal_carbs: totalNutrients.value.carb,
+                meal_protein: totalNutrients.value.protein,
+                meal_fat: totalNutrients.value.fat,
+                meal_sugar: registeredFoods.value.reduce((sum, food) => {
+                    const quantity = parseFloat(food.quantity) || 1;
+                    return sum + (parseFloat(food.sugar) || 0) * quantity;
+                }, 0),
+                meal_foods: registeredFoods.value,
+                user_code: 1,
                 file: [selectedImageInfo.value]
             };
 
@@ -534,6 +575,19 @@
 
     const handleLoadDietPostConfirm = () => {
         closeLoadDietPostModal();
+    };
+
+    const updateMealInfo = () => {
+        mealInfo.value = {
+            ...mealInfo.value,
+            meal_name: document.querySelector('.registmeal-name-input')?.value || '',
+            meal_description: document.querySelector('.registmeal-desc-input')?.value || '',
+            meal_time: timeInput.value,
+            file: selectedImageInfo.value
+        };
+        
+        // Pinia 스토어에 임시 정보 저장
+        mealStore.setTempMealInfo(mealInfo.value);
     };
 </script>
 

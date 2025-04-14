@@ -78,8 +78,13 @@ const todayMeals = computed(() => {
     return meals.value.filter(meal => {
         if (!meal.meal_dt) return false;
         try {
-            const mealDate = meal.meal_dt.split(' ')[0]
-            return mealDate === selectedDate.value;
+            // 한국 시간대로 변환하여 날짜 비교
+            const date = new Date(meal.meal_dt);
+            const offset = date.getTimezoneOffset() * 60000;
+            const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+            const mealDateStr = koreanTime.toISOString().split('T')[0];
+            
+            return mealDateStr === selectedDate.value;
         } catch (error) {
             console.error('날짜 형식 오류:', error);
             return false;

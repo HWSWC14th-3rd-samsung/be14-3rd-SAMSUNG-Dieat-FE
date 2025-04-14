@@ -34,7 +34,14 @@
     import { useRegistMealStore } from '@/stores/registMeal';
 
     const router = useRouter();
-    const selectedDate = ref(new Date().toISOString().split('T')[0]);
+    // 한국 시간대(UTC+9)로 날짜 초기화
+    const getKoreanDate = () => {
+        const date = new Date();
+        const offset = date.getTimezoneOffset() * 60000;
+        const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+        return koreanTime.toISOString().split('T')[0];
+    };
+    const selectedDate = ref(getKoreanDate());
     const meals = ref([]);
     
     provide('selectedDate', selectedDate);
@@ -44,12 +51,14 @@
 
     const fetchMeals = async () => {
         try {
-            const response = await fetch('http://localhost:3000/meals')
+            // 전체 식사 데이터를 가져옴 (필터링은 MealList.vue에서 처리)
+            const response = await fetch(`http://localhost:3000/meals`);
             if (!response.ok) {
                 throw new Error('식사 데이터를 가져오는데 실패했습니다.')
             }
-            const data = await response.json()
-            meals.value = data
+            const data = await response.json();
+            
+            meals.value = data; // 전체 데이터를 저장하고 MealList.vue에서 필터링
         } catch (error) {
             console.error('식사 데이터 조회 오류:', error)
             meals.value = []
