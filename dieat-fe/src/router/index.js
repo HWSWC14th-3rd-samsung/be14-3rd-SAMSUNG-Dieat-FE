@@ -3,8 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // 페이지 컴포넌트 불러오기
 import Home from '@/views/Home.vue';
-import Signup from '@/views/Signup.vue';
-import Login from '@/views/Login.vue';
+import Regist from '@/components/member/Regist.vue';
+
 
 import MealLayout from '@/views/meal/MealLayout.vue';
 import RegistMeal from '@/views/meal/RegistMeal.vue';
@@ -28,8 +28,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', name: 'Home', component: Home },
-    { path: '/signup', component: Signup },
-    { path: '/login', component: Login },
+    { path: '/register', component: Regist },
+
 
     // { path: '/meal', component: MealLayout },
     // { path: '/registmeal', component: RegistMeal },
