@@ -74,6 +74,10 @@ const getFoodType = (type) => {
 <style scoped>
 .registmeal-cards-wrapper {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: -16px;  /* right section의 패딩만큼 왼쪽으로 이동 */
 }
 
 /* 카드 전체 컨테이너 스타일 */
@@ -93,7 +97,6 @@ const getFoodType = (type) => {
 .card-left {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;  /* 하단 정렬로 변경 */
     width: 40%;
     padding: 16px;
 }
@@ -101,11 +104,11 @@ const getFoodType = (type) => {
 .card-right {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 60%;
     padding: 16px;
 }
 
+/* 카테고리 영역 */
 .regstmeal-card-category {
     position: absolute;
     top: 0;
@@ -134,7 +137,7 @@ const getFoodType = (type) => {
 
 .registmeal-card-name {
     position: absolute;
-    top: -73px;
+    top: -36.5px;
     left: 50px;
     font-family: 'Inter';
     font-size: 14px;
@@ -153,7 +156,7 @@ const getFoodType = (type) => {
 
 .registmeal-card-unit {
     position: absolute;
-    top: -5px;
+    top: 0;
     right: 15px;
 }
 
@@ -165,13 +168,11 @@ const getFoodType = (type) => {
     text-align: right;
 }
 
-/* 영양소 정보 영역 */
 .registmeal-card-nutr-div {
     display: flex;
     gap: 12px;
     position: absolute;
-    z-index: 1;
-    top: -65px; 
+    bottom: 13px;
     left: 15px;
 }
 
@@ -221,27 +222,34 @@ const getFoodType = (type) => {
 
 /* 수량 영역 */
 .registmeal-card-amout-div {
+    position: absolute;
+    bottom: 8px;
+    right: 15px;
     display: flex;
     align-items: center;
     gap: 8px;
-    justify-content: flex-end;
-    margin-top: 8px;
 }
 
 .registmeal-card-amout-title {
     font-size: 12px;
     color: #333333;
+    margin-right: 8px;
 }
 
 .registmeal-card-amout {
     background: #F5F5F5;
-    padding: 4px 12px;
+    width: 57px;
+    height: 22px;
     border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
+    font-family: 'Inter';
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 
-/* 삭제 버튼 스타일 */
 .delete-button {
     position: absolute;
     top: 8px;
