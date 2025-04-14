@@ -1,40 +1,44 @@
 <template>
     <div v-for="food in foods" :key="food.id" class="registmeal-card">
-        <div class="regstmeal-card-category">
-            <h3 class="registmeal-card-category-name">{{ food.category || '일반' }}</h3>
-        </div>
-        <div class="registmeal-card-name-div">
-            <h3 class="registmeal-card-name">{{ food.name }}</h3>
-        </div>
-        <div class="registmeal-card-unit">
-            <h5 class="registmeal-card-unit-name">{{ food.unit }}</h5>
-        </div>
-        <div class="registmeal-card-nutr-div">
-            <div class="registmeal-card-nutr-cal">
-                <h3 class="registmeal-card-nutr-cal-value">{{ food.calorie }}</h3>
-                <h5 class="registmeal-card-nutr-cal-unit">칼로리</h5>
+        <div class="card-left">
+            <div class="regstmeal-card-category">
+                <h3 class="registmeal-card-category-name">{{ food.type || 'USER' }}</h3>
             </div>
-            <div class="registmeal-card-nutr-carb">
-                <h3 class="registmeal-card-nutr-carb-value">{{ food.carbohydrate }}</h3>
-                <h5 class="registmeal-card-nutr-carb-unit">탄수화물</h5>
+            <div class="registmeal-card-name-div">
+                <h3 class="registmeal-card-name">{{ food.name }}</h3>
             </div>
-            <div class="registmeal-card-nutr-protein">
-                <h3 class="registmeal-card-nutr-protein-value">{{ food.protein }}</h3>
-                <h5 class="registmeal-card-nutr-protein-unit">단백질</h5>
-            </div>
-            <div class="registmeal-card-nutr-fat">
-                <h3 class="registmeal-card-nutr-fat-value">{{ food.fat }}</h3>
-                <h5 class="registmeal-card-nutr-fat-unit">지방</h5>
-            </div>
-            <div class="registmeal-card-nutr-sugar">
-                <h3 class="registmeal-card-nutr-sugar-value">{{ food.sugar }}</h3>
-                <h5 class="registmeal-card-nutr-sugar-unit">당</h5>
+            <div class="registmeal-card-unit">
+                <h5 class="registmeal-card-unit-name">{{ food.unit }}</h5>
             </div>
         </div>
-        <div class="registmeal-card-amout-div"> 
-            <h3 class="registmeal-card-amout-title">수량</h3>
-            <div class="registmeal-card-amout">
-                {{ food.quantity }}
+        <div class="card-right">
+            <div class="registmeal-card-nutr-div">
+                <div class="registmeal-card-nutr-cal">
+                    <h3 class="registmeal-card-nutr-cal-value">{{ food.kcal }}</h3>
+                    <h5 class="registmeal-card-nutr-cal-unit">칼로리</h5>
+                </div>
+                <div class="registmeal-card-nutr-carb">
+                    <h3 class="registmeal-card-nutr-carb-value">{{ food.carb }}</h3>
+                    <h5 class="registmeal-card-nutr-carb-unit">탄수화물</h5>
+                </div>
+                <div class="registmeal-card-nutr-protein">
+                    <h3 class="registmeal-card-nutr-protein-value">{{ food.protein }}</h3>
+                    <h5 class="registmeal-card-nutr-protein-unit">단백질</h5>
+                </div>
+                <div class="registmeal-card-nutr-fat">
+                    <h3 class="registmeal-card-nutr-fat-value">{{ food.fat }}</h3>
+                    <h5 class="registmeal-card-nutr-fat-unit">지방</h5>
+                </div>
+                <div class="registmeal-card-nutr-sugar">
+                    <h3 class="registmeal-card-nutr-sugar-value">{{ food.sugar }}</h3>
+                    <h5 class="registmeal-card-nutr-sugar-unit">당</h5>
+                </div>
+            </div>
+            <div class="registmeal-card-amout-div"> 
+                <h3 class="registmeal-card-amout-title">수량</h3>
+                <div class="registmeal-card-amout">
+                    {{ food.quantity }}
+                </div>
             </div>
         </div>
     </div>
@@ -55,16 +59,30 @@ const props = defineProps({
 <style scoped>
 /* 카드 전체 컨테이너 스타일 */
 .registmeal-card {
-    width: 697px;
-    height: 274px;
+    width: 453px;
+    height: 99px;
     background: #FFFFFF;
-    border-radius: 16px;
+    border-radius: 8px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 24px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.card-left {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    position: relative;
+    justify-content: space-between;
+    width: 40%;
+}
+
+.card-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 60%;
 }
 
 /* 카테고리 영역 */
@@ -76,15 +94,15 @@ const props = defineProps({
 .registmeal-card-category-name {
     background: #7FBEB3;
     color: #FFFFFF;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
     font-weight: 500;
 }
 
 /* 음식 이름 영역 */
 .registmeal-card-name {
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 600;
     color: #333333;
     margin: 8px 0;
@@ -99,14 +117,14 @@ const props = defineProps({
 
 .registmeal-card-unit-name {
     color: #666666;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 /* 영양소 정보 영역 */
 .registmeal-card-nutr-div {
     display: flex;
-    gap: 24px;
-    margin-top: 16px;
+    gap: 12px;
+    justify-content: flex-end;
 }
 
 .registmeal-card-nutr-cal,
@@ -114,9 +132,6 @@ const props = defineProps({
 .registmeal-card-nutr-protein,
 .registmeal-card-nutr-fat,
 .registmeal-card-nutr-sugar {
-    background: #F5F5F5;
-    padding: 12px 20px;
-    border-radius: 8px;
     text-align: center;
 }
 
@@ -125,10 +140,10 @@ const props = defineProps({
 .registmeal-card-nutr-protein-value,
 .registmeal-card-nutr-fat-value,
 .registmeal-card-nutr-sugar-value {
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 600;
     color: #333333;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .registmeal-card-nutr-cal-unit,
@@ -136,30 +151,29 @@ const props = defineProps({
 .registmeal-card-nutr-protein-unit,
 .registmeal-card-nutr-fat-unit,
 .registmeal-card-nutr-sugar-unit {
-    font-size: 14px;
+    font-size: 12px;
     color: #666666;
 }
 
 /* 수량 영역 */
 .registmeal-card-amout-div {
-    position: absolute;
-    bottom: 24px;
-    right: 24px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 8px;
 }
 
 .registmeal-card-amout-title {
-    font-size: 16px;
+    font-size: 12px;
     color: #333333;
 }
 
 .registmeal-card-amout {
     background: #F5F5F5;
-    padding: 8px 24px;
-    border-radius: 8px;
-    font-size: 18px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 14px;
     font-weight: 500;
 }
 </style>

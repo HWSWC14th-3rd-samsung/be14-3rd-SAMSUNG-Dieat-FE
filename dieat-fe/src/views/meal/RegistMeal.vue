@@ -161,9 +161,23 @@
     onMounted(() => {
         // Pinia store에서 선택된 음식 데이터 가져오기
         const selectedFoods = mealStore.selectedFoods;
+        console.log('RegistMeal - onMounted: Pinia store의 음식 데이터', selectedFoods);
         if (selectedFoods && selectedFoods.length > 0) {
             registeredFoods.value = selectedFoods;
             showMealCard.value = true;
+            console.log('RegistMeal - onMounted: 음식 카드 표시됨', registeredFoods.value);
+            console.log('RegistMeal - onMounted: 음식 데이터 상세 정보', {
+                id: selectedFoods[0].id,
+                name: selectedFoods[0].name,
+                unit: selectedFoods[0].unit,
+                category: selectedFoods[0].category,
+                calorie: selectedFoods[0].calorie,
+                carbohydrate: selectedFoods[0].carbohydrate,
+                protein: selectedFoods[0].protein,
+                fat: selectedFoods[0].fat,
+                sugar: selectedFoods[0].sugar,
+                quantity: selectedFoods[0].quantity
+            });
         }
     });
 
@@ -306,6 +320,7 @@
     };
 
     const addMealCard = () => {
+        console.log('RegistMeal - addMealCard: 음식 추가 버튼 클릭');
         const mealInfo = {
             meal_name: document.querySelector('.registmeal-name-input').value,
             meal_description: document.querySelector('.registmeal-desc-input').value,
@@ -313,18 +328,24 @@
             file: selectedImageInfo.value
         };
         
+        console.log('RegistMeal - addMealCard: 현재 등록된 음식', registeredFoods.value);
         mealStore.setTempMealInfo(mealInfo);
-        mealStore.clearSelectedFoods(); // 기존 음식 데이터 초기화
+        console.log('RegistMeal - addMealCard: 임시 식사 정보 저장됨', mealInfo);
         router.push('/searchFood');
     };
 
     const removeMealCard = () => {
+        console.log('RegistMeal - removeMealCard: 음식 제거 버튼 클릭');
+        console.log('RegistMeal - removeMealCard: 제거 전 음식 데이터', registeredFoods.value);
         showMealCard.value = false;
         registeredFoods.value = [];
-        mealStore.clearSelectedFoods(); // Pinia store의 음식 데이터도 초기화
+        mealStore.clearSelectedFoods();
+        console.log('RegistMeal - removeMealCard: 제거 후 음식 데이터', registeredFoods.value);
     };
 
     const handleSubmit = async () => {
+        console.log('RegistMeal - handleSubmit: 등록 버튼 클릭');
+        console.log('RegistMeal - handleSubmit: 현재 등록된 음식', registeredFoods.value);
         if (!showMealCard.value || registeredFoods.value.length === 0) {
             showNoFoodModal.value = true;
             return;
@@ -379,9 +400,11 @@
     };
 
     const goToMeal = () => {
-        // Pinia store의 데이터 초기화
+        console.log('RegistMeal - goToMeal: 취소 버튼 클릭');
+        console.log('RegistMeal - goToMeal: 취소 전 음식 데이터', registeredFoods.value);
         mealStore.clearSelectedFoods();
         mealStore.clearTempMealInfo();
+        console.log('RegistMeal - goToMeal: Pinia store 초기화 후', mealStore.selectedFoods);
         router.push('/meal');
     };
 

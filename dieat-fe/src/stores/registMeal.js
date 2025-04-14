@@ -8,11 +8,11 @@ export const useRegistMealStore = defineStore('registMeal', {
       meal_time: '',
       file: null
     },
-    selectedFoods: []
+    selectedFoods: [],  // 식사 등록 창의 음식 목록
+    basketFoods: []     // 음식 검색 시 장바구니 음식 목록
   }),
   actions: {
     setTempMealInfo(info) {
-      // 기본값
       const defaultInfo = {
         meal_name: '',
         meal_description: '',
@@ -45,11 +45,31 @@ export const useRegistMealStore = defineStore('registMeal', {
         file: null
       };
     },
+    // 식사 등록 창 음식 관리
     setSelectedFoods(foods) {
-      this.selectedFoods = foods;
+      this.selectedFoods = foods || [];
+    },
+    addSelectedFoods(foods) {
+      if (Array.isArray(foods)) {
+        this.selectedFoods = [...this.selectedFoods, ...foods];
+      }
     },
     clearSelectedFoods() {
       this.selectedFoods = [];
+    },
+    // 장바구니 음식 관리
+    setBasketFoods(foods) {
+      this.basketFoods = foods || [];
+    },
+    clearBasketFoods() {
+      this.basketFoods = [];
+    },
+    // 장바구니 음식을 식사 등록 창에 추가
+    addBasketFoodsToSelected() {
+      if (this.basketFoods.length > 0) {
+        this.selectedFoods = [...this.selectedFoods, ...this.basketFoods];
+        this.basketFoods = [];
+      }
     }
   }
 }); 
