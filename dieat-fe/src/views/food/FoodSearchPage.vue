@@ -7,13 +7,13 @@
     <h2>음식 데이터 검색</h2>
 
     <div class="search-bar-container">
-      <SearchBar v-model="searchKeyword" @search="searchFood" @add="onAddFood" @selectFilter="handleFilter"/>
+      <SearchBar v-model="searchKeyword" @search="searchFood" @add="onAddFood" @selectFilter="handleFilter" />
       <SearchResultList v-if="searchResults.length > 0" :results="searchResults" @select="handleSelectResult" />
     </div>
 
     <div class="main-content">
       <div class="search-result">
-        <FoodTable v-if="selectedFood" :items="[selectedFood]" @add-to-basket="handleAddToBasket" />
+        <FoodTable v-if="selectedFood" :items="selectedFood" @add-to-basket="handleAddToBasket" />
         <p v-else class="no-data">표시할 데이터가 없습니다</p>
       </div>
 
@@ -66,7 +66,7 @@ watch(searchKeyword, (newKeyword) => {
 
 onMounted(async () => {
   try {
-    const res = await fetch('http://localhost:3000/fooddata');
+    const res = await fetch('http://localhost:3000/food');
     if (!res.ok) throw new Error('음식 데이터를 불러오지 못 했습니다.');
     allFoods.value = await res.json();
   } catch (e) {
@@ -80,14 +80,20 @@ function searchFood(keyword = searchKeyword.value) {
     return;
   }
 
-  selectedFood.value =
-    allFoods.value.find((item) => item.name === keyword.trim()) || null;
+  selectedFood.value = allFoods.value.filter(item => item.name === keyword.trim());
 }
 
 function mockSearch(keyword) {
+  const uniqueNames = new Set();
+
   return allFoods.value
-    .filter((item) => item.name.includes(keyword.trim()))
-    .map((item) => ({ name: item.name }));
+    .filter(item => item.name.includes(keyword.trim()))
+    .filter(item => {
+      if (uniqueNames.has(item.name)) return false;
+      uniqueNames.add(item.name);
+      return true;
+    })
+    .map(item => ({ name: item.name }));
 }
 
 function handleSelectResult(item) {
