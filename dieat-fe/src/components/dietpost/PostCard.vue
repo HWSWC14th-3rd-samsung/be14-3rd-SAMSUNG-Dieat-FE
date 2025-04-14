@@ -11,28 +11,27 @@
     </div>
 
     <!-- 🖼️ 썸네일 + 오버레이 + 제목 + 북마크 -->
-<div class="image-container" @click="goToDetail">
-  <img :src="dietImage" alt="식단 이미지" class="thumbnail" />
-  <div class="overlay"></div>
+    <div class="image-container" @click="goToDetail">
+      <img :src="post.img" alt="식단 이미지" class="thumbnail" />
+      <div class="overlay"></div>
 
-  <!-- 제목 + 북마크 버튼 부분 -->
-  <div class="title-bookmark">
-    <h3 class="image-title">{{ post.title }}</h3>
-    <div class="bookmark-wrapper" @click.stop>
-      <BookmarkButton
-        :isActive="isBookmarked"
-        @toggle="toggleBookmark"
-      />
+      <div class="title-bookmark">
+        <h3 class="image-title">{{ post.title }}</h3>
+        <div class="bookmark-wrapper" @click.stop>
+          <BookmarkButton
+            :isActive="isBookmarked"
+            @toggle="toggleBookmark"
+          />
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <!-- 📅 날짜 + ❤️ 좋아요 + 💬 댓글 -->
     <div class="meta">
       <span class="date">{{ post.date }}</span>
       <div class="right-meta">
         <LikeButton :count="post.likes" @update="(val) => post.likes = val" />
-        <span>💬 {{ post.comments }}</span>
+        <span>💬 {{ post.commentsList?.length || 0 }}</span>
       </div>
     </div>
 
@@ -51,14 +50,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import userImage from '@/assets/dietpost/user_img.png'
-import dietImage from '@/assets/dietpost/diet_post_img.png'
 import BookmarkButton from './BookmarkButton.vue'
 import MoreMenu from './MoreMenu.vue'
 import LikeButton from './LikeButton.vue'
-
-// defineProps({
-//   post: Object
-// })
 
 const isFollowing = ref(false)
 const isBookmarked = ref(false)
@@ -118,42 +112,32 @@ function goToDetail() {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
 .follow-btn:hover {
   background-color: #f2f2f2;
 }
 
-.more-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: black;
-}
-
 .image-container {
   position: relative;
+  cursor: pointer;
 }
 
 .thumbnail {
   width: 100%;
-  height: auto;
+  height: 180px;
+  object-fit: cover;
   border-radius: 10px;
 }
 
-/* 🔳 어두운 오버레이 */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(43, 43, 43, 0.5);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  background-color: rgba(43, 43, 43, 0.4);
+  border-radius: 10px;
 }
 
-/* 📝 제목 + 저장 버튼 */
 .title-bookmark {
   position: absolute;
   top: 8px;
@@ -162,13 +146,13 @@ function goToDetail() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 2; /* 이미지를 덮어쓰기 위해 */
   color: white;
-  pointer-events: none; /* 내부 요소 클릭 방지 해제 필요 */
+  z-index: 2;
+  pointer-events: none;
 }
 
 .bookmark-wrapper {
-  pointer-events: auto; /* 북마크 버튼 클릭 가능하도록 설정 */
+  pointer-events: auto;
 }
 
 .image-title {
@@ -177,19 +161,6 @@ function goToDetail() {
   font-weight: bold;
 }
 
-.bookmark-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.save-icon {
-  width: 20px;
-  height: 20px;
-}
-
-/* 📅 날짜 + 좋아요/댓글 */
 .meta {
   display: flex;
   justify-content: space-between;
@@ -217,6 +188,5 @@ function goToDetail() {
   display: flex;
   align-items: center;
   text-align: center;
-
 }
 </style>

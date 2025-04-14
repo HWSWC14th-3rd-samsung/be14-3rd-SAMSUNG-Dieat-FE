@@ -57,7 +57,7 @@
 import { ref, computed, onMounted } from 'vue'
 import PostCard from '@/components/dietpost/PostCard.vue'
 import Header from '@/components/common/Header.vue'
-import { fetchPosts } from '@/api/dietpost.js'
+import { fetchPosts } from '@/components/dietpost/dietpost.js'
 
 const searchKeyword = ref('')
 const selectedSort = ref('date')

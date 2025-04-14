@@ -1,13 +1,11 @@
 <template>
   <Header />
 
-  <div class="post-detail">
-    <!-- 제목 + 드롭다운 버튼 -->
+  <div class="post-detail" v-if="post">
     <div class="top-section">
       <h1 class="page-title">식단 게시글</h1>
     </div>
 
-    <!-- 경로 표시 -->
     <div class="breadcrumb">
       <RouterLink to="/" class="text-link">Home &gt; </RouterLink>
       <span>MEAL &gt; </span>
@@ -15,104 +13,80 @@
       <button class="back-btn" @click="goToList">목록 보기</button>
     </div>
 
-    <!-- 게시글 내용 -->
     <div class="post-container">
-      <!-- 제목 + MoreMenu2 -->
       <div class="post-title-row">
-        <h2 class="post-title">🔍 {{ post.title }}</h2>
+        <h2 class="post-title"> {{ post.title }}</h2>
       </div>
 
-      <!-- 작성자 정보 -->
       <div class="info">
         <div class="info-block">
-          <span class="label">작성자</span>
-          <span class="bar">|</span>
+          <span class="label">작성자</span><span class="bar">|</span>
           <span class="value">{{ post.nickname }}</span>
         </div>
         <div class="info-block">
-          <span class="label">작성일시</span>
-          <span class="bar">|</span>
+          <span class="label">작성일시</span><span class="bar">|</span>
           <span class="value">{{ post.date }}</span>
         </div>
         <div class="info-block">
-          <span class="label">조회수</span>
-          <span class="bar">|</span>
+          <span class="label">조회수</span><span class="bar">|</span>
           <span class="value">{{ post.views }}</span>
         </div>
-     </div>
-    <MoreMenu2 />
-
-    <!-- ✅ 메인 이미지 + 화살표 버튼 + 썸네일 이미지 추가 -->
-<div class="image-description-box">
-  <!-- 메인 이미지 + 좌우 이동 버튼 -->
-  <div class="image-slider">
-    <button class="arrow-btn" v-if="currentImageIndex > 0" @click="prevImage">◀</button>
-    <img :src="images[currentImageIndex]" alt="식단 이미지" class="main-img" />
-    <button class="arrow-btn" v-if="currentImageIndex < images.length - 1" @click="nextImage">▶</button>
-  </div>
-
-  <!-- 썸네일 리스트 -->
-  <div class="thumbnail-list">
-    <img
-      v-for="(img, idx) in images"
-      :key="idx"
-      :src="img"
-      :class="{ selected: idx === currentImageIndex }"
-      @click="currentImageIndex = idx"
-    />
-  </div>
-
-  <!-- 설명 -->
-  <p class="description">{{ post.description }}</p>
-</div>
-
-
-      <!-- 상세 영양 리스트 -->
-<div class="nutrition-detail">
-  <div
-    class="nutrition-item"
-    v-for="(item, index) in post.items"
-    :key="index"
-  >
-    <div class="left-info">
-      <span class="badge">회원</span>
-      <div class="name-block">
-        <div class="name">{{ item.name }}</div>
-        <div class="unit">100g / 1인분</div>
       </div>
-    </div>
 
-    <div class="nutrients">
-      <div class="nutrient">
-        <strong>{{ item.kcal }}</strong>
-        <span>kcal</span>
-      </div>
-      <div class="nutrient">
-        <strong>{{ item.carbs }}</strong>
-        <span>탄수화물</span>
-      </div>
-      <div class="nutrient">
-        <strong>{{ item.protein }}</strong>
-        <span>단백질</span>
-      </div>
-      <div class="nutrient">
-        <strong>{{ item.fat }}</strong>
-        <span>지방</span>
-      </div>
-      <div class="nutrient">
-        <strong>{{ item.sugar }}</strong>
-        <span>당</span>
-      </div>
-    </div>
+      <MoreMenu2 />
 
-      <div class="quantity">
-        <div class="label">수량</div>
-        <div class="value">1</div>
-      </div>
-  </div>
-</div>
+      <!-- 이미지 + 설명 -->
+      <div class="image-description-box">
+        <div class="image-slider">
+          <button v-if="currentImageIndex > 0" class="arrow-btn" @click="prevImage">◀</button>
+          <img :src="images[currentImageIndex]" alt="식단 이미지" class="main-img" />
+          <button v-if="currentImageIndex < images.length - 1" class="arrow-btn" @click="nextImage">▶</button>
+        </div>
 
-      <!-- 총 영양 정보 -->
+        <div class="thumbnail-list">
+          <img
+            v-for="(img, idx) in images"
+            :key="idx"
+            :src="img"
+            :class="{ selected: idx === currentImageIndex }"
+            @click="currentImageIndex = idx"
+          />
+        </div>
+
+        <p class="description">{{ post.description }}</p>
+      </div>
+
+      <!-- 음식별 영양 정보 -->
+      <div class="nutrition-detail">
+        <div
+          class="nutrition-item"
+          v-for="(item, index) in post.items"
+          :key="index"
+        >
+          <div class="left-info">
+            <span class="badge">회원</span>
+            <div class="name-block">
+              <div class="name">{{ item.name }}</div>
+              <div class="unit">100g / 1인분</div>
+            </div>
+          </div>
+
+          <div class="nutrients">
+            <div class="nutrient"><strong>{{ item.kcal }}</strong><span>kcal</span></div>
+            <div class="nutrient"><strong>{{ item.carbs }}</strong><span>탄수화물</span></div>
+            <div class="nutrient"><strong>{{ item.protein }}</strong><span>단백질</span></div>
+            <div class="nutrient"><strong>{{ item.fat }}</strong><span>지방</span></div>
+            <div class="nutrient"><strong>{{ item.sugar }}</strong><span>당</span></div>
+          </div>
+
+          <div class="quantity">
+            <div class="label">수량</div>
+            <div class="value">1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 총 영양 요약 -->
       <div class="summary">
         <h3>영양 정보</h3>
         <div class="summary-content">
@@ -133,63 +107,60 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- 좋아요 및 댓글 -->
-  <div class="interaction">
-        ❤️ 좋아요 {{ post.likes }} &nbsp;&nbsp;&nbsp; 💬 댓글 {{ post.comments.length }}
-      </div>
 
-      <!-- 댓글 목록 -->
-      <div class="comment-list">
-        <div class="comment" v-for="(c, i) in post.comments" :key="i">
-          <strong>{{ c.writer }}</strong>: {{ c.content }}
-        </div>
+    <!-- 좋아요 및 댓글 -->
+    <div class="interaction">
+      ❤️ 좋아요 {{ post.likes }} &nbsp;&nbsp;&nbsp; 💬 댓글 {{ post.commentsList.length }}
+    </div>
+
+    <div class="comment-list">
+      <div class="comment" v-for="(c, i) in post.commentsList" :key="i">
+        <strong>{{ c.writer }}</strong>: {{ c.content }}
       </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import Header from '@/components/common/Header.vue'
 import MoreMenu2 from '@/components/dietpost/MoreMenu2.vue'
-import imgMain from '@/assets/dietpost/diet_post_img.png'
-import imgSub1 from '@/assets/dietpost/diet_sub_img1.png'
-import imgSub2 from '@/assets/dietpost/diet_sub_img2.png'
 import NutrientChart from '@/components/dietpost/NutrientChart.vue'
-import { useRouter } from 'vue-router'
+import { fetchPostById } from '@/components/dietpost/dietpost.js'
+
+// 라우터 관련
 const router = useRouter()
+const route = useRoute()
+const postId = route.params.id
+
+// 게시글 데이터
+const post = ref(null)
+
+// 이미지 슬라이더
+const currentImageIndex = ref(0)
+const images = ref([])
 
 function goToList() {
   router.push('/dietPost')
 }
-
-// ✅ 썸네일 슬라이드 상태 관리 (추가)
-const images = [imgMain, imgSub1, imgSub2]
-const currentImageIndex = ref(0)
-
-const nextImage = () => {
-  if (currentImageIndex.value < images.length - 1) currentImageIndex.value++
+function nextImage() {
+  if (currentImageIndex.value < images.value.length - 1) currentImageIndex.value++
 }
-const prevImage = () => {
+function prevImage() {
   if (currentImageIndex.value > 0) currentImageIndex.value--
 }
 
-const post = {
-  title: '스크램블 에그와 토스트 조합!',
-  nickname: '웰시킹',
-  date: '2025-04-02 14:00:00',
-  views: 50,
-  description: '담백하면서도 고소한 스크램블 에그와 토스트입니다...',
-  likes: 59,
-  items: [
-    { name: '스크램블 에그', kcal: 177, carbs: 1.9, protein: 12, fat: 13, sugar: 1 },
-    { name: '토스트', kcal: 148, carbs: 16, protein: 10, fat: 7, sugar: 1 }
-  ],
-  total: { kcal: 1200, carbs: 500, protein: 300, fat: 200, sugar: 10 },
-  comments: [
-    { writer: '열치열', content: '얼치 143g 피스 미쳤다..' },
-    { writer: '헬도리군', content: '상상보다 헬치!' }
-  ]
-}
+// 게시글 불러오기
+onMounted(async () => {
+  try {
+    const data = await fetchPostById(postId)
+    post.value = data
+    images.value = [data.img, ...data.subImages]
+  } catch (err) {
+    console.error('❌ 상세 게시글 불러오기 실패:', err)
+  }
+})
 </script>
 
 <style scoped>
