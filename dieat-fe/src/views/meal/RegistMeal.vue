@@ -43,7 +43,7 @@
                                 <div class="registmeal-img-plus"></div>
                             </template>
                             <template v-else>
-                                <img :src="previewImage" class="preview-image" alt="선택된 이미지">
+                                <img :src="selectedImageInfo?.path || previewImage" class="preview-image" alt="선택된 이미지">
                                 <div class="image-overlay">
                                     <button class="remove-image" @click.stop="removeImage">×</button>
                                 </div>
@@ -365,42 +365,25 @@
             try {
                 const uniqueFileName = generateUniqueFileName(file.name);
                 
-                // 현재 등록된 이미지들의 ID 중 최대값을 찾아서 1을 더함
-                let maxId = 0; // 기본값은 0으로 설정하여 첫 번째 이미지는 1부터 시작
-                
-                try {
-                    const response = await fetch(API_URL);
-                    if (response.ok) {
-                        const meals = await response.json();
-                        maxId = Math.max(...meals.map(meal => 
-                            Math.max(...(meal.file?.map(f => f.id) || [0]))
-                        ), 0);
-                    }
-                } catch (error) {
-                    console.error('기존 식사 데이터 조회 중 오류:', error);
-                }
-                
-                selectedImageInfo.value = {
-                    id: maxId + 1,
-                    originalName: file.name,
-                    uniqueName: uniqueFileName,
-                    imageData: '',
-                    type: file.type,
-                    size: file.size,
-                    path: `/src/img/meal/${uniqueFileName}`,
-                    uploadDate: new Date().toISOString()
-                };
-
+                // FileReader를 사용하여 이미지를 Base64로 변환
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const imageData = e.target.result;
+                    selectedImageInfo.value = {
+                        id: Date.now(),
+                        originalName: file.name,
+                        uniqueName: uniqueFileName,
+                        imageData: imageData, // Base64 이미지 데이터 저장
+                        type: file.type,
+                        size: file.size,
+                        path: imageData, // path 대신 Base64 데이터를 사용
+                        uploadDate: new Date().toISOString()
+                    };
                     previewImage.value = imageData;
                 };
                 reader.readAsDataURL(file);
 
-                console.log('파일 업로드 성공:', {
-                    fileInfo: selectedImageInfo.value
-                });
+                console.log('파일 업로드 성공');
 
             } catch (error) {
                 console.error('파일 업로드 중 오류 발생:', error);

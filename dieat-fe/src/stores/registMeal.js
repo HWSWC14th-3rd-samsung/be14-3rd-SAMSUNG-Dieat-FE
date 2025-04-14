@@ -22,27 +22,40 @@ export const useRegistMealStore = defineStore('registMeal', {
 
       const safeInfo = info || defaultInfo;
 
-      // 이미지 ID 설정
-      let imageId = 1; // 기본값은 1로 설정
-      
+      // 이미지 정보 처리
+      let fileInfo = null;
       if (safeInfo.file) {
-        // 기존 ID가 있으면 그대로 사용
-        imageId = safeInfo.file.id > 0 ? safeInfo.file.id : 1;
+        // file이 배열인 경우
+        if (Array.isArray(safeInfo.file)) {
+          fileInfo = safeInfo.file.map(file => ({
+            id: file.id || 1,
+            originalName: file.originalName || '',
+            uniqueName: file.uniqueName || '',
+            path: file.path || '',
+            type: file.type || '',
+            size: file.size || 0,
+            uploadDate: file.uploadDate || new Date().toISOString()
+          }));
+        } 
+        // file이 단일 객체인 경우
+        else {
+          fileInfo = [{
+            id: safeInfo.file.id || 1,
+            originalName: safeInfo.file.originalName || '',
+            uniqueName: safeInfo.file.uniqueName || '',
+            path: safeInfo.file.path || '',
+            type: safeInfo.file.type || '',
+            size: safeInfo.file.size || 0,
+            uploadDate: safeInfo.file.uploadDate || new Date().toISOString()
+          }];
+        }
       }
 
       this.tempMealInfo = {
         meal_name: safeInfo.meal_name || '',
         meal_description: safeInfo.meal_description || '',
         meal_time: safeInfo.meal_time || '',
-        file: safeInfo.file ? [{
-          id: imageId,
-          originalName: safeInfo.file.originalName || '',
-          uniqueName: safeInfo.file.uniqueName || '',
-          path: safeInfo.file.path || '',
-          type: safeInfo.file.type || '',
-          size: safeInfo.file.size || 0,
-          uploadDate: new Date().toISOString()
-        }] : null
+        file: fileInfo
       };
     },
     clearTempMealInfo() {
