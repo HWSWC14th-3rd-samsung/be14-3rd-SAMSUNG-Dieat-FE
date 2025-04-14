@@ -21,10 +21,14 @@
 
     const filteredMeals = computed(() => {
         const filtered = meals.value.filter(meal => {
-            const mealDate = meal.meal_dt.split(' ')[0]
-            return mealDate === selectedDate.value
-        })
-        return filtered
+            // DB date format: "2025-04-13 21:00"
+            const mealDateStr = meal.meal_dt.split(' ')[0]; // "2025-04-13"
+            
+            // Check if the dates match exactly
+            return mealDateStr === selectedDate.value;
+        });
+        
+        return filtered;
     })
 
     const fetchMeals = async () => {

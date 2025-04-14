@@ -3992,7 +3992,7 @@
       ]
     },
     {
-      "meal_code": 2,
+      "meal_code": 91,
       "meal_dt": "2025-04-13 07:30",
       "meal_title": "김밥천국 김밥 2줄",
       "meal_desc": "김밥천국 김밥(일반김밥) 2줄",
@@ -4023,7 +4023,7 @@
       ]
     },
     {
-      "meal_code": 3,
+      "meal_code": 92,
       "meal_dt": "2025-04-13 12:30",
       "meal_title": "닭가슴살",
       "meal_desc": "하림 닭가슴살 블랙페퍼 2 개",
@@ -4052,6 +4052,38 @@
           "uploadDate": ""
         }
       ]
+    },
+    {
+      "meal_code": 93,
+      "meal_dt": "2025-04-13 21:00",
+      "meal_title": "야채곱창 소주",
+      "meal_desc": "야채곱창 2 인분, 볶음밥, 소주 2병",
+      "meal_calories": 2600,
+      "meal_carbs": 190,
+      "meal_sugar": 18,
+      "meal_protein": 60,
+      "meal_fat": 118,
+      "user_code": 1001,
+      "meal_food": [
+        {
+          "meal_food_code": 203,
+          "meal_food_type": "USERDATA",
+          "meal_food_cnt": 3
+        }
+      ],
+      "file": [
+        {
+          "id": -1,
+          "originalName": "",
+          "uniqueName": "",
+          "imageData": "",
+          "type": "",
+          "size": "",
+          "path": "/src/img/meal/",
+          "uploadDate": ""
+        }
+      ]
     }
+    
   ]
 }
