@@ -13,7 +13,8 @@ import QnaLayout from '../views/QnaLayout.vue';
 // import Contact from '@/pages/Contact.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
 import RegistFood from '@/features/registerFood/pages/FoodRegisterPage.vue'
-// import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
+import RegistFree from '@/features/registerFree/FreePostWritePage.vue'
+import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,9 +26,21 @@ const router = createRouter({
     { path: '/meal', component: MealLayout },
     { path: '/searchFood', component: SearchFood },
     { path: '/registerFood', component: RegistFood },
-    // {path: '/readFree', component: ReadFree },
-    { path: '/noticeLayout', component: NoticeLayout },
-    { path: '/qnaLayout', component: QnaLayout }
+      // 자유 게시글 리스트
+      {
+        path: '/readFree',
+        name: 'FreePostList',
+        component: FreePostListPage
+      },
+      // 자유 게시글 상세
+      {
+        path: '/readFree/:postId',
+        name: 'FreePostDetail',
+        component: FreePostDetailPage,
+        props: true
+      },
+    {path: '/noticeLayout', component: NoticeLayout},
+    {path: '/qnaLayout', component: QnaLayout}
   ]
 });
 
