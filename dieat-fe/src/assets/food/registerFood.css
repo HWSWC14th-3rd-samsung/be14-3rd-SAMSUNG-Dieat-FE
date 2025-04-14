@@ -1,5 +1,4 @@
-/* food-register-1024px.css */
-
+/* 공통 레이아웃 */
 .food-register-page {
     background-color: #fff;
     padding: 2rem;
@@ -15,6 +14,7 @@
     text-align: center;
 }
 
+/* 등록 폼 컨테이너 */
 .food-register-container {
     background-color: #fef7ed;
     border-radius: 1rem;
@@ -24,6 +24,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
+/* 공통 라벨 */
 .food-register-label {
     font-weight: 600;
     margin-top: 1.25rem;
@@ -32,21 +33,21 @@
     font-size: 0.95rem;
 }
 
-.food-register-grid-3,
-.food-register-grid-5 {
+/* 입력 그리드 */
+.food-register-grid-3 {
     display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 
-.food-register-grid-3 {
-    grid-template-columns: repeat(3, 1fr);
-}
-
 .food-register-grid-5 {
+    display: grid;
     grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
     margin-top: 1rem;
 }
 
+/* 입력 필드 */
 .food-register-input {
     width: 100%;
     padding: 0.75rem 1rem;
@@ -57,6 +58,7 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* 단위 & 단위 설명 */
 .unit-input-wrapper {
     position: relative;
     display: flex;
@@ -84,6 +86,7 @@
     padding-right: 3rem;
 }
 
+/* 버튼 */
 .food-register-button-group {
     display: flex;
     justify-content: center;

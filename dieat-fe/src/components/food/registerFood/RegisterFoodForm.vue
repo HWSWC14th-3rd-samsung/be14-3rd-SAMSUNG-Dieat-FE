@@ -1,0 +1,110 @@
+<template>
+    <div :class="isModal ? 'modal-wrapper' : 'food-register-page'">
+        <div :class="['food-register-container', { 'modal-style': isModal }]">
+            <!-- 음식 제목 -->
+            <label class="food-register-label">음식 제목</label>
+            <input v-model="foodTitle" class="food-register-input" placeholder="예: 닭가슴살 볶음밥" />
+
+            <!-- 음식량 -->
+            <label class="food-register-label">음식량</label>
+            <div class="food-register-grid-3">
+                <div class="unit-input-wrapper">
+                    <input v-model="amount" type="number" class="food-register-input with-unit" />
+                    <span class="unit">기준량</span>
+                </div>
+                <div class="unit-input-wrapper">
+                    <input v-model="unit" class="food-register-input with-unit" />
+                    <span class="unit">측정 단위</span>
+                </div>
+                <div class="unit-input-wrapper">
+                    <input v-model="serveUnit" class="food-register-input with-unit" />
+                    <span class="unit">제공 단위</span>
+                </div>
+            </div>
+
+            <!-- 영양 성분 -->
+            <label class="food-register-label">영양 성분</label>
+            <div class="food-register-grid-5">
+                <div v-for="(label, key) in labelMap" :key="key" class="unit-input-wrapper">
+                    <input v-model.number="nutrition[key]" type="number" class="food-register-input with-unit" />
+                    <span class="unit">{{ unitMap[key] }}</span>
+                    <div class="unit-caption">{{ label }}</div>
+                </div>
+            </div>
+
+            <!-- 버튼 -->
+            <div class="food-register-button-group">
+                <button class="primary-button" @click="submit">등록</button>
+                <button class="gray-button" @click="cancel">취소</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const emit = defineEmits(['register', 'close'])
+const props = defineProps({ isModal: Boolean })
+
+const foodTitle = ref('')
+const amount = ref(100)
+const unit = ref('g')
+const serveUnit = ref('1개')
+const nutrition = ref({ kcal: 0, carb: 0, protein: 0, fat: 0, sugar: 0 })
+
+const unitMap = { kcal: 'kcal', carb: 'g', protein: 'g', fat: 'g', sugar: 'g' }
+const labelMap = { kcal: '열량', carb: '탄수화물', protein: '단백질', fat: '지방', sugar: '당류' }
+
+function submit() {
+    const isValid =
+        foodTitle.value.trim() !== '' &&
+        amount.value > 0 &&
+        unit.value.trim() !== '' &&
+        serveUnit.value.trim() !== '' &&
+        Object.values(nutrition.value).every(n => n > 0)
+
+    if (!isValid) {
+        alert('입력이 완료되지 않았습니다.');
+        return;
+    }
+
+    const food = {
+        id: Date.now(),
+        name: foodTitle.value,
+        unit: `${amount.value}${unit.value} / ${serveUnit.value}`,
+        ...nutrition.value,
+        count: 1,
+        accurate: 0,
+        inaccurate: 0,
+        type: 'USER',
+        nickname: '사용자'
+    }
+
+    emit('register', food)
+    if (props.isModal) emit('close')
+}
+
+function cancel() {
+    if (props.isModal) emit('close')
+}
+</script>
+
+<style>
+.modal-wrapper {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-style {
+    max-width: 600px !important;
+    width: 100%;
+}
+</style>
+
+<style src="@/assets/food/registerFood.css"></style>
