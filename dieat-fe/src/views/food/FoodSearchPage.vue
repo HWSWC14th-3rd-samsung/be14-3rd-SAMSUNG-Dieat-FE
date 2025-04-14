@@ -19,7 +19,7 @@
 
       <div class="basket-panel">
         <BasketPanel :items="basket" @remove-item="removeFromBasket" @update-quantity="updateBasketQuantity" />
-        <button class="complete-button">완료</button>
+        <button class="complete-button" @click="goToRegisterMeal">완료</button>
       </div>
     </div>
   </div>
@@ -48,13 +48,24 @@ function onAddFood() {
   router.push('/registerFood');
 }
 
-// 🔍 검색어 변경 감지
+function goToRegisterMeal() {
+  if (basket.value.length === 0) {
+    alert('장바구니에 담긴 음식이 없습니다.');
+    return;
+  }
+
+  router.push({
+    path: '/RegistMeal',
+    state: { basket: basket.value }
+  });
+}
+
 watch(searchKeyword, (newKeyword) => {
   if (isManuallySelected.value) {
     isManuallySelected.value = false;
     return;
   }
-
+  
   if (newKeyword.trim()) {
     searchResults.value = mockSearch(newKeyword);
     console.log('[watch] searchResults:', searchResults.value);
@@ -69,6 +80,13 @@ onMounted(async () => {
     const res = await fetch('http://localhost:3000/food');
     if (!res.ok) throw new Error('음식 데이터를 불러오지 못 했습니다.');
     allFoods.value = await res.json();
+    
+    /** registMeal에서 window.history.state.basket로 데이터 읽어야 함 */
+    const receivedBasket = window.history.state?.basket;
+    if (receivedBasket && Array.isArray(receivedBasket)) {
+      basket.value = receivedBasket;
+    }
+
   } catch (e) {
     console.error(e);
   }
@@ -104,7 +122,7 @@ function handleSelectResult(item) {
 }
 
 function handleAddToBasket(item) {
-  const exists = basket.value.find((b) => b.name === item.name);
+  const exists = basket.value.find((b) => b.id === item.id);
   if (!exists) {
     basket.value.push({ ...item, quantity: 1 });
   } else {
