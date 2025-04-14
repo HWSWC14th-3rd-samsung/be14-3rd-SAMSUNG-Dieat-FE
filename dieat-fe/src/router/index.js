@@ -12,7 +12,12 @@ import QnaLayout from '../views/QnaLayout.vue';
 // import About from '@/pages/About.vue';
 // import Contact from '@/pages/Contact.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
+<<<<<<< HEAD
 // import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
+=======
+import ReadFree from '@/features/readFree/pages/FreePostListPage.vue'
+import Dashboard from '@/components/dashboard/Dashboard.vue';
+>>>>>>> 17f049a (대시보드 개발중)
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,7 +30,8 @@ const router = createRouter({
     {path: '/searchFood', component: SearchFood },
     // {path: '/readFree', component: ReadFree },
     {path: '/noticeLayout', component: NoticeLayout},
-    {path: '/qnaLayout', component: QnaLayout}
+    {path: '/qnaLayout', component: QnaLayout},
+    {path: '/dashboard', component: Dashboard}
   ]
 });
 
