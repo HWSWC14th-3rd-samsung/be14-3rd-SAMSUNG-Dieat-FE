@@ -11,9 +11,8 @@ import RegistMeal from '@/views/meal/RegistMeal.vue';
 import NoticeLayout from '../views/NoticeLayout.vue';
 import QnaLayout from '../views/QnaLayout.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue';
-import ReadFree from '@/features/readFree/pages/FreePostListPage.vue';
+// import ReadFree from '@/features/readFree/pages/FreePostListPage.vue';
 import DietPostDetail from '@/views/dietpost/DietPostDetail.vue';
-import MealLayout from '../views/MealLayout.vue';
 // import About from '@/pages/About.vue';
 // import Contact from '@/pages/Contact.vue';
 import Dashboard from '@/views/dashboard/Dashboard.vue';
@@ -27,7 +26,7 @@ const router = createRouter({
     { path: '/login', component: Login },
     { path: '/dietPost', component: DietPostLayout },
     { path: '/searchFood', component: SearchFood },
-    { path: '/readFree', component: ReadFree },
+    // { path: '/readFree', component: ReadFree },
     { path: '/noticeLayout', component: NoticeLayout },
     { path: '/qnaLayout', component: QnaLayout },
     { path: '/dietPost/:id', component: DietPostDetail },
