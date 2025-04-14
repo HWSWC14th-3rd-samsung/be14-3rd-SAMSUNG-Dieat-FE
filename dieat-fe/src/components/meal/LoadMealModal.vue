@@ -141,15 +141,31 @@ const fetchMonthlyMeals = async () => {
         const data = await response.json();
         
         if (Array.isArray(data) && data.length > 0) {
-            // 현재 달의 데이터만 필터링
+            // 현재 달의 데이터만 필터링 (한국 시간 기준)
             const currentYear = currentDate.value.getFullYear();
             const currentMonth = String(currentDate.value.getMonth() + 1).padStart(2, '0');
             const yearMonth = `${currentYear}-${currentMonth}`;
             
+            // meal_dt 값이 있는 식사들만 필터링
             mealsData.value = data
                 .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
-                .filter(meal => meal.meal_dt.startsWith(yearMonth))
-                .map(meal => meal.meal_dt);
+                .filter(meal => {
+                    try {
+                        // 날짜 부분만 추출 (YYYY-MM-DD)
+                        const mealDateParts = meal.meal_dt.split(/[T ]/);
+                        if (mealDateParts.length === 0) return false;
+                        
+                        const mealDateStr = mealDateParts[0];
+                        if (!mealDateStr || mealDateStr.includes('undefined')) return false;
+                        
+                        // yearMonth로 시작하는지 확인 (같은 년도-월인지)
+                        return mealDateStr.startsWith(yearMonth);
+                    } catch (error) {
+                        console.error('날짜 필터링 오류:', error, meal);
+                        return false;
+                    }
+                })
+                .map(meal => meal.meal_dt); // 날짜 값만 추출
         } else {
             mealsData.value = [];
         }
@@ -273,13 +289,28 @@ const hasMeal = (date) => {
     const day = String(date.getDate()).padStart(2, '0');
     const targetDate = `${year}-${month}-${day}`;
     
-    const hasMealOnDate = mealsData.value.some(mealDate => {
-        const mealDateStr = mealDate.split(' ')[0];
-        const result = mealDateStr === targetDate;
-        return result;
+    // 한국 시간 기준으로 날짜 비교
+    return mealsData.value.some(mealDate => {
+        if (!mealDate || typeof mealDate !== 'string') return false;
+        
+        try {
+            // 'T'나 공백으로 분리하여 날짜 부분만 추출 (YYYY-MM-DD)
+            const mealDateParts = mealDate.split(/[T ]/);
+            if (mealDateParts.length === 0) return false;
+            
+            const mealDateStr = mealDateParts[0];
+            if (!mealDateStr) return false;
+            
+            // 날짜 부분이 'undefined'를 포함하는지 확인
+            if (mealDateStr.includes('undefined')) return false;
+            
+            // 날짜 부분이 targetDate와 일치하는지 비교
+            return mealDateStr === targetDate;
+        } catch (error) {
+            console.error('날짜 비교 오류:', error, mealDate);
+            return false;
+        }
     });
-    
-    return hasMealOnDate;
 };
 
 const fetchMealsByDate = async (date) => {
@@ -299,13 +330,18 @@ const fetchMealsByDate = async (date) => {
         
         const allData = await response.json();
         
-        // 클라이언트에서 날짜 필터링
+        // 클라이언트에서 날짜 필터링 (한국 시간 기준)
         const filteredData = allData
             .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
             .filter(meal => {
                 try {
-                    const mealDate = new Date(meal.meal_dt);
-                    const mealDateStr = mealDate.toISOString().split('T')[0];
+                    // 'T'나 공백으로 분리하여 날짜 부분만 추출
+                    const mealDateParts = meal.meal_dt.split(/[T ]/);
+                    if (mealDateParts.length === 0) return false;
+                    
+                    const mealDateStr = mealDateParts[0];
+                    if (!mealDateStr || mealDateStr.includes('undefined')) return false;
+                    
                     return mealDateStr === targetDate;
                 } catch (error) {
                     console.error('날짜 변환 오류:', error, meal);
@@ -323,8 +359,19 @@ const fetchMealsByDate = async (date) => {
         // 시간 추출 및 분 단위 변환 함수
         const getMinutes = (dateTimeStr) => {
             try {
-                const timePart = dateTimeStr.split(' ')[1];
-                const [hours, minutes] = timePart.split(':').map(Number);
+                // 'T'나 공백을 기준으로 날짜와 시간 분리
+                const timeParts = dateTimeStr.split(/[T ]/);
+                if (timeParts.length < 2) return 0;
+                
+                const timePart = timeParts[1];
+                if (!timePart) return 0;
+                
+                const timeElements = timePart.split(':');
+                if (timeElements.length < 2) return 0;
+                
+                const hours = parseInt(timeElements[0]) || 0;
+                const minutes = parseInt(timeElements[1]) || 0;
+                
                 return hours * 60 + minutes;
             } catch (error) {
                 console.error('시간 변환 오류:', error, dateTimeStr);
@@ -340,16 +387,35 @@ const fetchMealsByDate = async (date) => {
         });
 
         // 서버에서 받은 데이터를 화면에 표시할 형식으로 변환
-        selectedDateMeals.value = filteredData.map(meal => ({
-            id: meal.meal_code,
-            name: meal.meal_title || '식사 이름 없음',
-            time: new Date(meal.meal_dt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }),
-            kcal: Math.round(meal.meal_calories) || 0,
-            carbs: Math.round(meal.meal_carbs) || 0,
-            protein: Math.round(meal.meal_protein) || 0,
-            fat: Math.round(meal.meal_fat) || 0,
-            sodium: Math.round(meal.meal_sugar) || 0
-        }));
+        selectedDateMeals.value = filteredData.map(meal => {
+            // 날짜 및 시간 형식 처리
+            let mealTime = '';
+            try {
+                const mealDateStr = meal.meal_dt;
+                // 'T'나 공백으로 분리
+                const timeParts = mealDateStr.split(/[T ]/);
+                if (timeParts.length >= 2) {
+                    const timeElements = timeParts[1].split(':');
+                    if (timeElements.length >= 2) {
+                        mealTime = `${timeElements[0]}:${timeElements[1]}`;
+                    }
+                }
+            } catch (error) {
+                console.error('시간 형식 변환 오류:', error, meal);
+                mealTime = '00:00';
+            }
+            
+            return {
+                id: meal.meal_code,
+                name: meal.meal_title || '식사 이름 없음',
+                time: mealTime || '00:00',
+                kcal: Math.round(meal.meal_calories) || 0,
+                carbs: Math.round(meal.meal_carbs) || 0,
+                protein: Math.round(meal.meal_protein) || 0,
+                fat: Math.round(meal.meal_fat) || 0,
+                sodium: Math.round(meal.meal_sugar) || 0
+            };
+        });
     } catch (error) {
         console.error('식사 데이터 조회 중 오류 발생:', error);
         selectedDateMeals.value = [];
