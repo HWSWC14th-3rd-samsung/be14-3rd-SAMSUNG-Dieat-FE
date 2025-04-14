@@ -1,6 +1,6 @@
 <template>
     <div class="meal-stats">
-        <h3>오늘 하루</h3>
+        <h3>하루 총합</h3>
         <div class="stats-grid">
             <div class="stat-item">
                 <div class="stat-content">
@@ -19,7 +19,7 @@
                 <div class="stat-content">
                     <div class="stat-label">탄수화물</div>
                     <div class="stat-value" :style="{ color: carbsColor }">
-                        {{ calculateTotalCarbs() }}g
+                        {{ calculateTotalCarbs() }}
                     </div>
                 </div>
                 <div class="line-div"></div>
@@ -85,24 +85,28 @@ const fetchTodayMeals = async () => {
             return mealDate === selectedDate.value
         })
     } catch (error) {
-        console.error('오늘의 식사 데이터 조회 오류:', error)
+        console.log('오늘의 식사 데이터가 없습니다.')
         todayMeals.value = []
     }
 }
 
 const calculateTotalCalories = () => {
+    if (!todayMeals.value || todayMeals.value.length === 0) return 0
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_calories || 0), 0))
 }
 
 const calculateTotalCarbs = () => {
+    if (!todayMeals.value || todayMeals.value.length === 0) return 0
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_carbs || 0), 0))
 }
 
 const calculateTotalProtein = () => {
+    if (!todayMeals.value || todayMeals.value.length === 0) return 0
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_protein || 0), 0))
 }
 
 const calculateTotalFat = () => {
+    if (!todayMeals.value || todayMeals.value.length === 0) return 0
     return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_fat || 0), 0))
 }
 
