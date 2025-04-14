@@ -10,26 +10,9 @@
       "meal_sugar": 12.97,
       "meal_protein": 47.63,
       "meal_fat": 12.08,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 1,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 1,
-          "meal_food_cnt": 1.4
-        },
-        {
-          "meal_food_code": 2,
-          "meal_food_type": "USERDATA",
-          "meal_code": 1,
-          "meal_food_cnt": 1.7
-        },
-        {
-          "meal_food_code": 3,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 1,
-          "meal_food_cnt": 1
-        }
+
       ],
       "id": "a729",
       "file": [
@@ -55,32 +38,9 @@
       "meal_sugar": 16.09,
       "meal_protein": 43.75,
       "meal_fat": 29.88,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 4,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 2,
-          "meal_food_cnt": 2.7
-        },
-        {
-          "meal_food_code": 5,
-          "meal_food_type": "USERDATA",
-          "meal_code": 2,
-          "meal_food_cnt": 2.4
-        },
-        {
-          "meal_food_code": 6,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 2,
-          "meal_food_cnt": 1.9
-        },
-        {
-          "meal_food_code": 7,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 2,
-          "meal_food_cnt": 3
-        }
+
       ],
       "id": "2c9c",
       "file": [
@@ -106,20 +66,9 @@
       "meal_sugar": 17.73,
       "meal_protein": 39.81,
       "meal_fat": 31.36,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 8,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 3,
-          "meal_food_cnt": 1.8
-        },
-        {
-          "meal_food_code": 9,
-          "meal_food_type": "USERDATA",
-          "meal_code": 3,
-          "meal_food_cnt": 2.5
-        }
+
       ],
       "id": "5407",
       "file": [
@@ -145,26 +94,9 @@
       "meal_sugar": 13.96,
       "meal_protein": 23.97,
       "meal_fat": 17.32,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 10,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 4,
-          "meal_food_cnt": 2.4
-        },
-        {
-          "meal_food_code": 11,
-          "meal_food_type": "USERDATA",
-          "meal_code": 4,
-          "meal_food_cnt": 1.2
-        },
-        {
-          "meal_food_code": 12,
-          "meal_food_type": "USERDATA",
-          "meal_code": 4,
-          "meal_food_cnt": 1.2
-        }
+
       ],
       "id": "c683",
       "file": [
@@ -190,26 +122,9 @@
       "meal_sugar": 23.87,
       "meal_protein": 21.49,
       "meal_fat": 32.39,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 13,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 5,
-          "meal_food_cnt": 1.4
-        },
-        {
-          "meal_food_code": 14,
-          "meal_food_type": "USERDATA",
-          "meal_code": 5,
-          "meal_food_cnt": 1.7
-        },
-        {
-          "meal_food_code": 15,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 5,
-          "meal_food_cnt": 2.4
-        }
+
       ],
       "id": "5de7",
       "file": [
@@ -235,32 +150,9 @@
       "meal_sugar": 24.64,
       "meal_protein": 36.11,
       "meal_fat": 11.81,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 16,
-          "meal_food_type": "USERDATA",
-          "meal_code": 6,
-          "meal_food_cnt": 2.9
-        },
-        {
-          "meal_food_code": 17,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 6,
-          "meal_food_cnt": 2.9
-        },
-        {
-          "meal_food_code": 18,
-          "meal_food_type": "USERDATA",
-          "meal_code": 6,
-          "meal_food_cnt": 1.3
-        },
-        {
-          "meal_food_code": 19,
-          "meal_food_type": "USERDATA",
-          "meal_code": 6,
-          "meal_food_cnt": 1.3
-        }
+
       ],
       "id": "5b7b",
       "file": [
@@ -286,32 +178,9 @@
       "meal_sugar": 8.92,
       "meal_protein": 36.31,
       "meal_fat": 32.34,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 20,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 7,
-          "meal_food_cnt": 1.9
-        },
-        {
-          "meal_food_code": 21,
-          "meal_food_type": "USERDATA",
-          "meal_code": 7,
-          "meal_food_cnt": 1.1
-        },
-        {
-          "meal_food_code": 22,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 7,
-          "meal_food_cnt": 1.5
-        },
-        {
-          "meal_food_code": 23,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 7,
-          "meal_food_cnt": 2
-        }
+
       ],
       "id": "b1fb",
       "file": [
@@ -337,32 +206,9 @@
       "meal_sugar": 10.51,
       "meal_protein": 55.02,
       "meal_fat": 18.74,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 24,
-          "meal_food_type": "USERDATA",
-          "meal_code": 8,
-          "meal_food_cnt": 1.1
-        },
-        {
-          "meal_food_code": 25,
-          "meal_food_type": "USERDATA",
-          "meal_code": 8,
-          "meal_food_cnt": 2.4
-        },
-        {
-          "meal_food_code": 26,
-          "meal_food_type": "USERDATA",
-          "meal_code": 8,
-          "meal_food_cnt": 2.4
-        },
-        {
-          "meal_food_code": 27,
-          "meal_food_type": "USERDATA",
-          "meal_code": 8,
-          "meal_food_cnt": 1.8
-        }
+
       ],
       "id": "d6cf",
       "file": [
@@ -388,20 +234,9 @@
       "meal_sugar": 11.36,
       "meal_protein": 41.45,
       "meal_fat": 30.25,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 28,
-          "meal_food_type": "USERDATA",
-          "meal_code": 9,
-          "meal_food_cnt": 2.3
-        },
-        {
-          "meal_food_code": 29,
-          "meal_food_type": "USERDATA",
-          "meal_code": 9,
-          "meal_food_cnt": 2.6
-        }
+
       ],
       "id": "fd71",
       "file": [
@@ -427,20 +262,9 @@
       "meal_sugar": 9.26,
       "meal_protein": 41.14,
       "meal_fat": 15.05,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 30,
-          "meal_food_type": "USERDATA",
-          "meal_code": 10,
-          "meal_food_cnt": 1
-        },
-        {
-          "meal_food_code": 31,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 10,
-          "meal_food_cnt": 2.1
-        }
+
       ],
       "id": "b7bc",
       "file": [
@@ -466,20 +290,9 @@
       "meal_sugar": 5.81,
       "meal_protein": 32.68,
       "meal_fat": 10.54,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
-        {
-          "meal_food_code": 32,
-          "meal_food_type": "USERDATA",
-          "meal_code": 11,
-          "meal_food_cnt": 1.7
-        },
-        {
-          "meal_food_code": 33,
-          "meal_food_type": "OPENDATA",
-          "meal_code": 11,
-          "meal_food_cnt": 1.2
-        }
+
       ],
       "id": "0fde",
       "file": [
@@ -505,7 +318,7 @@
       "meal_sugar": 18.32,
       "meal_protein": 35.2,
       "meal_fat": 28.04,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -533,7 +346,7 @@
       "meal_sugar": 7.83,
       "meal_protein": 43.37,
       "meal_fat": 21.57,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
       ],
       "id": "3592",
@@ -560,7 +373,7 @@
       "meal_sugar": 20.72,
       "meal_protein": 45,
       "meal_fat": 25.74,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -588,7 +401,7 @@
       "meal_sugar": 17.69,
       "meal_protein": 29.35,
       "meal_fat": 24.21,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -616,7 +429,7 @@
       "meal_sugar": 9.05,
       "meal_protein": 38.86,
       "meal_fat": 32.18,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -644,7 +457,7 @@
       "meal_sugar": 16.91,
       "meal_protein": 59.54,
       "meal_fat": 14.04,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -672,7 +485,7 @@
       "meal_sugar": 16.43,
       "meal_protein": 59.42,
       "meal_fat": 16.72,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -700,7 +513,7 @@
       "meal_sugar": 22.65,
       "meal_protein": 46.71,
       "meal_fat": 34.99,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -728,7 +541,7 @@
       "meal_sugar": 5.24,
       "meal_protein": 54.14,
       "meal_fat": 34.06,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -756,7 +569,7 @@
       "meal_sugar": 20.59,
       "meal_protein": 36.13,
       "meal_fat": 32.36,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -784,7 +597,7 @@
       "meal_sugar": 5.21,
       "meal_protein": 29.7,
       "meal_fat": 13.16,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -812,7 +625,7 @@
       "meal_sugar": 16.75,
       "meal_protein": 41.65,
       "meal_fat": 21.41,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
       ],
       "id": "c0d1",
@@ -839,7 +652,7 @@
       "meal_sugar": 12.77,
       "meal_protein": 37.07,
       "meal_fat": 29.95,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -867,7 +680,7 @@
       "meal_sugar": 14.65,
       "meal_protein": 59.19,
       "meal_fat": 11.05,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -895,7 +708,7 @@
       "meal_sugar": 18.46,
       "meal_protein": 23.82,
       "meal_fat": 33.3,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -923,7 +736,7 @@
       "meal_sugar": 24.23,
       "meal_protein": 56.32,
       "meal_fat": 26.78,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -951,7 +764,7 @@
       "meal_sugar": 7.89,
       "meal_protein": 44.95,
       "meal_fat": 14.3,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -979,7 +792,7 @@
       "meal_sugar": 10.24,
       "meal_protein": 26.27,
       "meal_fat": 25.94,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1007,7 +820,7 @@
       "meal_sugar": 13.69,
       "meal_protein": 52.92,
       "meal_fat": 17.97,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1035,7 +848,7 @@
       "meal_sugar": 15.28,
       "meal_protein": 33.39,
       "meal_fat": 30.22,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1063,7 +876,7 @@
       "meal_sugar": 23.13,
       "meal_protein": 53.14,
       "meal_fat": 19.5,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1091,7 +904,7 @@
       "meal_sugar": 15.09,
       "meal_protein": 31.61,
       "meal_fat": 20.85,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1119,7 +932,7 @@
       "meal_sugar": 6.47,
       "meal_protein": 44.19,
       "meal_fat": 21.39,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1147,7 +960,7 @@
       "meal_sugar": 12.65,
       "meal_protein": 59.96,
       "meal_fat": 26.38,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1175,7 +988,7 @@
       "meal_sugar": 17.32,
       "meal_protein": 42.27,
       "meal_fat": 34.43,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1203,7 +1016,7 @@
       "meal_sugar": 15.25,
       "meal_protein": 25.68,
       "meal_fat": 16.77,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1231,7 +1044,7 @@
       "meal_sugar": 6.1,
       "meal_protein": 32.39,
       "meal_fat": 11.3,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1259,7 +1072,7 @@
       "meal_sugar": 18.32,
       "meal_protein": 48.17,
       "meal_fat": 17.09,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1287,7 +1100,7 @@
       "meal_sugar": 15.19,
       "meal_protein": 55.36,
       "meal_fat": 30.02,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1315,7 +1128,7 @@
       "meal_sugar": 20.19,
       "meal_protein": 39.92,
       "meal_fat": 34.89,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1343,7 +1156,7 @@
       "meal_sugar": 5.74,
       "meal_protein": 56.85,
       "meal_fat": 29.91,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1371,7 +1184,7 @@
       "meal_sugar": 12.29,
       "meal_protein": 24.65,
       "meal_fat": 26.1,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1399,7 +1212,7 @@
       "meal_sugar": 22.78,
       "meal_protein": 36.5,
       "meal_fat": 20.09,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1427,7 +1240,7 @@
       "meal_sugar": 17.87,
       "meal_protein": 34.74,
       "meal_fat": 25.42,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1455,7 +1268,7 @@
       "meal_sugar": 14.42,
       "meal_protein": 35.57,
       "meal_fat": 32.67,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1483,7 +1296,7 @@
       "meal_sugar": 16.49,
       "meal_protein": 24.67,
       "meal_fat": 13.24,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1511,7 +1324,7 @@
       "meal_sugar": 6.73,
       "meal_protein": 53.07,
       "meal_fat": 24.34,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1539,7 +1352,7 @@
       "meal_sugar": 18.57,
       "meal_protein": 59.32,
       "meal_fat": 29.34,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1567,7 +1380,7 @@
       "meal_sugar": 16.86,
       "meal_protein": 38.13,
       "meal_fat": 27.78,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1595,7 +1408,7 @@
       "meal_sugar": 13.23,
       "meal_protein": 48.72,
       "meal_fat": 15.73,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1623,7 +1436,7 @@
       "meal_sugar": 7.29,
       "meal_protein": 32.28,
       "meal_fat": 30.06,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1651,7 +1464,7 @@
       "meal_sugar": 8.59,
       "meal_protein": 55,
       "meal_fat": 19.75,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1679,7 +1492,7 @@
       "meal_sugar": 14.58,
       "meal_protein": 50.65,
       "meal_fat": 14.15,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1707,7 +1520,7 @@
       "meal_sugar": 5.18,
       "meal_protein": 30.98,
       "meal_fat": 23.68,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1735,7 +1548,7 @@
       "meal_sugar": 13.77,
       "meal_protein": 43.67,
       "meal_fat": 30.94,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1763,7 +1576,7 @@
       "meal_sugar": 22.29,
       "meal_protein": 50.81,
       "meal_fat": 19.88,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1791,7 +1604,7 @@
       "meal_sugar": 10.3,
       "meal_protein": 46.29,
       "meal_fat": 30.18,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1819,7 +1632,7 @@
       "meal_sugar": 22.37,
       "meal_protein": 35.27,
       "meal_fat": 26.65,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1847,7 +1660,7 @@
       "meal_sugar": 7.02,
       "meal_protein": 58.65,
       "meal_fat": 28.51,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1875,7 +1688,7 @@
       "meal_sugar": 19.14,
       "meal_protein": 38.05,
       "meal_fat": 18.57,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1903,7 +1716,7 @@
       "meal_sugar": 17.25,
       "meal_protein": 24.17,
       "meal_fat": 16.05,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1931,7 +1744,7 @@
       "meal_sugar": 6.19,
       "meal_protein": 24.86,
       "meal_fat": 30.98,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1959,7 +1772,7 @@
       "meal_sugar": 23.55,
       "meal_protein": 24.92,
       "meal_fat": 16.87,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -1987,7 +1800,7 @@
       "meal_sugar": 16.61,
       "meal_protein": 42.18,
       "meal_fat": 34.01,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2015,7 +1828,7 @@
       "meal_sugar": 11.63,
       "meal_protein": 37.26,
       "meal_fat": 28.29,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2043,7 +1856,7 @@
       "meal_sugar": 17.3,
       "meal_protein": 29.47,
       "meal_fat": 21.66,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2071,7 +1884,7 @@
       "meal_sugar": 21.5,
       "meal_protein": 53.17,
       "meal_fat": 28.24,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2099,7 +1912,7 @@
       "meal_sugar": 20.55,
       "meal_protein": 49.47,
       "meal_fat": 18.34,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2127,7 +1940,7 @@
       "meal_sugar": 6.59,
       "meal_protein": 38.18,
       "meal_fat": 23.81,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2155,7 +1968,7 @@
       "meal_sugar": 15.95,
       "meal_protein": 54.53,
       "meal_fat": 23.6,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2183,7 +1996,7 @@
       "meal_sugar": 15.41,
       "meal_protein": 42.41,
       "meal_fat": 13.56,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2211,7 +2024,7 @@
       "meal_sugar": 8,
       "meal_protein": 4,
       "meal_fat": 8,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2239,7 +2052,7 @@
       "meal_sugar": 2,
       "meal_protein": 32,
       "meal_fat": 18,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2267,7 +2080,7 @@
       "meal_sugar": 10,
       "meal_protein": 81,
       "meal_fat": 183,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2295,7 +2108,7 @@
       "meal_sugar": 20,
       "meal_protein": 3.6,
       "meal_fat": 13,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2323,7 +2136,7 @@
       "meal_sugar": 2,
       "meal_protein": 50,
       "meal_fat": 3,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2351,7 +2164,7 @@
       "meal_sugar": 7,
       "meal_protein": 25,
       "meal_fat": 17,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2379,7 +2192,7 @@
       "meal_sugar": 5,
       "meal_protein": 48,
       "meal_fat": 15,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2407,7 +2220,7 @@
       "meal_sugar": 23.96,
       "meal_protein": 53.36,
       "meal_fat": 19.66,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2435,7 +2248,7 @@
       "meal_sugar": 23.97,
       "meal_protein": 54.73,
       "meal_fat": 18.91,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2463,7 +2276,7 @@
       "meal_sugar": 22.42,
       "meal_protein": 50.98,
       "meal_fat": 11.64,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2491,7 +2304,7 @@
       "meal_sugar": 7.8,
       "meal_protein": 34.3,
       "meal_fat": 21.15,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2519,7 +2332,7 @@
       "meal_sugar": 16.96,
       "meal_protein": 41.63,
       "meal_fat": 14.97,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2547,7 +2360,7 @@
       "meal_sugar": 16.16,
       "meal_protein": 34.36,
       "meal_fat": 21.77,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2575,7 +2388,7 @@
       "meal_sugar": 6.92,
       "meal_protein": 51.27,
       "meal_fat": 13.52,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2603,7 +2416,7 @@
       "meal_sugar": 8,
       "meal_protein": 40.54,
       "meal_fat": 25.72,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2631,7 +2444,7 @@
       "meal_sugar": 15.31,
       "meal_protein": 43.22,
       "meal_fat": 20.14,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2659,7 +2472,7 @@
       "meal_sugar": 13.17,
       "meal_protein": 24.65,
       "meal_fat": 11.44,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2687,7 +2500,7 @@
       "meal_sugar": 19.76,
       "meal_protein": 56.08,
       "meal_fat": 26.8,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2715,7 +2528,7 @@
       "meal_sugar": 5.47,
       "meal_protein": 30.32,
       "meal_fat": 19.71,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_foods": [
 
       ],
@@ -2743,7 +2556,7 @@
       "meal_sugar": 12,
       "meal_protein": 24.4,
       "meal_fat": 30.6,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2771,7 +2584,7 @@
       "meal_sugar": 2,
       "meal_protein": 48,
       "meal_fat": 3,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
@@ -2799,7 +2612,7 @@
       "meal_sugar": 18,
       "meal_protein": 60,
       "meal_fat": 118,
-      "user_code": 1001,
+      "user_code": 1,
       "meal_food": [
 
       ],
