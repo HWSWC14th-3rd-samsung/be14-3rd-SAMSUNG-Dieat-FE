@@ -79,7 +79,7 @@
   
     .dropdown-item {
         display: block;
-        padding: 8px 16px;
+        padding: 8px 10px;
         color: #333;
         text-decoration: none;
         text-align: center;
