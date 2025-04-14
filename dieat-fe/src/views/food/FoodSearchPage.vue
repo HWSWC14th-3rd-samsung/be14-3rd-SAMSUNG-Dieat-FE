@@ -49,14 +49,16 @@ const allFoods = ref([])
 const router = useRouter()
 
 function onAddFood() {
-  showModal.value = true
+  showModal.value = true;
 }
 
 function handleRegisterFood(food) {
-  allFoods.value.push(food)
-  basket.value.push({ ...food, quantity: 1 })
-  selectedFood.value = [food]
-  searchKeyword.value = food.name
+  allFoods.value.push(food);
+  basket.value.push({ ...food, quantity: 1 });
+  selectedFood.value = [food];
+  searchKeyword.value = food.name;
+  isManuallySelected.value = true;
+  searchResults.value = [];
 }
 
 function goToRegisterMeal() {

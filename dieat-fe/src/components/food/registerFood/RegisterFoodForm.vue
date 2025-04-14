@@ -1,11 +1,9 @@
 <template>
     <div :class="isModal ? 'modal-wrapper' : 'food-register-page'">
         <div :class="['food-register-container', { 'modal-style': isModal }]">
-            <!-- 음식 제목 -->
             <label class="food-register-label">음식 제목</label>
             <input v-model="foodTitle" class="food-register-input" placeholder="예: 닭가슴살 볶음밥" />
 
-            <!-- 음식량 -->
             <label class="food-register-label">음식량</label>
             <div class="food-register-grid-3">
                 <div class="unit-input-wrapper">
@@ -22,7 +20,6 @@
                 </div>
             </div>
 
-            <!-- 영양 성분 -->
             <label class="food-register-label">영양 성분</label>
             <div class="food-register-grid-5">
                 <div v-for="(label, key) in labelMap" :key="key" class="unit-input-wrapper">
@@ -32,7 +29,6 @@
                 </div>
             </div>
 
-            <!-- 버튼 -->
             <div class="food-register-button-group">
                 <button class="primary-button" @click="submit">등록</button>
                 <button class="gray-button" @click="cancel">취소</button>
@@ -56,17 +52,27 @@ const nutrition = ref({ kcal: 0, carb: 0, protein: 0, fat: 0, sugar: 0 })
 const unitMap = { kcal: 'kcal', carb: 'g', protein: 'g', fat: 'g', sugar: 'g' }
 const labelMap = { kcal: '열량', carb: '탄수화물', protein: '단백질', fat: '지방', sugar: '당류' }
 
-function submit() {
-    const isValid =
+function isFormComplete() {
+    return (
         foodTitle.value.trim() !== '' &&
-        amount.value > 0 &&
         unit.value.trim() !== '' &&
         serveUnit.value.trim() !== '' &&
-        Object.values(nutrition.value).every(n => n > 0)
+        Object.values(nutrition.value).every(v => v !== null && v !== '')
+    )
+}
 
-    if (!isValid) {
-        alert('입력이 완료되지 않았습니다.');
-        return;
+function resetForm() {
+    foodTitle.value = ''
+    amount.value = 100
+    unit.value = 'g'
+    serveUnit.value = '1개'
+    nutrition.value = { kcal: 0, carb: 0, protein: 0, fat: 0, sugar: 0 }
+}
+
+function submit() {
+    if (!isFormComplete()) {
+        alert('입력이 완료되지 않았습니다.')
+        return
     }
 
     const food = {
@@ -81,8 +87,13 @@ function submit() {
         nickname: '사용자'
     }
 
-    emit('register', food)
-    if (props.isModal) emit('close')
+    if (props.isModal) {
+        emit('register', food)
+        emit('close')
+    } else {
+        alert('등록이 완료되었습니다.')
+        resetForm()
+    }
 }
 
 function cancel() {
@@ -90,7 +101,7 @@ function cancel() {
 }
 </script>
 
-<style>
+<style scoped>
 .modal-wrapper {
     position: fixed;
     inset: 0;
@@ -98,7 +109,7 @@ function cancel() {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 1000;
 }
 
 .modal-style {
