@@ -7,11 +7,20 @@
             <div class="registmeal-leftsection">
                 <div class="registmeal-name-div">
                     <h3 class="registmeal-name">식사 이름</h3>
-                    <input type="text" class="registmeal-name-input">
+                    <input 
+                        type="text" 
+                        class="registmeal-name-input"
+                        v-model="mealInfo.meal_name"
+                        @input="updateMealInfo"
+                    >
                 </div>
                 <div class="registmeal-desc-div">
                     <h3 class="registmeal-desc">식사 설명</h3>
-                    <textarea class="registmeal-desc-input"></textarea>
+                    <textarea 
+                        class="registmeal-desc-input"
+                        v-model="mealInfo.meal_description"
+                        @input="updateMealInfo"
+                    ></textarea>
                 </div>
                 <div class="registmeal-time-wrapper">
                     <div class="registmeal-time-div">
@@ -56,33 +65,52 @@
                     <h3 class="registmeal-nutrient-title">총 영양성분</h3>
                     <div class="registmeal-nutrient-graph">
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill calorie" style="height: 60%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill calorie" :style="{ height: `${Math.min(nutrientPercentages.calorie, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.calorie) }}kcal
+                                        <span v-if="nutrientPercentages.calorie > 100" class="percent">({{ Math.round(nutrientPercentages.calorie) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">칼로리</span>
+                            <span class="nutrient-label">칼로리<br/>(2000kcal)</span>
                         </div>
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill carb" style="height: 40%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill carb" :style="{ height: `${Math.min(nutrientPercentages.carb, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.carb) }}g
+                                        <span v-if="nutrientPercentages.carb > 100" class="percent">({{ Math.round(nutrientPercentages.carb) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">탄수화물</span>
+                            <span class="nutrient-label">탄수화물<br/>(300g)</span>
                         </div>
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill protein" style="height: 30%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill protein" :style="{ height: `${Math.min(nutrientPercentages.protein, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.protein) }}g
+                                        <span v-if="nutrientPercentages.protein > 100" class="percent">({{ Math.round(nutrientPercentages.protein) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">단백질</span>
+                            <span class="nutrient-label">단백질<br/>(200g)</span>
                         </div>
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill fat" style="height: 20%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill fat" :style="{ height: `${Math.min(nutrientPercentages.fat, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.fat) }}g
+                                        <span v-if="nutrientPercentages.fat > 100" class="percent">({{ Math.round(nutrientPercentages.fat) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">지방</span>
+                            <span class="nutrient-label">지방<br/>(50g)</span>
                         </div>
                         <!-- 그리드 라인 -->
-                        <div class="grid-line" style="bottom: 25%;"></div>
-                        <div class="grid-line" style="bottom: 50%;"></div>
-                        <div class="grid-line" style="bottom: 75%;"></div>
+                        <div class="grid-line line-1"></div>
+                        <div class="grid-line line-2"></div>
                     </div>
                 </div>
             </div>
@@ -104,7 +132,12 @@
                     </div>
                 </div>
                 <div class="meal-cards-container">
-                    <RegistMealCard v-if="registeredFoods.length > 0" :foods="registeredFoods" />
+                    <RegistMealCard 
+                        v-if="registeredFoods.length > 0" 
+                        :foods="registeredFoods" 
+                        :showDeleteButton="showDeleteMode"
+                        @delete="handleDeleteFood" 
+                    />
                 </div>
             </div>
             <div class="registmeal-footer">
@@ -138,7 +171,7 @@
     import AlertModal from '@/components/meal/AlertModal.vue';
     import LoadMealModal from '@/components/meal/LoadMealModal.vue';
     import LoadDietPostModal from '@/components/meal/LoadDietPostModal.vue';
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed } from 'vue';
     import { useRouter } from 'vue-router';
     import { useRegistMealStore } from '@/stores/registMeal';
 
@@ -155,29 +188,69 @@
     const showLoadMealModal = ref(false);
     const showLoadDietPostModal = ref(false);
     const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
+    const showDeleteMode = ref(false);
 
     const mealStore = useRegistMealStore();
+
+    const mealInfo = ref({
+        meal_name: '',
+        meal_description: '',
+        meal_time: '',
+        file: null
+    });
+
+    // 목표 영양성분 설정
+    const NUTRIENT_GOALS = {
+        calorie: 2000, // kcal
+        carb: 300,    // g
+        protein: 200, // g
+        fat: 50      // g
+    };
+
+    // 총 영양성분 계산
+    const totalNutrients = computed(() => {
+        return registeredFoods.value.reduce((total, food) => {
+            return {
+                calorie: total.calorie + (parseFloat(food.kcal) || 0),
+                carb: total.carb + (parseFloat(food.carb) || 0),
+                protein: total.protein + (parseFloat(food.protein) || 0),
+                fat: total.fat + (parseFloat(food.fat) || 0)
+            };
+        }, {
+            calorie: 0,
+            carb: 0,
+            protein: 0,
+            fat: 0
+        });
+    });
+
+    // 영양성분 퍼센티지 계산
+    const nutrientPercentages = computed(() => {
+        return {
+            calorie: Math.min((totalNutrients.value.calorie / NUTRIENT_GOALS.calorie) * 100, 100),
+            carb: Math.min((totalNutrients.value.carb / NUTRIENT_GOALS.carb) * 100, 100),
+            protein: Math.min((totalNutrients.value.protein / NUTRIENT_GOALS.protein) * 100, 100),
+            fat: Math.min((totalNutrients.value.fat / NUTRIENT_GOALS.fat) * 100, 100)
+        };
+    });
 
     onMounted(() => {
         // Pinia store에서 선택된 음식 데이터 가져오기
         const selectedFoods = mealStore.selectedFoods;
-        console.log('RegistMeal - onMounted: Pinia store의 음식 데이터', selectedFoods);
         if (selectedFoods && selectedFoods.length > 0) {
             registeredFoods.value = selectedFoods;
             showMealCard.value = true;
-            console.log('RegistMeal - onMounted: 음식 카드 표시됨', registeredFoods.value);
-            console.log('RegistMeal - onMounted: 음식 데이터 상세 정보', {
-                id: selectedFoods[0].id,
-                name: selectedFoods[0].name,
-                unit: selectedFoods[0].unit,
-                category: selectedFoods[0].category,
-                calorie: selectedFoods[0].calorie,
-                carbohydrate: selectedFoods[0].carbohydrate,
-                protein: selectedFoods[0].protein,
-                fat: selectedFoods[0].fat,
-                sugar: selectedFoods[0].sugar,
-                quantity: selectedFoods[0].quantity
-            });
+        }
+
+        // Pinia store에서 임시 식사 정보 가져오기
+        const tempInfo = mealStore.tempMealInfo;
+        if (tempInfo) {
+            mealInfo.value = { ...tempInfo };
+            timeInput.value = tempInfo.meal_time;
+            if (tempInfo.file) {
+                selectedImageInfo.value = tempInfo.file[0];
+                previewImage.value = tempInfo.file[0].path;
+            }
         }
     });
 
@@ -272,6 +345,7 @@
         }
         
         timeInput.value = value;
+        updateMealInfo();
     };
 
     const triggerFileInput = () => {
@@ -317,6 +391,7 @@
                 }
             }
         }
+        updateMealInfo();
     };
 
     const addMealCard = () => {
@@ -336,11 +411,23 @@
 
     const removeMealCard = () => {
         console.log('RegistMeal - removeMealCard: 음식 제거 버튼 클릭');
-        console.log('RegistMeal - removeMealCard: 제거 전 음식 데이터', registeredFoods.value);
-        showMealCard.value = false;
-        registeredFoods.value = [];
-        mealStore.clearSelectedFoods();
-        console.log('RegistMeal - removeMealCard: 제거 후 음식 데이터', registeredFoods.value);
+        showDeleteMode.value = !showDeleteMode.value;
+        console.log('RegistMeal - removeMealCard: 삭제 모드 상태 변경됨', showDeleteMode.value);
+    };
+
+    const handleDeleteFood = (index) => {
+        console.log('RegistMeal - handleDeleteFood: 음식 삭제', index);
+        // 해당 인덱스의 음식을 배열에서 제거
+        registeredFoods.value = registeredFoods.value.filter((_, i) => i !== index);
+        // Pinia store 업데이트
+        mealStore.setSelectedFoods(registeredFoods.value);
+        
+        // 모든 음식이 삭제되었을 때 처리
+        if (registeredFoods.value.length === 0) {
+            showMealCard.value = false;
+            showDeleteMode.value = false;
+        }
+        console.log('RegistMeal - handleDeleteFood: 남은 음식', registeredFoods.value);
     };
 
     const handleSubmit = async () => {
@@ -587,59 +674,94 @@
 }
 
 .registmeal-nutrient-graph {
-    background: white;
-    width: 343px;
-    height: 240px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 20px;
     position: relative;
+    height: 235px;
+    padding: 20px 40px;
+    margin-bottom: 30px;
+    background-color: white;
+    border-radius: 8px;
 }
 
 .nutrient-bar-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60px;
-    position: relative;
-    z-index: 2;
+    width: 50px;
+    height: 100%;
+    margin-top: 20px;
 }
 
 .nutrient-bar {
-    width: 30px;
-    background-color: #E6E6E6;
-    margin-bottom: 10px;
+    width: 100%;
+    height: 160px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
     position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .nutrient-bar-fill {
-    width: 100%;
     position: absolute;
     bottom: 0;
-    left: 0;
+    width: 100%;
+    transition: height 0.5s ease;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 24px; /* 최소 높이 설정 */
+}
+
+.nutrient-value {
+    color: white;
+    font-size: 12px;
+    padding: 4px;
+    position: relative;
+    white-space: nowrap;
+    z-index: 2;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.percent {
+    font-size: 10px;
+    opacity: 0.9;
+    margin-top: 2px;
 }
 
 .nutrient-label {
-    font-family: 'Inter';
-    font-weight: 500;
+    margin-top: 8px;
     font-size: 12px;
-    color: #666;
     text-align: center;
+    color: #666;
+    white-space: pre-line;
+    line-height: 1.2;
 }
-
-.nutrient-bar-fill.calorie { background-color: #FF4B4B; }
-.nutrient-bar-fill.carb { background-color: #FFA94B; }
-.nutrient-bar-fill.protein { background-color: #4CAF50; }
-.nutrient-bar-fill.fat { background-color: #4B7BFF; }
 
 .grid-line {
     position: absolute;
-    left: 0;
-    width: 100%;
+    left: 40px;
+    right: 40px;
+    width: calc(100% - 80px);
     height: 1px;
-    background-color: #E6E6E6;
+    background-color: #ddd;
     z-index: 1;
+}
+
+.line-1 {
+    bottom: 115px;
+}
+
+.line-2 {
+    bottom: 165px;
 }
 
 .registmeal-footer {
@@ -960,4 +1082,9 @@
 .meal-cards-container .registmeal-card:last-child {
     margin-bottom: 0;
 }
+
+.calorie { background-color: #FD5D5D; }
+.carb { background-color: #FDCA5D; }
+.protein { background-color: #50E250; }
+.fat { background-color: #5D7DFD; }
 </style>

@@ -1,43 +1,48 @@
 <template>
-    <div v-for="food in foods" :key="food.id" class="registmeal-card">
-        <div class="card-left">
-            <div class="regstmeal-card-category">
-                <h3 class="registmeal-card-category-name">{{ food.type || 'USER' }}</h3>
-            </div>
-            <div class="registmeal-card-name-div">
-                <h3 class="registmeal-card-name">{{ food.name }}</h3>
-            </div>
-            <div class="registmeal-card-unit">
-                <h5 class="registmeal-card-unit-name">{{ food.unit }}</h5>
-            </div>
-        </div>
-        <div class="card-right">
-            <div class="registmeal-card-nutr-div">
-                <div class="registmeal-card-nutr-cal">
-                    <h3 class="registmeal-card-nutr-cal-value">{{ food.kcal }}</h3>
-                    <h5 class="registmeal-card-nutr-cal-unit">칼로리</h5>
+    <div class="registmeal-cards-wrapper">
+        <div v-for="(food, index) in foods" :key="food.id" class="registmeal-card">
+            <button v-if="showDeleteButton" class="delete-button" @click="$emit('delete', index)">×</button>
+            <div class="card-left">
+                <div class="regstmeal-card-category">
+                    <h3 class="registmeal-card-category-name" :class="{ 'opendata': food.type === 'OPENDATA' }">
+                        {{ getFoodType(food.type) }}
+                    </h3>
                 </div>
-                <div class="registmeal-card-nutr-carb">
-                    <h3 class="registmeal-card-nutr-carb-value">{{ food.carb }}</h3>
-                    <h5 class="registmeal-card-nutr-carb-unit">탄수화물</h5>
+                <div class="registmeal-card-name-div">
+                    <h3 class="registmeal-card-name">{{ food.name }}</h3>
                 </div>
-                <div class="registmeal-card-nutr-protein">
-                    <h3 class="registmeal-card-nutr-protein-value">{{ food.protein }}</h3>
-                    <h5 class="registmeal-card-nutr-protein-unit">단백질</h5>
-                </div>
-                <div class="registmeal-card-nutr-fat">
-                    <h3 class="registmeal-card-nutr-fat-value">{{ food.fat }}</h3>
-                    <h5 class="registmeal-card-nutr-fat-unit">지방</h5>
-                </div>
-                <div class="registmeal-card-nutr-sugar">
-                    <h3 class="registmeal-card-nutr-sugar-value">{{ food.sugar }}</h3>
-                    <h5 class="registmeal-card-nutr-sugar-unit">당</h5>
+                <div class="registmeal-card-unit">
+                    <h5 class="registmeal-card-unit-name">{{ food.unit }}</h5>
                 </div>
             </div>
-            <div class="registmeal-card-amout-div"> 
-                <h3 class="registmeal-card-amout-title">수량</h3>
-                <div class="registmeal-card-amout">
-                    {{ food.quantity }}
+            <div class="card-right">
+                <div class="registmeal-card-nutr-div">
+                    <div class="registmeal-card-nutr-cal">
+                        <h3 class="registmeal-card-nutr-cal-value">{{ food.kcal }}</h3>
+                        <h5 class="registmeal-card-nutr-cal-unit">칼로리</h5>
+                    </div>
+                    <div class="registmeal-card-nutr-carb">
+                        <h3 class="registmeal-card-nutr-carb-value">{{ food.carb }}</h3>
+                        <h5 class="registmeal-card-nutr-carb-unit">탄수화물</h5>
+                    </div>
+                    <div class="registmeal-card-nutr-protein">
+                        <h3 class="registmeal-card-nutr-protein-value">{{ food.protein }}</h3>
+                        <h5 class="registmeal-card-nutr-protein-unit">단백질</h5>
+                    </div>
+                    <div class="registmeal-card-nutr-fat">
+                        <h3 class="registmeal-card-nutr-fat-value">{{ food.fat }}</h3>
+                        <h5 class="registmeal-card-nutr-fat-unit">지방</h5>
+                    </div>
+                    <div class="registmeal-card-nutr-sugar">
+                        <h3 class="registmeal-card-nutr-sugar-value">{{ food.sugar }}</h3>
+                        <h5 class="registmeal-card-nutr-sugar-unit">당</h5>
+                    </div>
+                </div>
+                <div class="registmeal-card-amout-div"> 
+                    <h3 class="registmeal-card-amout-title">수량</h3>
+                    <div class="registmeal-card-amout">
+                        {{ food.quantity }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,18 +50,32 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-
 const props = defineProps({
     foods: {
         type: Array,
         required: true,
         default: () => []
+    },
+    showDeleteButton: {
+        type: Boolean,
+        default: false
     }
 });
+
+const emit = defineEmits(['delete']);
+
+const getFoodType = (type) => {
+    if (type === 'OPENDATA') return '공공';
+    if (type === 'USERDATA') return '회원';
+    return '회원';  // 기본값
+};
 </script>
 
 <style scoped>
+.registmeal-cards-wrapper {
+    width: 100%;
+}
+
 /* 카드 전체 컨테이너 스타일 */
 .registmeal-card {
     width: 453px;
@@ -92,12 +111,21 @@ const props = defineProps({
 }
 
 .registmeal-card-category-name {
-    background: #7FBEB3;
-    color: #FFFFFF;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
+    background: #98DCC6;
+    width: 41px;
+    height: 22px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-weight: 600;
+    font-size: 10px;
+    color: #000000;
+}
+
+.registmeal-card-category-name.opendata {
+    background: rgba(255, 126, 126, 0.6);
 }
 
 /* 음식 이름 영역 */
@@ -175,5 +203,37 @@ const props = defineProps({
     border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
+}
+
+/* 삭제 버튼 스타일 */
+.delete-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.2s ease;
+    padding: 0;
+    margin: 0;
+}
+
+.delete-button:hover {
+    background-color: #ff3333;
+    transform: scale(1.1);
+}
+
+.delete-button:active {
+    transform: scale(0.95);
 }
 </style>
