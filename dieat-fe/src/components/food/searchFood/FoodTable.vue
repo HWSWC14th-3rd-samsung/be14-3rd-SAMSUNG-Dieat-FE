@@ -81,6 +81,7 @@ function canVote(item, type) {
 function vote(foodId, type) {
     const key = getVoteKey(foodId);
     const prev = localVotes[key];
+
     const item = props.items.find(f => f.id === foodId);
     if (!item) return;
 
