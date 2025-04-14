@@ -13,45 +13,35 @@
 </template>
 
 <script setup>
-    import { ref, inject, watch, onMounted, computed } from 'vue'
+    import { inject, computed } from 'vue'
     import MealCard from '@/components/meal/MealCard.vue'
 
     const selectedDate = inject('selectedDate')
-    const meals = ref([])
+    const meals = inject('meals')
 
     const filteredMeals = computed(() => {
-        const filtered = meals.value.filter(meal => {
-            // DB date format: "2025-04-13 21:00"
-            const mealDateStr = meal.meal_dt.split(' ')[0]; // "2025-04-13"
-            
-            // Check if the dates match exactly
-            return mealDateStr === selectedDate.value;
-        });
+        if (!meals.value) return [];
         
-        return filtered;
-    })
-
-    const fetchMeals = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/meals')
-            if (!response.ok) {
-                throw new Error('식사 데이터를 가져오는데 실패했습니다.')
+        return meals.value.filter(meal => {
+            // 식사 날짜 필드가 여러 이름으로 존재함 (meal_dt 또는 meal_time)
+            const mealDateField = meal.meal_dt || meal.meal_time;
+            if (!mealDateField) {
+                return false;
             }
-            const data = await response.json()
-            meals.value = data
-        } catch (error) {
-            console.error('식사 데이터 조회 오류:', error)
-            meals.value = []
-        }
-    }
-
-    onMounted(() => {
-        fetchMeals()
-    })
-
-    // selectedDate가 변경될 때마다 fetchMeals를 다시 호출
-    watch(selectedDate, () => {
-        fetchMeals()
+            
+            try {
+                // 한국 시간대로 변환하여 날짜 비교
+                const date = new Date(mealDateField);
+                const offset = date.getTimezoneOffset() * 60000;
+                const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+                const mealDateStr = koreanTime.toISOString().split('T')[0];
+                
+                return mealDateStr === selectedDate.value;
+            } catch (error) {
+                console.error('날짜 형식 오류:', error, meal);
+                return false;
+            }
+        });
     })
 </script>
 

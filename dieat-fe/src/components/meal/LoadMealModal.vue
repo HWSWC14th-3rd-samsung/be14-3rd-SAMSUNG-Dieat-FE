@@ -52,7 +52,19 @@
                             <h4>식사 목록</h4>
                         </div>
                         <div class="meal-list">
-                            <div v-for="meal in selectedDateMeals" :key="meal.id" class="meal-card">
+                            <div 
+                                v-for="meal in selectedDateMeals" 
+                                :key="meal.id" 
+                                class="meal-card"
+                                :class="{ 'selected-meal': selectedMeal?.id === meal.id }"
+                                @click="selectMeal(meal)"
+                            >
+                                <button v-if="showDeleteButton" class="meal-card-delete-btn" @click.stop="$emit('delete', meal.id)">
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1L11 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
                                 <div class="meal-card-content">
                                     <div class="meal-info">
                                         <div class="meal-name">{{ meal.name }}</div>
@@ -60,23 +72,23 @@
                                     </div>
                                     <div class="meal-nutrients">
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.kcal }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.kcal, meal.quantity) }}</span>
                                             <span class="unit">kcal</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.carbs }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.carbs, meal.quantity) }}</span>
                                             <span class="unit">탄수화물</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.protein }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.protein, meal.quantity) }}</span>
                                             <span class="unit">단백질</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.fat }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.fat, meal.quantity) }}</span>
                                             <span class="unit">지방</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.sodium }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.sodium, meal.quantity) }}</span>
                                             <span class="unit">나트륨</span>
                                         </div>
                                     </div>
@@ -101,15 +113,20 @@ const props = defineProps({
     show: {
         type: Boolean,
         required: true
+    },
+    showDeleteButton: {
+        type: Boolean,
+        default: false
     }
 });
 
-const emit = defineEmits(['close', 'confirm']);
+const emit = defineEmits(['close', 'confirm', 'delete']);
 
 const currentDate = ref(new Date());
 const selectedDate = ref(null);
 const mealsData = ref([]);
 const selectedDateMeals = ref([]);
+const selectedMeal = ref(null);
 
 const API_URL = 'http://localhost:3000/meals';
 
@@ -124,14 +141,31 @@ const fetchMonthlyMeals = async () => {
         const data = await response.json();
         
         if (Array.isArray(data) && data.length > 0) {
-            // 현재 달의 데이터만 필터링
+            // 현재 달의 데이터만 필터링 (한국 시간 기준)
             const currentYear = currentDate.value.getFullYear();
             const currentMonth = String(currentDate.value.getMonth() + 1).padStart(2, '0');
             const yearMonth = `${currentYear}-${currentMonth}`;
             
+            // meal_dt 값이 있는 식사들만 필터링
             mealsData.value = data
-                .filter(meal => meal.meal_dt.startsWith(yearMonth))
-                .map(meal => meal.meal_dt);
+                .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
+                .filter(meal => {
+                    try {
+                        // 날짜 부분만 추출 (YYYY-MM-DD)
+                        const mealDateParts = meal.meal_dt.split(/[T ]/);
+                        if (mealDateParts.length === 0) return false;
+                        
+                        const mealDateStr = mealDateParts[0];
+                        if (!mealDateStr || mealDateStr.includes('undefined')) return false;
+                        
+                        // yearMonth로 시작하는지 확인 (같은 년도-월인지)
+                        return mealDateStr.startsWith(yearMonth);
+                    } catch (error) {
+                        console.error('날짜 필터링 오류:', error, meal);
+                        return false;
+                    }
+                })
+                .map(meal => meal.meal_dt); // 날짜 값만 추출
         } else {
             mealsData.value = [];
         }
@@ -240,8 +274,46 @@ const closeModal = () => {
     emit('close');
 };
 
-const confirmSelection = () => {
-    emit('confirm', selectedDate.value);
+const confirmSelection = async () => {
+    // 식사가 선택되었는지 확인
+    if (!selectedMeal.value) {
+        alert('식사를 선택해주세요.');
+        return;
+    }
+    
+    try {
+        // 선택한 식사의 전체 정보를 서버에서 가져오기
+        const response = await fetch(`${API_URL}?meal_code=${selectedMeal.value.id}`);
+        
+        if (!response.ok) {
+            throw new Error('서버 응답 오류');
+        }
+        
+        const meals = await response.json();
+        
+        // 일치하는 식사가 없는 경우
+        if (!meals || meals.length === 0) {
+            throw new Error('선택한 식사 정보를 찾을 수 없습니다.');
+        }
+        
+        // 첫 번째 항목이 해당 식사 정보
+        const mealData = meals[0];
+        
+        // 부모 컴포넌트로 선택한 식사 정보 전달
+        emit('confirm', {
+            date: selectedDate.value,
+            meal: {
+                meal_name: mealData.meal_title,
+                meal_description: mealData.meal_desc,
+                meal_time: mealData.meal_dt,
+                file: mealData.file ? mealData.file[0] : null,
+                foods: mealData.meal_foods || []
+            }
+        });
+    } catch (error) {
+        console.error('식사 정보 조회 중 오류 발생:', error);
+        alert('식사 정보를 불러오는 중 오류가 발생했습니다.');
+    }
 };
 
 const hasMeal = (date) => {
@@ -255,13 +327,28 @@ const hasMeal = (date) => {
     const day = String(date.getDate()).padStart(2, '0');
     const targetDate = `${year}-${month}-${day}`;
     
-    const hasMealOnDate = mealsData.value.some(mealDate => {
-        const mealDateStr = mealDate.split(' ')[0];
-        const result = mealDateStr === targetDate;
-        return result;
+    // 한국 시간 기준으로 날짜 비교
+    return mealsData.value.some(mealDate => {
+        if (!mealDate || typeof mealDate !== 'string') return false;
+        
+        try {
+            // 'T'나 공백으로 분리하여 날짜 부분만 추출 (YYYY-MM-DD)
+            const mealDateParts = mealDate.split(/[T ]/);
+            if (mealDateParts.length === 0) return false;
+            
+            const mealDateStr = mealDateParts[0];
+            if (!mealDateStr) return false;
+            
+            // 날짜 부분이 'undefined'를 포함하는지 확인
+            if (mealDateStr.includes('undefined')) return false;
+            
+            // 날짜 부분이 targetDate와 일치하는지 비교
+            return mealDateStr === targetDate;
+        } catch (error) {
+            console.error('날짜 비교 오류:', error, mealDate);
+            return false;
+        }
     });
-    
-    return hasMealOnDate;
 };
 
 const fetchMealsByDate = async (date) => {
@@ -281,12 +368,24 @@ const fetchMealsByDate = async (date) => {
         
         const allData = await response.json();
         
-        // 클라이언트에서 날짜 필터링
-        const filteredData = allData.filter(meal => {
-            const mealDate = new Date(meal.meal_dt);
-            const mealDateStr = mealDate.toISOString().split('T')[0];
-            return mealDateStr === targetDate;
-        });
+        // 클라이언트에서 날짜 필터링 (한국 시간 기준)
+        const filteredData = allData
+            .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
+            .filter(meal => {
+                try {
+                    // 'T'나 공백으로 분리하여 날짜 부분만 추출
+                    const mealDateParts = meal.meal_dt.split(/[T ]/);
+                    if (mealDateParts.length === 0) return false;
+                    
+                    const mealDateStr = mealDateParts[0];
+                    if (!mealDateStr || mealDateStr.includes('undefined')) return false;
+                    
+                    return mealDateStr === targetDate;
+                } catch (error) {
+                    console.error('날짜 변환 오류:', error, meal);
+                    return false;
+                }
+            });
 
         // 해당 날짜에 meal 데이터가 없는 경우
         if (filteredData.length === 0) {
@@ -295,70 +394,79 @@ const fetchMealsByDate = async (date) => {
             return;
         }
 
-        // 시간 추출 및 분 단위 변환 함수 (개선된 버전)
-        const extractMinutes = (datetimeStr) => {
+        // 시간 추출 및 분 단위 변환 함수
+        const getMinutes = (dateTimeStr) => {
             try {
-                // 날짜와 시간 분리
-                const parts = datetimeStr.split(' ');
-                if (parts.length < 2) {
-                    console.error('잘못된 datetime 형식:', datetimeStr);
-                    return 0; // 기본값
-                }
+                // 'T'나 공백을 기준으로 날짜와 시간 분리
+                const timeParts = dateTimeStr.split(/[T ]/);
+                if (timeParts.length < 2) return 0;
                 
-                const timePart = parts[1]; // "08:15:00" 또는 "08:15"
-                const timeComponents = timePart.split(':');
-                const hour = parseInt(timeComponents[0], 10);
-                const minute = parseInt(timeComponents[1], 10);
+                const timePart = timeParts[1];
+                if (!timePart) return 0;
                 
-                if (isNaN(hour) || isNaN(minute)) {
-                    console.error('시간 파싱 오류:', timePart);
-                    return 0;
-                }
+                const timeElements = timePart.split(':');
+                if (timeElements.length < 2) return 0;
                 
-                return hour * 60 + minute; // 총 분 단위로 변환
+                const hours = parseInt(timeElements[0]) || 0;
+                const minutes = parseInt(timeElements[1]) || 0;
+                
+                return hours * 60 + minutes;
             } catch (error) {
-                console.error('시간 변환 오류:', error, datetimeStr);
+                console.error('시간 변환 오류:', error, dateTimeStr);
                 return 0;
             }
         };
 
-        // 데이터 정렬 전 로그
-        // console.log('정렬 전 데이터:', filteredData.map(d => ({
-        //     title: d.meal_title,
-        //     time: d.meal_dt,
-        //     minutes: extractMinutes(d.meal_dt)
-        // })));
-
-        // 시간 순서대로 정렬 (오름차순)
+        // 시간 순으로 정렬
         filteredData.sort((a, b) => {
-            const timeA = extractMinutes(a.meal_dt);
-            const timeB = extractMinutes(b.meal_dt);
-            // 내림차순으로 변경 (값이 반대로 되는지 확인)
-            return timeB - timeA;
+            const minutesA = getMinutes(a.meal_dt);
+            const minutesB = getMinutes(b.meal_dt);
+            return minutesA - minutesB;
         });
-        
-        // 데이터 정렬 후 로그
-        // console.log('정렬 후 데이터:', filteredData.map(d => ({
-        //     title: d.meal_title,
-        //     time: d.meal_dt,
-        //     minutes: extractMinutes(d.meal_dt)
-        // })));
 
         // 서버에서 받은 데이터를 화면에 표시할 형식으로 변환
-        selectedDateMeals.value = filteredData.map(meal => ({
-            id: meal.meal_code,
-            name: meal.meal_title || '식사 이름 없음',
-            time: new Date(meal.meal_dt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
-            kcal: Math.round(meal.meal_calories) || 0,
-            carbs: Math.round(meal.meal_carbs) || 0,
-            protein: Math.round(meal.meal_protein) || 0,
-            fat: Math.round(meal.meal_fat) || 0,
-            sodium: Math.round(meal.meal_sugar) || 0
-        }));
+        selectedDateMeals.value = filteredData.map(meal => {
+            // 날짜 및 시간 형식 처리
+            let mealTime = '';
+            try {
+                const mealDateStr = meal.meal_dt;
+                // 'T'나 공백으로 분리
+                const timeParts = mealDateStr.split(/[T ]/);
+                if (timeParts.length >= 2) {
+                    const timeElements = timeParts[1].split(':');
+                    if (timeElements.length >= 2) {
+                        mealTime = `${timeElements[0]}:${timeElements[1]}`;
+                    }
+                }
+            } catch (error) {
+                console.error('시간 형식 변환 오류:', error, meal);
+                mealTime = '00:00';
+            }
+            
+            return {
+                id: meal.meal_code,
+                name: meal.meal_title || '식사 이름 없음',
+                time: mealTime || '00:00',
+                kcal: Math.round(meal.meal_calories) || 0,
+                carbs: Math.round(meal.meal_carbs) || 0,
+                protein: Math.round(meal.meal_protein) || 0,
+                fat: Math.round(meal.meal_fat) || 0,
+                sodium: Math.round(meal.meal_sugar) || 0
+            };
+        });
     } catch (error) {
         console.error('식사 데이터 조회 중 오류 발생:', error);
         selectedDateMeals.value = [];
     }
+};
+
+const selectMeal = (meal) => {
+    selectedMeal.value = meal;
+};
+
+const calculateNutrient = (value, quantity) => {
+    const qty = parseFloat(quantity) || 1;
+    return Math.floor(parseFloat(value) * qty);
 };
 </script>
 
@@ -590,10 +698,10 @@ const fetchMealsByDate = async (date) => {
 .meal-list {
     flex: 1;
     overflow-y: auto;
-    padding: 0 8px;
-    margin-right: -8px;
+    padding: 0 0 0 0;
+    margin: 0;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 
 .modal-footer {
@@ -603,14 +711,21 @@ const fetchMealsByDate = async (date) => {
     justify-content: flex-end;
     gap: 10px;
     height: 40px;
+    margin-bottom: 15px;
 }
 
 .cancel-button {
     padding: 8px 20px;
-    border: 1px solid #ddd;
+    border: none;
     border-radius: 4px;
-    background-color: white;
+    background-color: #BEBEBE;
+    color: white;
     cursor: pointer;
+    font-family: 'Inter';
+    font-weight: 400;
+    font-size: 14px;
+    position: relative;
+    right: 40px;
 }
 
 .confirm-button {
@@ -620,6 +735,8 @@ const fetchMealsByDate = async (date) => {
     background-color: #FF4B4B;
     color: white;
     cursor: pointer;
+    position: relative;
+    right: 200px;
 }
 
 .confirm-button:hover {
@@ -627,7 +744,7 @@ const fetchMealsByDate = async (date) => {
 }
 
 .cancel-button:hover {
-    background-color: #f5f5f5;
+    background-color: #d3d3d3;
 }
 
 .calendar-grid {
@@ -653,15 +770,23 @@ const fetchMealsByDate = async (date) => {
 .meal-card {
     background: white;
     border-radius: 8px;
-    padding: 16px;
+    padding: 0;
     margin-bottom: 12px;
+    margin-left: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.selected-meal {
+    border: 2px solid #FFA18E;
 }
 
 .meal-card-content {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 16px;
 }
 
 .meal-info {
@@ -716,5 +841,30 @@ const fetchMealsByDate = async (date) => {
 
 .meal-list {
     padding: 0 8px;
+}
+
+.meal-card-delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.meal-card-delete-btn:hover {
+    transform: scale(1.1);
+}
+
+.meal-card-delete-btn:hover svg path {
+    stroke: #333333;
 }
 </style> 

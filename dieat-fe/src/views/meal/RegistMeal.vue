@@ -4,11 +4,20 @@
             <div class="registmeal-leftsection">
                 <div class="registmeal-name-div">
                     <h3 class="registmeal-name">식사 이름</h3>
-                    <input type="text" class="registmeal-name-input">
+                    <input 
+                        type="text" 
+                        class="registmeal-name-input"
+                        v-model="mealInfo.meal_name"
+                        @input="updateMealInfo"
+                    >
                 </div>
                 <div class="registmeal-desc-div">
                     <h3 class="registmeal-desc">식사 설명</h3>
-                    <textarea class="registmeal-desc-input"></textarea>
+                    <textarea 
+                        class="registmeal-desc-input"
+                        v-model="mealInfo.meal_description"
+                        @input="updateMealInfo"
+                    ></textarea>
                 </div>
                 <div class="registmeal-time-wrapper">
                     <div class="registmeal-time-div">
@@ -31,7 +40,7 @@
                                 <div class="registmeal-img-plus"></div>
                             </template>
                             <template v-else>
-                                <img :src="previewImage" class="preview-image" alt="선택된 이미지">
+                                <img :src="selectedImageInfo?.path || previewImage" class="preview-image" alt="선택된 이미지">
                                 <div class="image-overlay">
                                     <button class="remove-image" @click.stop="removeImage">×</button>
                                 </div>
@@ -53,33 +62,52 @@
                     <h3 class="registmeal-nutrient-title">총 영양성분</h3>
                     <div class="registmeal-nutrient-graph">
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill calorie" style="height: 60%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill calorie" :style="{ height: `${Math.min(nutrientPercentages.calorie, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.calorie) }}kcal
+                                        <span v-if="nutrientPercentages.calorie > 100" class="percent">({{ Math.round(nutrientPercentages.calorie) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">칼로리</span>
+                            <span class="nutrient-label">칼로리<br/>(2000kcal)</span>
                         </div>
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill carb" style="height: 40%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill carb" :style="{ height: `${Math.min(nutrientPercentages.carb, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.carb) }}g
+                                        <span v-if="nutrientPercentages.carb > 100" class="percent">({{ Math.round(nutrientPercentages.carb) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">탄수화물</span>
+                            <span class="nutrient-label">탄수화물<br/>(300g)</span>
                         </div>
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill protein" style="height: 30%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill protein" :style="{ height: `${Math.min(nutrientPercentages.protein, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.protein) }}g
+                                        <span v-if="nutrientPercentages.protein > 100" class="percent">({{ Math.round(nutrientPercentages.protein) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">단백질</span>
+                            <span class="nutrient-label">단백질<br/>(200g)</span>
                         </div>
                         <div class="nutrient-bar-container">
-                            <div class="nutrient-bar" style="height: 170px;">
-                                <div class="nutrient-bar-fill fat" style="height: 20%;"></div>
+                            <div class="nutrient-bar">
+                                <div class="nutrient-bar-fill fat" :style="{ height: `${Math.min(nutrientPercentages.fat, 100)}%` }">
+                                    <span class="nutrient-value">
+                                        {{ Math.round(totalNutrients.fat) }}g
+                                        <span v-if="nutrientPercentages.fat > 100" class="percent">({{ Math.round(nutrientPercentages.fat) }}%)</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="nutrient-label">지방</span>
+                            <span class="nutrient-label">지방<br/>(50g)</span>
                         </div>
                         <!-- 그리드 라인 -->
-                        <div class="grid-line" style="bottom: 25%;"></div>
-                        <div class="grid-line" style="bottom: 50%;"></div>
-                        <div class="grid-line" style="bottom: 75%;"></div>
+                        <div class="grid-line line-1"></div>
+                        <div class="grid-line line-2"></div>
                     </div>
                 </div>
             </div>
@@ -100,12 +128,17 @@
                         </button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <RegistMealCard v-if="showMealCard" />
+                <div class="meal-cards-container">
+                    <RegistMealCard 
+                        v-if="registeredFoods.length > 0" 
+                        :foods="registeredFoods" 
+                        :showDeleteButton="showDeleteMode"
+                        @delete="handleDeleteFood" 
+                    />
+                </div>
             </div>
             <div class="registmeal-footer">
-                <button class="registmeal-load-dietpost">식단 불러오기</button>
+                <button class="registmeal-load-dietpost" @click="openLoadDietPostModal">식단 불러오기</button>
                 <button class="registmeal-load-meal" @click="openLoadMealModal">식사 불러오기</button>
                 <button class="registmeal-regist" @click="handleSubmit">등록</button>
                 <button class="registmeal-cancel" @click="goToMeal">취소</button>
@@ -122,6 +155,15 @@
         @close="closeLoadMealModal"
         @confirm="handleLoadMealConfirm"
     />
+    <LoadDietPostModal
+        :show="showLoadDietPostModal"
+        @close="closeLoadDietPostModal"
+        @confirm="handleLoadDietPostConfirm"
+    />
+    <CompleteModal
+        :show="showCompleteModal"
+        @close="closeCompleteModal"
+    />
 </template>
 
 <script setup>
@@ -129,12 +171,35 @@
     import Header from '@/components/common/Header.vue';
     import AlertModal from '@/components/meal/AlertModal.vue';
     import LoadMealModal from '@/components/meal/LoadMealModal.vue';
-    import { ref, onMounted } from 'vue';
+    import LoadDietPostModal from '@/components/meal/LoadDietPostModal.vue';
+    import CompleteModal from '@/components/common/CompleteModal.vue';
+    import { ref, onMounted, computed } from 'vue';
     import { useRouter } from 'vue-router';
     import { useRegistMealStore } from '@/stores/registMeal';
 
     const router = useRouter();
-    const timeInput = ref('');
+    
+    // 한국 시간(UTC+9)로 현재 날짜 및 시간 가져오기
+    const getKoreanDateTime = () => {
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000;
+        const koreanTime = new Date(now.getTime() + offset + (9 * 60 * 60 * 1000));
+        
+        const year = koreanTime.getFullYear();
+        const month = String(koreanTime.getMonth() + 1).padStart(2, '0');
+        const day = String(koreanTime.getDate()).padStart(2, '0');
+        const hours = String(koreanTime.getHours()).padStart(2, '0');
+        const minutes = String(koreanTime.getMinutes()).padStart(2, '0');
+        
+        return {
+            date: `${year}-${month}-${day}`,
+            time: `${hours}:${minutes}`,
+            dateTime: `${year}-${month}-${day} ${hours}:${minutes}`
+        };
+    };
+    
+    const koreanDateTime = getKoreanDateTime();
+    const timeInput = ref(koreanDateTime.dateTime);
     const timeError = ref(false);
     const fileInput = ref(null);
     const previewImage = ref(null);
@@ -144,9 +209,75 @@
     const showNoFoodModal = ref(false);
     const showMealCard = ref(false);
     const showLoadMealModal = ref(false);
+    const showLoadDietPostModal = ref(false);
+    const showCompleteModal = ref(false);
     const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
+    const showDeleteMode = ref(false);
 
     const mealStore = useRegistMealStore();
+
+    const mealInfo = ref({
+        meal_name: '',
+        meal_description: '',
+        meal_time: koreanDateTime.dateTime,
+        file: null
+    });
+
+    // 목표 영양성분 설정
+    const NUTRIENT_GOALS = {
+        calorie: 2000, // kcal
+        carb: 300,    // g
+        protein: 200, // g
+        fat: 50      // g
+    };
+
+    // 총 영양성분 계산
+    const totalNutrients = computed(() => {
+        return registeredFoods.value.reduce((total, food) => {
+            const quantity = parseFloat(food.quantity) || 1;
+            return {
+                calorie: total.calorie + (parseFloat(food.kcal) || 0) * quantity,
+                carb: total.carb + (parseFloat(food.carb) || 0) * quantity,
+                protein: total.protein + (parseFloat(food.protein) || 0) * quantity,
+                fat: total.fat + (parseFloat(food.fat) || 0) * quantity
+            };
+        }, {
+            calorie: 0,
+            carb: 0,
+            protein: 0,
+            fat: 0
+        });
+    });
+
+    // 영양성분 퍼센티지 계산
+    const nutrientPercentages = computed(() => {
+        return {
+            calorie: Math.min((totalNutrients.value.calorie / NUTRIENT_GOALS.calorie) * 100, 100),
+            carb: Math.min((totalNutrients.value.carb / NUTRIENT_GOALS.carb) * 100, 100),
+            protein: Math.min((totalNutrients.value.protein / NUTRIENT_GOALS.protein) * 100, 100),
+            fat: Math.min((totalNutrients.value.fat / NUTRIENT_GOALS.fat) * 100, 100)
+        };
+    });
+
+    onMounted(() => {
+        // Pinia store에서 선택된 음식 데이터 가져오기
+        const selectedFoods = mealStore.selectedFoods;
+        if (selectedFoods && selectedFoods.length > 0) {
+            registeredFoods.value = selectedFoods;
+            showMealCard.value = true;
+        }
+
+        // Pinia store에서 임시 식사 정보 가져오기
+        const tempInfo = mealStore.tempMealInfo;
+        if (tempInfo) {
+            mealInfo.value = { ...tempInfo };
+            timeInput.value = tempInfo.meal_time;
+            if (tempInfo.file) {
+                selectedImageInfo.value = tempInfo.file[0];
+                previewImage.value = tempInfo.file[0].path;
+            }
+        }
+    });
 
     // JSON 서버 기본 URL
     const API_URL = 'http://localhost:3000/meals';
@@ -239,6 +370,7 @@
         }
         
         timeInput.value = value;
+        updateMealInfo();
     };
 
     const triggerFileInput = () => {
@@ -249,47 +381,43 @@
         const file = event.target.files[0];
         if (file) {
             try {
+                const uniqueFileName = generateUniqueFileName(file.name);
+                
+                // FileReader를 사용하여 이미지를 Base64로 변환
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const imageData = e.target.result;
-                    const uniqueFileName = generateUniqueFileName(file.name);
-                    
-                    // 미리보기와 파일 정보 저장
-                    previewImage.value = imageData;
                     selectedImageInfo.value = {
+                        id: Date.now(),
                         originalName: file.name,
                         uniqueName: uniqueFileName,
+                        imageData: imageData, // Base64 이미지 데이터 저장
                         type: file.type,
                         size: file.size,
-                        path: `/src/img/meal/${uniqueFileName}` // 저장될 경로 추가
+                        path: imageData, // path 대신 Base64 데이터를 사용
+                        uploadDate: new Date().toISOString()
                     };
+                    previewImage.value = imageData;
                 };
                 reader.readAsDataURL(file);
 
-                // FormData를 사용하여 파일 업로드
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('filename', selectedImageInfo.value.uniqueName);
-
-                // 파일 업로드 API 호출
-                const response = await fetch('/api/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    throw new Error('파일 업로드 실패');
-                }
+                console.log('파일 업로드 성공');
 
             } catch (error) {
                 console.error('파일 업로드 중 오류 발생:', error);
                 errorMessage.value = '파일 업로드에 실패했습니다.';
+                previewImage.value = null;
+                selectedImageInfo.value = null;
+                if (fileInput.value) {
+                    fileInput.value.value = '';
+                }
             }
         }
+        updateMealInfo();
     };
 
     const addMealCard = () => {
-        // 현재 입력된 식사 정보를 store에 저장
+        console.log('RegistMeal - addMealCard: 음식 추가 버튼 클릭');
         const mealInfo = {
             meal_name: document.querySelector('.registmeal-name-input').value,
             meal_description: document.querySelector('.registmeal-desc-input').value,
@@ -297,19 +425,36 @@
             file: selectedImageInfo.value
         };
         
+        console.log('RegistMeal - addMealCard: 현재 등록된 음식', registeredFoods.value);
         mealStore.setTempMealInfo(mealInfo);
-        
-        // /searchFood 경로로 이동
+        console.log('RegistMeal - addMealCard: 임시 식사 정보 저장됨', mealInfo);
         router.push('/searchFood');
     };
 
     const removeMealCard = () => {
-        showMealCard.value = false;
-        registeredFoods.value = [];  // 음식 목록 초기화
+        console.log('RegistMeal - removeMealCard: 음식 제거 버튼 클릭');
+        showDeleteMode.value = !showDeleteMode.value;
+        console.log('RegistMeal - removeMealCard: 삭제 모드 상태 변경됨', showDeleteMode.value);
+    };
+
+    const handleDeleteFood = (index) => {
+        console.log('RegistMeal - handleDeleteFood: 음식 삭제', index);
+        // 해당 인덱스의 음식을 배열에서 제거
+        registeredFoods.value = registeredFoods.value.filter((_, i) => i !== index);
+        // Pinia store 업데이트
+        mealStore.setSelectedFoods(registeredFoods.value);
+        
+        // 모든 음식이 삭제되었을 때 처리
+        if (registeredFoods.value.length === 0) {
+            showMealCard.value = false;
+            showDeleteMode.value = false;
+        }
+        console.log('RegistMeal - handleDeleteFood: 남은 음식', registeredFoods.value);
     };
 
     const handleSubmit = async () => {
-        // 등록된 음식이 없는 경우 모달 표시
+        console.log('RegistMeal - handleSubmit: 등록 버튼 클릭');
+        console.log('RegistMeal - handleSubmit: 현재 등록된 음식', registeredFoods.value);
         if (!showMealCard.value || registeredFoods.value.length === 0) {
             showNoFoodModal.value = true;
             return;
@@ -325,26 +470,36 @@
             isLoading.value = true;
             errorMessage.value = '';
 
+            // 날짜와 시간을 한국 시간 기준으로 ISO 8601 형식으로 변환
+            const [datePart, timePart] = timeInput.value.split(' ');
+            const [year, month, day] = datePart.split('-');
+            const [hours, minutes] = timePart.split(':');
+            
+            // 한국 시간을 그대로 사용하여 ISO 8601 형식으로 변환
+            const mealDateTime = `${datePart}T${timePart}:00`;
+            
+            // 음식 관련 영양소 데이터 계산
             const mealData = {
                 id: Date.now(),
-                meal_name: document.querySelector('.registmeal-name-input').value,
-                meal_description: document.querySelector('.registmeal-desc-input').value,
-                meal_time: timeInput.value,
-                file: [{
-                    id: -1,
-                    originalName: selectedImageInfo.value.originalName,
-                    uniqueName: selectedImageInfo.value.uniqueName,
-                    path: selectedImageInfo.value.path,
-                    type: selectedImageInfo.value.type,
-                    size: selectedImageInfo.value.size,
-                    uploadDate: new Date().toISOString()
-                }]
+                meal_code: Date.now(),
+                meal_title: document.querySelector('.registmeal-name-input').value,
+                meal_desc: document.querySelector('.registmeal-desc-input').value,
+                meal_dt: mealDateTime,  // ISO 8601 형식으로 저장
+                meal_calories: totalNutrients.value.calorie,
+                meal_carbs: totalNutrients.value.carb,
+                meal_protein: totalNutrients.value.protein,
+                meal_fat: totalNutrients.value.fat,
+                meal_sugar: registeredFoods.value.reduce((sum, food) => {
+                    const quantity = parseFloat(food.quantity) || 1;
+                    return sum + (parseFloat(food.sugar) || 0) * quantity;
+                }, 0),
+                meal_foods: registeredFoods.value,
+                user_code: 1,
+                file: [selectedImageInfo.value]
             };
 
-            // 저장될 데이터 콘솔에 출력
             console.log('저장될 데이터:', JSON.stringify(mealData, null, 2));
 
-            // fetch를 사용하여 데이터 저장
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -355,8 +510,8 @@
 
             if (!response.ok) throw new Error('서버 응답 오류');
             
-            // 저장 성공 시 /meal 경로로 이동
-            await router.push('/meal');
+            // 등록 완료 모달 표시
+            showCompleteModal.value = true;
 
         } catch (error) {
             console.error('저장 중 오류 발생:', error);
@@ -367,20 +522,32 @@
     };
 
     const removeImage = () => {
-        // 로컬 상태만 초기화
         previewImage.value = null;
         selectedImageInfo.value = null;
         if (fileInput.value) {
-            fileInput.value.value = '';  // 파일 input 초기화
+            fileInput.value.value = '';
         }
     };
 
     const goToMeal = () => {
+        console.log('RegistMeal - goToMeal: 취소 버튼 클릭');
+        console.log('RegistMeal - goToMeal: 취소 전 음식 데이터', registeredFoods.value);
+        mealStore.clearSelectedFoods();
+        mealStore.clearTempMealInfo();
+        console.log('RegistMeal - goToMeal: Pinia store 초기화 후', mealStore.selectedFoods);
         router.push('/meal');
     };
 
     const closeNoFoodModal = () => {
         showNoFoodModal.value = false;
+    };
+
+    const closeCompleteModal = () => {
+        showCompleteModal.value = false;
+        // 모달을 닫을 때 메인 페이지로 이동
+        mealStore.clearSelectedFoods();
+        mealStore.clearTempMealInfo();
+        router.push('/meal');
     };
 
     const openLoadMealModal = () => {
@@ -391,9 +558,88 @@
         showLoadMealModal.value = false;
     };
 
-    const handleLoadMealConfirm = () => {
-        // 선택된 식사 데이터 처리 로직 구현 예정
-        closeLoadMealModal();
+    const handleLoadMealConfirm = (data) => {
+        try {
+            // 선택한 식사 정보가 있는지 확인
+            if (!data || !data.meal) {
+                console.error('선택한 식사 정보가 없습니다.');
+                return;
+            }
+            
+            console.log('불러온 식사 정보:', data);
+            
+            // 식사 정보 화면에 표시
+            mealInfo.value = {
+                meal_name: data.meal.meal_name || '',
+                meal_description: data.meal.meal_description || '',
+                meal_time: data.meal.meal_time || koreanDateTime.dateTime,
+                file: data.meal.file || null
+            };
+            
+            // 시간 입력란에 시간 설정
+            if (data.meal.meal_time) {
+                // meal_time이 ISO 형식(T 포함)인 경우 공백으로 변환
+                if (data.meal.meal_time.includes('T')) {
+                    const parts = data.meal.meal_time.split('T');
+                    const timePart = parts[1]?.split(':') || [];
+                    if (parts[0] && timePart.length >= 2) {
+                        timeInput.value = `${parts[0]} ${timePart[0]}:${timePart[1]}`;
+                    }
+                } else {
+                    timeInput.value = data.meal.meal_time;
+                }
+            }
+            
+            // 이미지 정보 설정
+            if (data.meal.file) {
+                selectedImageInfo.value = data.meal.file;
+                previewImage.value = data.meal.file.path;
+            }
+            
+            // 등록된 음식 정보 설정
+            if (data.meal.foods && data.meal.foods.length > 0) {
+                registeredFoods.value = data.meal.foods;
+                showMealCard.value = true;
+                
+                // Pinia store에도 저장
+                mealStore.setSelectedFoods(data.meal.foods);
+            }
+            
+            // 식사 정보를 Pinia store에 임시 저장
+            mealStore.setTempMealInfo(mealInfo.value);
+            
+            // 모달 닫기
+            closeLoadMealModal();
+        } catch (error) {
+            console.error('식사 정보 로드 중 오류 발생:', error);
+            alert('식사 정보를 로드하는 중 오류가 발생했습니다.');
+            closeLoadMealModal();
+        }
+    };
+
+    const openLoadDietPostModal = () => {
+        showLoadDietPostModal.value = true;
+    };
+
+    const closeLoadDietPostModal = () => {
+        showLoadDietPostModal.value = false;
+    };
+
+    const handleLoadDietPostConfirm = () => {
+        closeLoadDietPostModal();
+    };
+
+    const updateMealInfo = () => {
+        mealInfo.value = {
+            ...mealInfo.value,
+            meal_name: document.querySelector('.registmeal-name-input')?.value || '',
+            meal_description: document.querySelector('.registmeal-desc-input')?.value || '',
+            meal_time: timeInput.value,
+            file: selectedImageInfo.value
+        };
+        
+        // Pinia 스토어에 임시 정보 저장
+        mealStore.setTempMealInfo(mealInfo.value);
     };
 </script>
 
@@ -547,59 +793,94 @@
 }
 
 .registmeal-nutrient-graph {
-    background: white;
-    width: 343px;
-    height: 240px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 20px;
     position: relative;
+    height: 235px;
+    padding: 20px 40px;
+    margin-bottom: 30px;
+    background-color: white;
+    border-radius: 8px;
 }
 
 .nutrient-bar-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60px;
-    position: relative;
-    z-index: 2;
+    width: 50px;
+    height: 100%;
+    margin-top: 20px;
 }
 
 .nutrient-bar {
-    width: 30px;
-    background-color: #E6E6E6;
-    margin-bottom: 10px;
+    width: 100%;
+    height: 160px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
     position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .nutrient-bar-fill {
-    width: 100%;
     position: absolute;
     bottom: 0;
-    left: 0;
+    width: 100%;
+    transition: height 0.5s ease;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 24px; /* 최소 높이 설정 */
+}
+
+.nutrient-value {
+    color: white;
+    font-size: 12px;
+    padding: 4px;
+    position: relative;
+    white-space: nowrap;
+    z-index: 2;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.percent {
+    font-size: 10px;
+    opacity: 0.9;
+    margin-top: 2px;
 }
 
 .nutrient-label {
-    font-family: 'Inter';
-    font-weight: 500;
+    margin-top: 8px;
     font-size: 12px;
-    color: #666;
     text-align: center;
+    color: #666;
+    white-space: pre-line;
+    line-height: 1.2;
 }
-
-.nutrient-bar-fill.calorie { background-color: #FF4B4B; }
-.nutrient-bar-fill.carb { background-color: #FFA94B; }
-.nutrient-bar-fill.protein { background-color: #4CAF50; }
-.nutrient-bar-fill.fat { background-color: #4B7BFF; }
 
 .grid-line {
     position: absolute;
-    left: 0;
-    width: 100%;
+    left: 40px;
+    right: 40px;
+    width: calc(100% - 80px);
     height: 1px;
-    background-color: #E6E6E6;
+    background-color: #ddd;
     z-index: 1;
+}
+
+.line-1 {
+    bottom: 115px;
+}
+
+.line-2 {
+    bottom: 165px;
 }
 
 .registmeal-footer {
@@ -906,4 +1187,23 @@
 .modal-confirm-btn:hover {
     background-color: #0f4433;
 }
+
+.meal-cards-container {
+    overflow-y: auto;
+    max-height: calc(100% - 60px);
+    padding: 10px;
+}
+
+.meal-cards-container .registmeal-card {
+    margin-bottom: 20px;
+}
+
+.meal-cards-container .registmeal-card:last-child {
+    margin-bottom: 0;
+}
+
+.calorie { background-color: #FD5D5D; }
+.carb { background-color: #FDCA5D; }
+.protein { background-color: #50E250; }
+.fat { background-color: #5D7DFD; }
 </style>
