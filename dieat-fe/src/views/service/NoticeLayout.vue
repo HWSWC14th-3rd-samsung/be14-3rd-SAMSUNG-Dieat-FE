@@ -17,70 +17,82 @@
     </div>
 
     <div class="board-wrapper">
-        <ServiceTable
-            :posts="noticePosts"
-            titleHeader="공지 제목"
-            :useLink="true"
-            linkPrefix="/noticeDetail"
-            />
+        <ServiceTable :posts="noticePosts" titleHeader="공지 제목" :useLink="true" linkPrefix="/noticeDetail" />
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-
+    <Footer />
 </template>
 
 <script setup>
-    import Header from '@/components/common/Header.vue';
-    import Footer from '@/components/common/Footer.vue';
-    import ServiceTable from './ServiceTable.vue';
-    import { ref } from 'vue';
-    
-    const noticePosts = ref([
-        { title: '공지사항입니다. 공지사항', date: '2025-03-27', count: '18' },
-        { title: 'Dieat 서비스 안내', date: '2025-03-27', count: '18' },
-        { title: '3월 업데이트 안내', date: '2025-03-24', count: '65' },
-        { title: '시스템 점검 시간으로 인한 사이트 접속 제한', date: '2025-03-14', count: '69' },
-        { title: '공지사항에는', date: '2025-03-11', count: '73' },
-        { title: '또 무슨 공지가 있을까요', date: '2025-03-08', count: '99' },
-        { title: '그래서 저희의 요점은', date: '2025-03-01', count: '123' },
-        { title: '다잇, 삼성 많은 사랑 부탁드립니다.', date: '2025-02-27', count: '232' }
-    ])
+import Header from '@/components/common/Header.vue';
+import Footer from '@/components/common/Footer.vue';
+import ServiceTable from './ServiceTable.vue';
+import { ref } from 'vue';
+
+const noticePosts = ref([
+    { title: '공지사항입니다. 공지사항', date: '2025-03-27', count: '18' },
+    { title: 'Dieat 서비스 안내', date: '2025-03-27', count: '18' },
+    { title: '3월 업데이트 안내', date: '2025-03-24', count: '65' },
+    { title: '시스템 점검 시간으로 인한 사이트 접속 제한', date: '2025-03-14', count: '69' },
+    { title: '공지사항에는', date: '2025-03-11', count: '73' },
+    { title: '또 무슨 공지가 있을까요', date: '2025-03-08', count: '99' },
+    { title: '그래서 저희의 요점은', date: '2025-03-01', count: '123' },
+    { title: '다잇, 삼성 많은 사랑 부탁드립니다.', date: '2025-02-27', count: '232' }
+])
 </script>
 
 <style scoped>
+.breadcrumb {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    margin-right: 2rem;
+    color: gray;
+    flex-wrap: nowrap;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-    .breadcrumb {
-        display: block;
-        text-align: right;
-        margin-top: 1rem;
-        margin-right: 3rem;
-        color: gray;
-        flex-wrap: nowrap;
-    }
+.text-link {
+    color: inherit;
+    text-decoration: none;
+    font-weight: normal;
+    cursor: pointer;
+}
 
-    .text-link {
-        color: inherit;
-        text-decoration: none;
-        font-weight: normal;
-        cursor: pointer;
-    }
+h1 {
+    text-align: center;
+    max-width: 1024px;
+    margin: 2rem auto 0 auto;
+}
 
-    h1 {
-        text-align: center;
-    }
+.searchingBar-img {
+    display: block;
+    margin: 3rem auto 0 auto;
+    max-width: 100%;
+    height: auto;
+}
 
-    .searchingBar-img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 6rem;
-    }
+.post-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem auto;
+    max-width: 1024px;
+}
 
-    .board-wrapper {
-        padding: 2rem;
-        max-width: 800px;
-        margin: 0 auto;
-    }
+.post-item {
+    border-bottom: 1px solid #ddd;
+    padding: 1rem 0;
+}
+
+.meta {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.board-wrapper {
+    padding: 2rem;
+    max-width: 1024px;
+    margin: 0 auto;
+}
 </style>

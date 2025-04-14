@@ -143,9 +143,13 @@ const filteredPosts = computed(() => {
 
 .right-controls {
   display: flex;
-  flex-direction: column;
-  gap: 15rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end; /* ✅ 우측 정렬 추가 */
+  gap: 1rem;
+  flex: 1;
 }
+
 
 @media (min-width: 768px) {
   .right-controls {

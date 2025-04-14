@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
     <div class="bookmark-page">
       <!-- 왼쪽 메뉴 -->
       <aside class="sidebar">
@@ -61,7 +60,7 @@
     });
 
     onMounted(async () => {
-        const res = await fetch('/data/bookmark/bm.json'); // public 기준 경로
+        const res = await fetch('/bookmark/bm.json'); // public 기준 경로
         const json = await res.json();
 
         // nutrients 배열로 가공

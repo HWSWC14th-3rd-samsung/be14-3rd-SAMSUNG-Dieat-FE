@@ -4,6 +4,9 @@ import SubscribeList from '@/components/subscribe/SubscribeList.vue'
 import BlockUserList from '@/components/block/BlockUserList.vue'
 import DietPostLayout from '@/views/dietpost/DietPostLayout.vue'
 import DietPostDetail from '@/views/dietpost/DietPostDetail.vue'
+import Regist from '@/components/Regist.vue';
+import SubscribeList from '@/components/subscribe/SubscribeList.vue';
+import BlockUserList from '@/components/block/BlockUserList.vue';
 
 const router = createRouter({
   history: createWebHistory(),

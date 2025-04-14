@@ -16,7 +16,7 @@
 
       <div class="basket-panel">
         <BasketPanel :items="basket" @remove-item="removeFromBasket" @update-quantity="updateBasketQuantity" />
-        <button class="complete-button" @click="goToRegisterMeal">완료</button>
+        <button class="complete-button" @click="goToRegisterMeal" id="completeButton">완료</button>
       </div>
     </div>
   </div>
@@ -27,6 +27,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useRegistMealStore } from '@/stores/registMeal'
 
 import Header from '@/components/common/Header.vue'
 import FoodTable from '@/components/food/searchFood/FoodTable.vue'
@@ -47,6 +48,7 @@ const isManuallySelected = ref(false)
 
 const allFoods = ref([])
 const router = useRouter()
+const registMealStore = useRegistMealStore()
 
 function onAddFood() {
   showModal.value = true
@@ -62,12 +64,50 @@ function handleRegisterFood(food) {
 }
 
 function goToRegisterMeal() {
+  console.log('FoodSearchPage - goToRegisterMeal: 완료 버튼 클릭');
+  
   if (basket.value.length === 0) {
     alert('장바구니에 담긴 음식이 없습니다.')
     return
   }
 
-  router.push({ path: '/RegistMeal', state: { basket: basket.value } })
+  console.log('FoodSearchPage - goToRegisterMeal: 장바구니 데이터', basket.value);
+  
+  try {
+    console.log('FoodSearchPage - goToRegisterMeal: Pinia store에 데이터 저장 시도');
+    const foodsWithAllInfo = basket.value.map(food => ({
+      id: food.id,
+      name: food.name,
+      unit: food.unit,
+      kcal: food.kcal || 0,
+      carb: food.carb || 0,
+      protein: food.protein || 0,
+      fat: food.fat || 0,
+      sugar: food.sugar || 0,
+      count: food.count || 1,
+      accurate: food.accurate || 0,
+      inaccurate: food.inaccurate || 0,
+      type: food.type || 'USER',
+      nickname: food.nickname || '',
+      quantity: food.quantity || 1
+    }));
+    
+    console.log('FoodSearchPage - goToRegisterMeal: 변환된 데이터', foodsWithAllInfo);
+    
+    // 기존 선택된 음식들 가져오기
+    const currentFoods = registMealStore.selectedFoods || [];
+    // 새로운 음식들 추가
+    registMealStore.setSelectedFoods([...currentFoods, ...foodsWithAllInfo]);
+    
+    console.log('FoodSearchPage - goToRegisterMeal: Pinia store에 데이터 저장 성공');
+    console.log('FoodSearchPage - goToRegisterMeal: 라우터 이동 시도 /registmeal');
+    
+    router.push('/registmeal');
+    
+    console.log('FoodSearchPage - goToRegisterMeal: 라우터 이동 명령 실행 완료');
+  } catch (error) {
+    console.error('FoodSearchPage - goToRegisterMeal: 오류 발생', error);
+  }
 }
 
 watch(searchKeyword, (newKeyword) => {
@@ -86,14 +126,13 @@ watch(searchKeyword, (newKeyword) => {
 
 onMounted(async () => {
   try {
+    console.log('FoodSearchPage - onMounted: 시작');
     const res = await fetch('http://localhost:3000/food')
     if (!res.ok) throw new Error('음식 데이터를 불러오지 못 했습니다.')
     allFoods.value = await res.json()
 
-    const receivedBasket = window.history.state?.basket
-    if (receivedBasket && Array.isArray(receivedBasket)) {
-      basket.value = receivedBasket
-    }
+    basket.value = [];
+    registMealStore.clearBasketFoods();
   } catch (e) {
     console.error(e)
   }
@@ -143,12 +182,15 @@ function handleFilter(type) {
 }
 
 function handleAddToBasket(item) {
+  console.log('FoodSearchPage - handleAddToBasket: 장바구니에 음식 추가', item);
   const exists = basket.value.find(b => b.id === item.id)
   if (!exists) {
-    basket.value.push({ ...item, quantity: 1 })
+    const foodWithQuantity = { ...item, quantity: 1 };
+    basket.value.push(foodWithQuantity);
   } else {
-    exists.quantity += 1
+    exists.quantity += 1;
   }
+  console.log('FoodSearchPage - handleAddToBasket: 현재 장바구니', basket.value);
 }
 
 function removeFromBasket(index) {

@@ -59,10 +59,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject, watch, computed } from 'vue'
+import { inject, computed } from 'vue'
 
 const selectedDate = inject('selectedDate')
-const todayMeals = ref([])
+const meals = inject('meals')
 
 // 목표치 (임시값)
 const TARGET_VALUES = {
@@ -72,54 +72,78 @@ const TARGET_VALUES = {
     fat: 50
 }
 
-const fetchTodayMeals = async () => {
-    try {
-        const response = await fetch('http://localhost:3000/meals')
-        if (!response.ok) {
-            throw new Error('식사 데이터를 가져오는데 실패했습니다.')
+const todayMeals = computed(() => {
+    if (!meals.value) return [];
+    
+    return meals.value.filter(meal => {
+        if (!meal.meal_dt) return false;
+        try {
+            // 한국 시간대로 변환하여 날짜 비교
+            const date = new Date(meal.meal_dt);
+            const offset = date.getTimezoneOffset() * 60000;
+            const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
+            const mealDateStr = koreanTime.toISOString().split('T')[0];
+            
+            return mealDateStr === selectedDate.value;
+        } catch (error) {
+            console.error('날짜 형식 오류:', error);
+            return false;
         }
-        const allMeals = await response.json()
-        
-        todayMeals.value = allMeals.filter(meal => {
-            const mealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
-            return mealDate === selectedDate.value
-        })
-    } catch (error) {
-        console.log('오늘의 식사 데이터가 없습니다.')
-        todayMeals.value = []
-    }
-}
+    });
+})
 
 const calculateTotalCalories = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_calories || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const calories = meal.meal_calories || 0
+        return sum + calories
+    }, 0)
+    return Math.round(total)
 }
 
 const calculateTotalCarbs = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_carbs || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const carbs = meal.meal_carbs || 0
+        return sum + carbs
+    }, 0)
+    return Math.round(total)
 }
 
 const calculateTotalProtein = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_protein || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const protein = meal.meal_protein || 0
+        return sum + protein
+    }, 0)
+    return Math.round(total)
 }
 
 const calculateTotalFat = () => {
-    if (!todayMeals.value || todayMeals.value.length === 0) return 0
-    return Math.round(todayMeals.value.reduce((sum, meal) => sum + (meal.meal_fat || 0), 0))
+    if (!todayMeals.value || todayMeals.value.length === 0) {
+        return 0
+    }
+    const total = todayMeals.value.reduce((sum, meal) => {
+        const fat = meal.meal_fat || 0
+        return sum + fat
+    }, 0)
+    return Math.round(total)
 }
 
 const getNutrientColor = (current, target, isProtein = false) => {
     const ratio = (current / target) * 100
     
     if (isProtein) {
-        
         if (ratio < 90) return '#D30E0E'
         if (ratio < 100) return '#FF9D00'
         return '#696969'
     } else {
-
         if (ratio > 110) return '#D30E0E'
         if (ratio > 100) return '#FF9D00'
         return '#696969'
@@ -140,14 +164,6 @@ const caloriesRatio = computed(() => calculateNutrientRatio(calculateTotalCalori
 const carbsRatio = computed(() => calculateNutrientRatio(calculateTotalCarbs(), TARGET_VALUES.carbs))
 const proteinRatio = computed(() => calculateNutrientRatio(calculateTotalProtein(), TARGET_VALUES.protein))
 const fatRatio = computed(() => calculateNutrientRatio(calculateTotalFat(), TARGET_VALUES.fat))
-
-onMounted(() => {
-    fetchTodayMeals()
-})
-
-watch(selectedDate, () => {
-    fetchTodayMeals()
-})
 </script>
 
 <style scoped>
