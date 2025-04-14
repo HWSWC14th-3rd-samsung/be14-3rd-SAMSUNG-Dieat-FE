@@ -15,6 +15,7 @@
 import { ref } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
 import LoginModal from '@/components/LoginModal.vue'
+// import { RouterView } from 'vue-router';
 
 const isLoginModalOpen = ref(false)
 
@@ -45,6 +46,13 @@ body {
   font-family: 'Helvetica', 'Arial', sans-serif;
   background-color: #f9f9f9;
 }
+
+html, body, #app {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
 </style>
 
 
