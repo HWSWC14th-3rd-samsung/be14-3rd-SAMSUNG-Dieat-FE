@@ -11,6 +11,7 @@
             </tr>
         </thead>
         <tbody>
+            <!-- 🔥 게시글이 있을 때 -->
             <tr v-for="(post, index) in posts" :key="index" class="clickable-row">
                 <td class="title-cell" @click="goToDetail(post.id)">
                     {{ post.title }}
@@ -21,22 +22,37 @@
                 <td>{{ post.views }}</td>
                 <td>{{ post.likes }}</td>
             </tr>
+
+            <!-- 🔥 게시글이 없을 때에도 구조 유지 -->
+            <tr v-if="posts.length === 0">
+                <td colspan="6" class="no-result">검색 결과가 없습니다.</td>
+            </tr>
         </tbody>
     </table>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
+
 const props = defineProps({
     posts: {
         type: Array,
         required: true
     }
-});
+})
 
-const router = useRouter();
+const router = useRouter()
 
 function goToDetail(postId) {
-    router.push(`/readFree/${postId}`);
+    router.push(`/readFree/${postId}`)
 }
 </script>
+
+<style scoped>
+.no-result {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1rem;
+    color: #999;
+}
+</style>
