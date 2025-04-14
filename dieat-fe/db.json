@@ -91,5 +91,43 @@
             "views": 128,
             "likes": 45
         }
+    ],
+    "fooddata": [
+        {
+            "name": "불닭볶음면 큰 컵",
+            "unit": "140g / 1개",
+            "kcal": 530,
+            "carb": 85,
+            "protein": 12,
+            "fat": 16,
+            "sugar": 7,
+            "accurate": 0,
+            "inaccurate": 0,
+            "nickname": "한화시스템 비욘드캠프 14기"
+        },
+        {
+            "name": "불닭소스",
+            "unit": "20g / 1개",
+            "kcal": 100,
+            "carb": 5,
+            "protein": 2,
+            "fat": 8,
+            "sugar": 1,
+            "accurate": 0,
+            "inaccurate": 0,
+            "nickname": "소스소스"
+        },
+        {
+            "name": "불닭볶음면",
+            "unit": "100g",
+            "kcal": 470,
+            "carb": 70,
+            "protein": 10,
+            "fat": 15,
+            "sugar": 5,
+            "accurate": 1,
+            "inaccurate": 0,
+            "nickname": "기본불닭"
+        }
     ]
 }

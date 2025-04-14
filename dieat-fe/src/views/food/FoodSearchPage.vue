@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Header from '@/components/common/Header.vue';
@@ -43,8 +43,10 @@ const isManuallySelected = ref(false);
 
 const router = useRouter();
 
+const allFoods = ref([]);
+
 function onAddFood() {
-    router.push('/food/register');
+    router.push('/registerFood');
 }
 
 // 🔍 검색어 변경 감지
@@ -63,64 +65,30 @@ watch(searchKeyword, (newKeyword) => {
     }
 });
 
+onMounted(async () => {
+    try {
+        const res = await fetch('http://localhost:3000/fooddata');
+        if (!res.ok) throw new Error('음식 데이터를 불러오지 못 했습니다.');
+        allFoods.value = await res.json();
+    } catch (e) {
+        console.error(e);
+    }
+});
+
 function searchFood(keyword = searchKeyword.value) {
     if (!keyword.trim()) {
         selectedFood.value = null;
         return;
     }
 
-    const allItems = [
-        {
-            name: '불닭볶음면 큰 컵',
-            unit: '140g / 1개',
-            kcal: 530,
-            carb: 85,
-            protein: 12,
-            fat: 16,
-            sugar: 7,
-            accurate: 0,
-            inaccurate: 0,
-            nickname: '한화시스템 비욘드캠프 14기',
-        },
-        {
-            name: '불닭소스',
-            unit: '20g / 1개',
-            kcal: 100,
-            carb: 5,
-            protein: 2,
-            fat: 8,
-            sugar: 1,
-            accurate: 0,
-            inaccurate: 0,
-            nickname: '소스소스',
-        },
-        {
-            name: '불닭볶음면',
-            unit: '100g',
-            kcal: 470,
-            carb: 70,
-            protein: 10,
-            fat: 15,
-            sugar: 5,
-            accurate: 1,
-            inaccurate: 0,
-            nickname: '기본불닭',
-        }
-    ];
-
-    selectedFood.value = allItems.find(item => item.name === keyword.trim()) || null;
+    selectedFood.value =
+        allFoods.value.find(item => item.name === keyword.trim()) || null;
 }
 
 function mockSearch(keyword) {
-    const options = [
-        '불닭볶음면', '까르보불닭볶음면', '리틀핫불닭볶음면', '로제불닭볶음면',
-        '4가지치즈불닭볶음면', '핵불닭볶음면', '불닭볶음면 큰 컵',
-        '컵 불닭볶음면', '불닭볶음면 소스', '콘치즈불닭볶음면', '불닭소스'
-    ];
-
-    return options
-        .filter(name => name.includes(keyword.trim()))
-        .map(name => ({ name }));
+    return allFoods.value
+        .filter(item => item.name.includes(keyword.trim()))
+        .map(item => ({ name: item.name }));
 }
 
 function handleSelectResult(item) {
