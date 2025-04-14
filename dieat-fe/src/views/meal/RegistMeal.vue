@@ -1,7 +1,4 @@
 <template>
-    <header>
-        <Header />
-    </header>
     <div class="registmeal-wrapper">
         <div class="registmeal-container">
             <div class="registmeal-leftsection">

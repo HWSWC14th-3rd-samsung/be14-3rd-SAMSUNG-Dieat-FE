@@ -1,7 +1,4 @@
 <template>
-  <header>
-    <Header />
-  </header>
 
   <div class="food-search-page">
     <h2>음식 데이터 검색</h2>
@@ -13,7 +10,7 @@
 
     <div class="main-content">
       <div class="search-result">
-        <FoodTable v-if="selectedFood" :items="selectedFood" @add-to-basket="handleAddToBasket" />
+        <FoodTable v-if="selectedFood" :items="selectedFood" :user-id="user?.id" @add-to-basket="handleAddToBasket" />
         <p v-else class="no-data">표시할 데이터가 없습니다</p>
       </div>
 
@@ -39,28 +36,31 @@ import SearchResultList from '@/components/food/searchFood/SearchResultList.vue'
 import SearchBar from '@/components/food/searchFood/SearchBar.vue'
 import RegisterFoodForm from '@/components/food/registerFood/RegisterFoodForm.vue'
 
+// 🧑 로그인 유저 가정 (나중에 store 또는 useAuth로 교체)
+const user = ref({ id: 'suzy1234', name: '강수지' })
+
 const searchKeyword = ref('')
 const searchResults = ref([])
 const selectedFood = ref(null)
 const basket = ref([])
-const isManuallySelected = ref(false)
 const showModal = ref(false)
+const isManuallySelected = ref(false)
 
 const allFoods = ref([])
 const router = useRouter()
 const registMealStore = useRegistMealStore()
 
 function onAddFood() {
-  showModal.value = true;
+  showModal.value = true
 }
 
 function handleRegisterFood(food) {
-  allFoods.value.push(food);
-  basket.value.push({ ...food, quantity: 1 });
-  selectedFood.value = [food];
-  searchKeyword.value = food.name;
-  isManuallySelected.value = true;
-  searchResults.value = [];
+  allFoods.value.push(food)
+  basket.value.push({ ...food, quantity: 1 })
+  selectedFood.value = [food]
+  searchKeyword.value = food.name
+  isManuallySelected.value = true
+  searchResults.value = []
 }
 
 function goToRegisterMeal() {
@@ -166,18 +166,18 @@ function handleSelectResult(item) {
 }
 
 function handleFilter(type) {
-  if (!selectedFood.value) return;
+  if (!selectedFood.value) return
 
   if (type === 'latest') {
-    selectedFood.value = [...selectedFood.value].sort((a, b) => b.id - a.id);
+    selectedFood.value = [...selectedFood.value].sort((a, b) => b.id - a.id)
   } else if (type === 'accuracy') {
-    selectedFood.value = [...selectedFood.value].sort((a, b) => b.accurate - a.accurate);
+    selectedFood.value = [...selectedFood.value].sort((a, b) => b.accurate - a.accurate)
   } else if (type === 'ratio') {
     selectedFood.value = [...selectedFood.value].sort((a, b) => {
-      const aRatio = a.accurate + a.inaccurate === 0 ? 0 : a.accurate / (a.accurate + a.inaccurate);
-      const bRatio = b.accurate + b.inaccurate === 0 ? 0 : b.accurate / (b.accurate + b.inaccurate);
-      return bRatio - aRatio;
-    });
+      const aRatio = a.accurate + a.inaccurate === 0 ? 0 : a.accurate / (a.accurate + a.inaccurate)
+      const bRatio = b.accurate + b.inaccurate === 0 ? 0 : b.accurate / (b.accurate + b.inaccurate)
+      return bRatio - aRatio
+    })
   }
 }
 

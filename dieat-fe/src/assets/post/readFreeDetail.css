@@ -29,10 +29,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    /* 가운데 정렬 */
     gap: 10px;
     margin-bottom: 20px;
-    /* header ↔ content 간 여백 추가 */
 }
 
 .meta-item {
@@ -72,25 +70,23 @@
 }
 
 /* ❤️ 좋아요, 댓글수 */
-.interaction-wrapper {
+.post-interaction {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 16px;
+    margin: 16px 0 24px;
     font-size: 15px;
     font-weight: 500;
 }
 
-.like-button {
-    border: none;
-    background: none;
+.post-interaction .like {
     cursor: pointer;
-    font-size: 15px;
-    color: #444;
+    user-select: none;
+    transition: color 0.2s ease;
 }
 
-.like-button .liked {
-    color: #f85230;
+.post-interaction .liked {
+    color: var(--color-primary);
 }
 
 .comment-count {

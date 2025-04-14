@@ -46,6 +46,7 @@
       <template v-else>
         <button @click="$emit('open-login')">로그인</button>
         <RouterLink to="/regist">회원가입</RouterLink>
+
       </template>
     </nav>
   </header>
@@ -90,6 +91,7 @@ const menu3 = [
   { label: '성공기 게시글 등록', href: '/registerSuccess' }
 ]
 const menu4 = [
+
   { label: '개인 정보', href: '/personalUserInfo' },
   { label: '포인트 적립 내역', href: '/point' },
   { label: '북마크', href: '/category' },

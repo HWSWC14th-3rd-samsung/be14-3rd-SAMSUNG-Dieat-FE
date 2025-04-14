@@ -1,7 +1,7 @@
-// src/router/index.js
-import { createRouter, createWebHistory } from 'vue-router';
 
-// 페이지 컴포넌트 불러오기
+import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '@/stores/user';
+
 import Home from '@/views/Home.vue';
 import Regist from '@/components/member/Regist.vue';
 import Login from '@/views/Login.vue';
@@ -23,8 +23,25 @@ import NoticeLayout from '@/views/service/NoticeLayout.vue';
 import QnaLayout from '@/views/service/QnaLayout.vue';
 import personalUserInfo from '@/components/member/personalUserInfo.vue';
 import userEdit from '@/components/member/userEdit.vue';
+import SubscribeList from '@/components/subscribe/SubscribeList.vue';
+import BlockUserList from '@/components/block/BlockUserList.vue';
+
+import MyReportLayout from '@/views/service/MyReportLayout.vue';
 
 import Dashboard from '@/views/dashboard/Dashboard.vue';
+
+import NoticeDetail from '@/views/service/NoticeDetail.vue';
+import QnaDetail from '@/views/service/QnaDetail.vue';
+import RegistQna from '@/views/service/RegistQna.vue';
+
+import BookMarkLayout from '@/views/bookmark/BookMarkLayout.vue';
+
+import ReadSuccess from '@/views/succpost/SuccessLayout.vue';
+import RegisterSuccPost from '@/views/succpost/RegisterSucc.vue'
+
+import userEdit from '@/components/member/userEdit.vue';
+import personalUserInfo from '@/components/member/personalUserInfo.vue';
+import DailyPoint from '@/components/point/DailyPoint.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -37,6 +54,7 @@ const router = createRouter({
 
 
 
+
     { path: '/meal', component: MealLayout },
     { path: '/registmeal', component: RegistMeal },
 
@@ -45,6 +63,7 @@ const router = createRouter({
 
     { path: '/searchFood', component: SearchFood },
     { path: '/registerFood', component: RegistFood },
+    { path: '/point', component: DailyPoint },
 
     { path: '/readFree', component: FreePostListPage },
     { path: '/readFree/:postId', component: FreePostDetailPage, props: true },
@@ -52,9 +71,32 @@ const router = createRouter({
 
     { path: '/noticeLayout', component: NoticeLayout },
     { path: '/qnaLayout', component: QnaLayout },
+    { path: '/subscribeMng', component: SubscribeList },
+    { path: '/block', component: BlockUserList },
 
-    { path: '/dashboard', component: Dashboard }
+    { path: '/myReportLayout', component: MyReportLayout },
+
+    { path: '/dashboard', component: Dashboard },
+
+    { path: '/noticeDetail/:id', name: 'NoticeDetail', component: NoticeDetail, props: true },
+    { path: '/qnaDetail/:id', name: 'QnaDetail', component: QnaDetail, props: true },
+    { path: '/registQna', component: RegistQna },
+
+    { path: '/bookmarkLayout', component: BookMarkLayout },
+    { path: '/readSuccess', component: ReadSuccess },
+    { path: '/registerSuccess', component: RegisterSuccPost },
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+
+  if (to.meta.requiresAuth && !userStore.isLogin) {
+    window.dispatchEvent(new Event('open-login-modal'))
+    return next(false)
+  }
+
+  next()
+})
 
 export default router;
