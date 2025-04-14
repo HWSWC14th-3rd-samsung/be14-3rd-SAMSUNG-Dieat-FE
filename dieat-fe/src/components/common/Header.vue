@@ -2,7 +2,7 @@
   <header class="header">
     <div>
       <RouterLink to="/" class="logo">
-        <img src="@/assets/home_img/DieatLogo2" alt="Dieat Main Page" />
+        <img src="@/assets/home_img/DieatLogo2.png" alt="Dieat Main Page" />
       </RouterLink>
     </div>
 
@@ -86,17 +86,17 @@ const menu3 = [
   { label: '성공기 게시글 등록', href: '/registerSuccess' }
 ]
 const menu4 = [
-  { label: '개인 정보', href: '/info' },
-  { label: '포인트 적립 내역', href: '/dailypoint' },
+  { label: '개인 정보', href: '/userinfo' },
+  { label: '포인트 적립 내역', href: '/point' },
   { label: '북마크', href: '/category' },
-  { label: '구독 관리', href: '/subscribeList' },
+  { label: '구독 관리', href: '/subscribeMng' },
   { label: '구독 게시판', href: '/subscribePost' },
-  { label: '차단', href: '/blockList' }
+  { label: '차단', href: '/block' }
 ]
 const menu5 = [
   { label: '공지 사항', href: '/noticeLayout' },
   { label: '문의 사항', href: '/qnaLayout' },
-  { label: '나의 신고 내역', href: '/myReport' }
+  { label: '나의 신고 내역', href: '/myReportLayout' }
 ]
 </script>
 
