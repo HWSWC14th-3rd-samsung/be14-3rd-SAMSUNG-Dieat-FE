@@ -163,6 +163,10 @@
         @close="closeLoadDietPostModal"
         @confirm="handleLoadDietPostConfirm"
     />
+    <CompleteModal
+        :show="showCompleteModal"
+        @close="closeCompleteModal"
+    />
 </template>
 
 <script setup>
@@ -171,6 +175,7 @@
     import AlertModal from '@/components/meal/AlertModal.vue';
     import LoadMealModal from '@/components/meal/LoadMealModal.vue';
     import LoadDietPostModal from '@/components/meal/LoadDietPostModal.vue';
+    import CompleteModal from '@/components/common/CompleteModal.vue';
     import { ref, onMounted, computed } from 'vue';
     import { useRouter } from 'vue-router';
     import { useRegistMealStore } from '@/stores/registMeal';
@@ -187,6 +192,7 @@
     const showMealCard = ref(false);
     const showLoadMealModal = ref(false);
     const showLoadDietPostModal = ref(false);
+    const showCompleteModal = ref(false);
     const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
     const showDeleteMode = ref(false);
 
@@ -210,11 +216,12 @@
     // 총 영양성분 계산
     const totalNutrients = computed(() => {
         return registeredFoods.value.reduce((total, food) => {
+            const quantity = parseFloat(food.quantity) || 1;
             return {
-                calorie: total.calorie + (parseFloat(food.kcal) || 0),
-                carb: total.carb + (parseFloat(food.carb) || 0),
-                protein: total.protein + (parseFloat(food.protein) || 0),
-                fat: total.fat + (parseFloat(food.fat) || 0)
+                calorie: total.calorie + (parseFloat(food.kcal) || 0) * quantity,
+                carb: total.carb + (parseFloat(food.carb) || 0) * quantity,
+                protein: total.protein + (parseFloat(food.protein) || 0) * quantity,
+                fat: total.fat + (parseFloat(food.fat) || 0) * quantity
             };
         }, {
             calorie: 0,
@@ -358,9 +365,23 @@
             try {
                 const uniqueFileName = generateUniqueFileName(file.name);
                 
-
+                // 현재 등록된 이미지들의 ID 중 최대값을 찾아서 1을 더함
+                let maxId = 0; // 기본값은 0으로 설정하여 첫 번째 이미지는 1부터 시작
+                
+                try {
+                    const response = await fetch(API_URL);
+                    if (response.ok) {
+                        const meals = await response.json();
+                        maxId = Math.max(...meals.map(meal => 
+                            Math.max(...(meal.file?.map(f => f.id) || [0]))
+                        ), 0);
+                    }
+                } catch (error) {
+                    console.error('기존 식사 데이터 조회 중 오류:', error);
+                }
+                
                 selectedImageInfo.value = {
-                    id: -1,
+                    id: maxId + 1,
                     originalName: file.name,
                     uniqueName: uniqueFileName,
                     imageData: '',
@@ -468,7 +489,8 @@
 
             if (!response.ok) throw new Error('서버 응답 오류');
             
-            await router.push('/meal');
+            // 등록 완료 모달 표시
+            showCompleteModal.value = true;
 
         } catch (error) {
             console.error('저장 중 오류 발생:', error);
@@ -497,6 +519,14 @@
 
     const closeNoFoodModal = () => {
         showNoFoodModal.value = false;
+    };
+
+    const closeCompleteModal = () => {
+        showCompleteModal.value = false;
+        // 모달을 닫을 때 메인 페이지로 이동
+        mealStore.clearSelectedFoods();
+        mealStore.clearTempMealInfo();
+        router.push('/meal');
     };
 
     const openLoadMealModal = () => {

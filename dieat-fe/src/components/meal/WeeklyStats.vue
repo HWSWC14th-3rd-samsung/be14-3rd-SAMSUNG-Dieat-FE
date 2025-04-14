@@ -33,10 +33,10 @@
 </template>
 
 <script setup>
-import { ref, inject, watch, onMounted, computed } from 'vue'
+import { inject, computed } from 'vue'
 
 const selectedDate = inject('selectedDate')
-const weeklyMeals = ref([])
+const meals = inject('meals')
 
 const TARGET_VALUES = {
     calories: 2000,
@@ -52,9 +52,11 @@ const getNutrientColor = (current, target) => {
     return '#000'
 }
 
-const fetchWeeklyStats = async (date) => {
+const weeklyMeals = computed(() => {
+    if (!meals.value || !selectedDate.value) return [];
+
     try {
-        const currentDate = new Date(date)
+        const currentDate = new Date(selectedDate.value)
         const startOfWeek = new Date(currentDate)
         startOfWeek.setDate(currentDate.getDate() - currentDate.getDay())
         const endOfWeek = new Date(startOfWeek)
@@ -62,22 +64,22 @@ const fetchWeeklyStats = async (date) => {
 
         const startDate = startOfWeek.toISOString().split('T')[0]
         const endDate = endOfWeek.toISOString().split('T')[0]
-
-        const response = await fetch('http://localhost:3000/meals')
-        if (!response.ok) {
-            throw new Error('주간 통계 데이터를 가져오는데 실패했습니다.')
-        }
-        const allMeals = await response.json()
         
-        weeklyMeals.value = allMeals.filter(meal => {
-            const mealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
-            return mealDate >= startDate && mealDate <= endDate
+        return meals.value.filter(meal => {
+            if (!meal.meal_dt) return false;
+            try {
+                const mealDate = new Date(meal.meal_dt).toISOString().split('T')[0]
+                return mealDate >= startDate && mealDate <= endDate
+            } catch (error) {
+                console.error('날짜 형식 오류:', error);
+                return false;
+            }
         })
     } catch (error) {
-        console.log('주간 식사 데이터가 없습니다.')
-        weeklyMeals.value = []
+        console.error('주간 식사 데이터 필터링 오류:', error);
+        return [];
     }
-}
+})
 
 const calculateDailyAverage = (meals, nutrientKey) => {
     if (!meals || meals.length === 0) return 0
@@ -119,14 +121,6 @@ const averageProtein = computed(() => {
 
 const averageFat = computed(() => {
     return calculateDailyAverage(weeklyMeals.value, 'meal_fat')
-})
-
-onMounted(() => {
-    fetchWeeklyStats(selectedDate.value)
-})
-
-watch(selectedDate, (newDate) => {
-    fetchWeeklyStats(newDate)
 })
 </script>
 

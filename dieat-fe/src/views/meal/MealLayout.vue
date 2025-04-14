@@ -29,14 +29,44 @@
     import WeeklyCalendar from './WeeklyCalendar.vue';
     import WeeklyStats from '@/components/meal/WeeklyStats.vue';
     import Header from '@/components/common/Header.vue';
-    import { ref, provide } from 'vue';
+    import { ref, provide, onMounted, watch } from 'vue';
     import { useRouter } from 'vue-router';
+    import { useRegistMealStore } from '@/stores/registMeal';
 
     const router = useRouter();
     const selectedDate = ref(new Date().toISOString().split('T')[0]);
+    const meals = ref([]);
+    
     provide('selectedDate', selectedDate);
+    provide('meals', meals);
+    
+    const mealStore = useRegistMealStore();
+
+    const fetchMeals = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/meals')
+            if (!response.ok) {
+                throw new Error('식사 데이터를 가져오는데 실패했습니다.')
+            }
+            const data = await response.json()
+            meals.value = data
+        } catch (error) {
+            console.error('식사 데이터 조회 오류:', error)
+            meals.value = []
+        }
+    }
+
+    onMounted(() => {
+        fetchMeals()
+    })
+
+    watch(selectedDate, () => {
+        fetchMeals()
+    })
 
     const goToRegistMeal = () => {
+        mealStore.clearSelectedFoods();
+        mealStore.clearTempMealInfo();
         router.push('/registmeal');
     };
 </script>

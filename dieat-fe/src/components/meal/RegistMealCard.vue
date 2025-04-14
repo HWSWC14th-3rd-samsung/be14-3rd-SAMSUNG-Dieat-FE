@@ -1,7 +1,12 @@
 <template>
     <div class="registmeal-cards-wrapper">
         <div v-for="(food, index) in foods" :key="food.id" class="registmeal-card">
-            <button v-if="showDeleteButton" class="delete-button" @click="$emit('delete', index)">×</button>
+            <button v-if="showDeleteButton" class="registmeal-card-delete-btn" @click="$emit('delete', index)">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L11 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
             <div class="card-left">
                 <div class="regstmeal-card-category">
                     <h3 class="registmeal-card-category-name" :class="{ 'opendata': food.type === 'OPENDATA' }">
@@ -11,37 +16,43 @@
                 <div class="registmeal-card-name-div">
                     <h3 class="registmeal-card-name">{{ food.name }}</h3>
                 </div>
-                <div class="registmeal-card-unit">
+                <div class="registmeal-card-unit" :class="{ 'shifted': showDeleteButton }">
                     <h5 class="registmeal-card-unit-name">{{ food.unit }}</h5>
                 </div>
             </div>
             <div class="card-right">
                 <div class="registmeal-card-nutr-div">
                     <div class="registmeal-card-nutr-cal">
-                        <h3 class="registmeal-card-nutr-cal-value">{{ food.kcal }}</h3>
+                        <h3 class="registmeal-card-nutr-cal-value">{{ calculateNutrient(food.kcal, food.quantity) }}</h3>
                         <h5 class="registmeal-card-nutr-cal-unit">kcal</h5>
                     </div>
                     <div class="registmeal-card-nutr-carb">
-                        <h3 class="registmeal-card-nutr-carb-value">{{ food.carb }}</h3>
+                        <h3 class="registmeal-card-nutr-carb-value">{{ calculateNutrient(food.carb, food.quantity) }}</h3>
                         <h5 class="registmeal-card-nutr-carb-unit">탄</h5>
                     </div>
                     <div class="registmeal-card-nutr-protein">
-                        <h3 class="registmeal-card-nutr-protein-value">{{ food.protein }}</h3>
+                        <h3 class="registmeal-card-nutr-protein-value">{{ calculateNutrient(food.protein, food.quantity) }}</h3>
                         <h5 class="registmeal-card-nutr-protein-unit">단</h5>
                     </div>
                     <div class="registmeal-card-nutr-fat">
-                        <h3 class="registmeal-card-nutr-fat-value">{{ food.fat }}</h3>
-                        <h5 class="registmeal-card-nutr-fat-unit">지    </h5>
+                        <h3 class="registmeal-card-nutr-fat-value">{{ calculateNutrient(food.fat, food.quantity) }}</h3>
+                        <h5 class="registmeal-card-nutr-fat-unit">지</h5>
                     </div>
                     <div class="registmeal-card-nutr-sugar">
-                        <h3 class="registmeal-card-nutr-sugar-value">{{ food.sugar }}</h3>
+                        <h3 class="registmeal-card-nutr-sugar-value">{{ calculateNutrient(food.sugar, food.quantity) }}</h3>
                         <h5 class="registmeal-card-nutr-sugar-unit">당</h5>
                     </div>
                 </div>
                 <div class="registmeal-card-amout-div"> 
                     <h3 class="registmeal-card-amout-title">수량</h3>
                     <div class="registmeal-card-amout">
-                        {{ food.quantity }}
+                        <input 
+                            type="number" 
+                            v-model="food.quantity" 
+                            step="0.1"
+                            min="0"
+                            @input="handleQuantityChange($event, index)"
+                        >
                     </div>
                 </div>
             </div>
@@ -62,12 +73,22 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['delete']);
+const emit = defineEmits(['delete', 'update:quantity']);
 
 const getFoodType = (type) => {
     if (type === 'OPENDATA') return '공공';
     if (type === 'USERDATA') return '회원';
     return '회원';  // 기본값
+};
+
+const handleQuantityChange = (event, index) => {
+    const value = parseFloat(event.target.value) || 0;
+    emit('update:quantity', { index, value });
+};
+
+const calculateNutrient = (value, quantity) => {
+    const qty = parseFloat(quantity) || 1;
+    return Math.floor(parseFloat(value) * qty);
 };
 </script>
 
@@ -119,7 +140,7 @@ const getFoodType = (type) => {
     background: #98DCC6;
     width: 41px;
     height: 18px;
-    border-radius: 0 0 5px 5px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,6 +179,11 @@ const getFoodType = (type) => {
     position: absolute;
     top: 0;
     right: 15px;
+    transition: right 0.3s ease;
+}
+
+.registmeal-card-unit.shifted {
+    right: 35px;
 }
 
 .registmeal-card-unit-name {
@@ -250,34 +276,57 @@ const getFoodType = (type) => {
     padding: 0;
 }
 
-.delete-button {
+.registmeal-card-delete-btn {
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: #ff4b4b;
-    color: white;
-    border: none;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
+    width: 20px;
+    height: 20px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 2;
+    align-items: center;
+    cursor: pointer;
     transition: all 0.2s ease;
+    z-index: 2;
+    background: none;
+    border: none;
     padding: 0;
-    margin: 0;
 }
 
-.delete-button:hover {
-    background-color: #ff3333;
+.registmeal-card-delete-btn:hover {
     transform: scale(1.1);
 }
 
-.delete-button:active {
-    transform: scale(0.95);
+.registmeal-card-delete-btn:hover svg path {
+    stroke: #333333;
+}
+
+.registmeal-card-amout input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 10px;
+    font-weight: 600;
+    color: #333333;
+    padding: 0;
+}
+
+.registmeal-card-amout input:focus {
+    outline: none;
+}
+
+/* Chrome, Safari, Edge에서 number input의 화살표 제거 */
+.registmeal-card-amout input::-webkit-outer-spin-button,
+.registmeal-card-amout input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox에서 number input의 화살표 제거 */
+.registmeal-card-amout input[type=number] {
+    -moz-appearance: textfield;
 }
 </style>

@@ -59,6 +59,12 @@
                                 :class="{ 'selected-meal': selectedMeal?.id === meal.id }"
                                 @click="selectMeal(meal)"
                             >
+                                <button v-if="showDeleteButton" class="meal-card-delete-btn" @click.stop="$emit('delete', meal.id)">
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1L11 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
                                 <div class="meal-card-content">
                                     <div class="meal-info">
                                         <div class="meal-name">{{ meal.name }}</div>
@@ -66,23 +72,23 @@
                                     </div>
                                     <div class="meal-nutrients">
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.kcal }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.kcal, meal.quantity) }}</span>
                                             <span class="unit">kcal</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.carbs }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.carbs, meal.quantity) }}</span>
                                             <span class="unit">탄수화물</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.protein }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.protein, meal.quantity) }}</span>
                                             <span class="unit">단백질</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.fat }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.fat, meal.quantity) }}</span>
                                             <span class="unit">지방</span>
                                         </div>
                                         <div class="nutrient">
-                                            <span class="value">{{ meal.sodium }}</span>
+                                            <span class="value">{{ calculateNutrient(meal.sodium, meal.quantity) }}</span>
                                             <span class="unit">나트륨</span>
                                         </div>
                                     </div>
@@ -107,10 +113,14 @@ const props = defineProps({
     show: {
         type: Boolean,
         required: true
+    },
+    showDeleteButton: {
+        type: Boolean,
+        default: false
     }
 });
 
-const emit = defineEmits(['close', 'confirm']);
+const emit = defineEmits(['close', 'confirm', 'delete']);
 
 const currentDate = ref(new Date());
 const selectedDate = ref(null);
@@ -137,6 +147,7 @@ const fetchMonthlyMeals = async () => {
             const yearMonth = `${currentYear}-${currentMonth}`;
             
             mealsData.value = data
+                .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
                 .filter(meal => meal.meal_dt.startsWith(yearMonth))
                 .map(meal => meal.meal_dt);
         } else {
@@ -289,11 +300,18 @@ const fetchMealsByDate = async (date) => {
         const allData = await response.json();
         
         // 클라이언트에서 날짜 필터링
-        const filteredData = allData.filter(meal => {
-            const mealDate = new Date(meal.meal_dt);
-            const mealDateStr = mealDate.toISOString().split('T')[0];
-            return mealDateStr === targetDate;
-        });
+        const filteredData = allData
+            .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
+            .filter(meal => {
+                try {
+                    const mealDate = new Date(meal.meal_dt);
+                    const mealDateStr = mealDate.toISOString().split('T')[0];
+                    return mealDateStr === targetDate;
+                } catch (error) {
+                    console.error('날짜 변환 오류:', error, meal);
+                    return false;
+                }
+            });
 
         // 해당 날짜에 meal 데이터가 없는 경우
         if (filteredData.length === 0) {
@@ -302,59 +320,30 @@ const fetchMealsByDate = async (date) => {
             return;
         }
 
-        // 시간 추출 및 분 단위 변환 함수 (개선된 버전)
-        const extractMinutes = (datetimeStr) => {
+        // 시간 추출 및 분 단위 변환 함수
+        const getMinutes = (dateTimeStr) => {
             try {
-                // 날짜와 시간 분리
-                const parts = datetimeStr.split(' ');
-                if (parts.length < 2) {
-                    console.error('잘못된 datetime 형식:', datetimeStr);
-                    return 0; // 기본값
-                }
-                
-                const timePart = parts[1]; // "08:15:00" 또는 "08:15"
-                const timeComponents = timePart.split(':');
-                const hour = parseInt(timeComponents[0], 10);
-                const minute = parseInt(timeComponents[1], 10);
-                
-                if (isNaN(hour) || isNaN(minute)) {
-                    console.error('시간 파싱 오류:', timePart);
-                    return 0;
-                }
-                
-                return hour * 60 + minute; // 총 분 단위로 변환
+                const timePart = dateTimeStr.split(' ')[1];
+                const [hours, minutes] = timePart.split(':').map(Number);
+                return hours * 60 + minutes;
             } catch (error) {
-                console.error('시간 변환 오류:', error, datetimeStr);
+                console.error('시간 변환 오류:', error, dateTimeStr);
                 return 0;
             }
         };
 
-        // 데이터 정렬 전 로그
-        // console.log('정렬 전 데이터:', filteredData.map(d => ({
-        //     title: d.meal_title,
-        //     time: d.meal_dt,
-        //     minutes: extractMinutes(d.meal_dt)
-        // })));
-
-        // 시간 순서대로 정렬 (오름차순)
+        // 시간 순으로 정렬
         filteredData.sort((a, b) => {
-            const timeA = extractMinutes(a.meal_dt);
-            const timeB = extractMinutes(b.meal_dt);
-            return timeA - timeB;  // 오름차순으로 변경
+            const minutesA = getMinutes(a.meal_dt);
+            const minutesB = getMinutes(b.meal_dt);
+            return minutesA - minutesB;
         });
-        
-        // 데이터 정렬 후 로그
-        // console.log('정렬 후 데이터:', filteredData.map(d => ({
-        //     title: d.meal_title,
-        //     time: d.meal_dt,
-        //     minutes: extractMinutes(d.meal_dt)
-        // })));
 
         // 서버에서 받은 데이터를 화면에 표시할 형식으로 변환
         selectedDateMeals.value = filteredData.map(meal => ({
             id: meal.meal_code,
             name: meal.meal_title || '식사 이름 없음',
-            time: new Date(meal.meal_dt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+            time: new Date(meal.meal_dt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }),
             kcal: Math.round(meal.meal_calories) || 0,
             carbs: Math.round(meal.meal_carbs) || 0,
             protein: Math.round(meal.meal_protein) || 0,
@@ -369,6 +358,11 @@ const fetchMealsByDate = async (date) => {
 
 const selectMeal = (meal) => {
     selectedMeal.value = meal;
+};
+
+const calculateNutrient = (value, quantity) => {
+    const qty = parseFloat(quantity) || 1;
+    return Math.floor(parseFloat(value) * qty);
 };
 </script>
 
@@ -743,5 +737,30 @@ const selectMeal = (meal) => {
 
 .meal-list {
     padding: 0 8px;
+}
+
+.meal-card-delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.meal-card-delete-btn:hover {
+    transform: scale(1.1);
+}
+
+.meal-card-delete-btn:hover svg path {
+    stroke: #333333;
 }
 </style> 

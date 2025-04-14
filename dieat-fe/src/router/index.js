@@ -31,8 +31,6 @@ const router = createRouter({
     { path: '/signup', component: Signup },
     { path: '/login', component: Login },
 
-    // { path: '/meal', component: MealLayout },
-    // { path: '/registmeal', component: RegistMeal },
     { path: '/meal', component: MealLayout },
     { path: '/registmeal', component: RegistMeal },
 

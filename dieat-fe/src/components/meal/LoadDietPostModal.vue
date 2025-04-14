@@ -57,6 +57,12 @@
                                 class="diet-card"
                                 :class="{ 'selected-diet': selectedDiet && selectedDiet.id === diet.id }"
                                 @click="selectDiet(diet)">
+                                <button v-if="showDeleteButton" class="diet-card-delete-btn" @click.stop="$emit('delete', diet.id)">
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1L11 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
                                 <div class="diet-card-content">
                                     <div class="diet-info">
                                         <div class="diet-name">{{ diet.title }}</div>
@@ -105,10 +111,14 @@ const props = defineProps({
     show: {
         type: Boolean,
         required: true
+    },
+    showDeleteButton: {
+        type: Boolean,
+        default: false
     }
 });
 
-const emit = defineEmits(['close', 'confirm']);
+const emit = defineEmits(['close', 'confirm', 'delete']);
 const selectedCategory = ref('all');
 const selectedDiet = ref(null);
 const bookmarkedDiets = ref([
@@ -437,5 +447,30 @@ const selectDiet = (diet) => {
     font-weight: 400;
     font-size: 12px;
     color: #666666;
+}
+
+.diet-card-delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.diet-card-delete-btn:hover {
+    transform: scale(1.1);
+}
+
+.diet-card-delete-btn:hover svg path {
+    stroke: #333333;
 }
 </style> 

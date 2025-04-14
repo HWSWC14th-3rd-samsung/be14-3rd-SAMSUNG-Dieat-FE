@@ -1,5 +1,11 @@
 <template>
     <div class="meal-card">
+        <button v-if="showDeleteButton" class="meal-card-delete-btn" @click="$emit('delete')">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L11 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
         <div class="meal-image"></div>
         <div class="meal-content">
             <div class="meal-header">
@@ -9,23 +15,23 @@
             <div class="meal-desc">{{ meal.meal_desc || meal.description }}</div>
             <div class="meal-nutrition">
                 <span>
-                    <div>{{ Math.round(meal.meal_calories || meal.calories) }}</div>
+                    <div>{{ calculateNutrient(meal.meal_calories || meal.calories, meal.quantity) }}</div>
                     <div>kcal</div>
                 </span>
                 <span>
-                    <div>{{ Math.round(meal.meal_carbs || meal.carbs) }}</div>
+                    <div>{{ calculateNutrient(meal.meal_carbs || meal.carbs, meal.quantity) }}</div>
                     <div>탄수</div>
                 </span>
                 <span>
-                    <div>{{ Math.round(meal.meal_protein || meal.protein) }}</div>
+                    <div>{{ calculateNutrient(meal.meal_protein || meal.protein, meal.quantity) }}</div>
                     <div>단백질</div>
                 </span>
                 <span>
-                    <div>{{ Math.round(meal.meal_fat || meal.fat) }}</div>
+                    <div>{{ calculateNutrient(meal.meal_fat || meal.fat, meal.quantity) }}</div>
                     <div>지방</div>
                 </span>
                 <span>
-                    <div>{{ Math.round(meal.meal_sugar || meal.sugar) }}</div>
+                    <div>{{ calculateNutrient(meal.meal_sugar || meal.sugar, meal.quantity) }}</div>
                     <div>당</div>
                 </span>
             </div>
@@ -38,8 +44,14 @@
         meal: {
             type: Object,
             required: true
+        },
+        showDeleteButton: {
+            type: Boolean,
+            default: false
         }
     })
+
+    defineEmits(['delete'])
 
     const formatTime = (dateTimeStr) => {
         if (!dateTimeStr) return ''
@@ -50,6 +62,11 @@
             hour12: false 
         })
     }
+
+    const calculateNutrient = (value, quantity) => {
+        const qty = parseFloat(quantity) || 1;
+        return Math.floor(parseFloat(value) * qty);
+    };
 </script>
 
 <style scoped>
@@ -160,5 +177,30 @@
     color: #969696;
     margin-right: 5px;
     margin-top: 5px;
+}
+
+.meal-card-delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.meal-card-delete-btn:hover {
+    transform: scale(1.1);
+}
+
+.meal-card-delete-btn:hover svg path {
+    stroke: #333333;
 }
 </style>

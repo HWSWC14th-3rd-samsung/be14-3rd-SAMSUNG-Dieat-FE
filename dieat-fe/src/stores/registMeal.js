@@ -22,12 +22,20 @@ export const useRegistMealStore = defineStore('registMeal', {
 
       const safeInfo = info || defaultInfo;
 
+      // 이미지 ID 설정
+      let imageId = 1; // 기본값은 1로 설정
+      
+      if (safeInfo.file) {
+        // 기존 ID가 있으면 그대로 사용
+        imageId = safeInfo.file.id > 0 ? safeInfo.file.id : 1;
+      }
+
       this.tempMealInfo = {
         meal_name: safeInfo.meal_name || '',
         meal_description: safeInfo.meal_description || '',
         meal_time: safeInfo.meal_time || '',
         file: safeInfo.file ? [{
-          id: -1,
+          id: imageId,
           originalName: safeInfo.file.originalName || '',
           uniqueName: safeInfo.file.uniqueName || '',
           path: safeInfo.file.path || '',

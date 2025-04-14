@@ -59,10 +59,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject, watch, computed } from 'vue'
+import { inject, computed } from 'vue'
 
 const selectedDate = inject('selectedDate')
-const todayMeals = ref([])
+const meals = inject('meals')
 
 // 목표치 (임시값)
 const TARGET_VALUES = {
@@ -72,32 +72,20 @@ const TARGET_VALUES = {
     fat: 50
 }
 
-const fetchTodayMeals = async () => {
-    try {
-        const response = await fetch('http://localhost:3000/meals')
-        if (!response.ok) {
-            throw new Error('식사 데이터를 가져오는데 실패했습니다.')
+const todayMeals = computed(() => {
+    if (!meals.value) return [];
+    
+    return meals.value.filter(meal => {
+        if (!meal.meal_dt) return false;
+        try {
+            const mealDate = meal.meal_dt.split(' ')[0]
+            return mealDate === selectedDate.value;
+        } catch (error) {
+            console.error('날짜 형식 오류:', error);
+            return false;
         }
-        const allMeals = await response.json()
-        
-        // 날짜 형식을 정확하게 맞추어 필터링
-        todayMeals.value = allMeals.filter(meal => {
-            const mealDate = meal.meal_dt.split(' ')[0] // "2025-04-13 21:00" -> "2025-04-13"
-            return mealDate === selectedDate.value
-        })
-
-        console.log(`${selectedDate.value} 날짜의 식사 데이터:`, {
-            식사_수: todayMeals.value.length,
-            총_칼로리: calculateTotalCalories(),
-            총_탄수화물: calculateTotalCarbs(),
-            총_단백질: calculateTotalProtein(),
-            총_지방: calculateTotalFat()
-        })
-    } catch (error) {
-        console.error('오늘의 식사 데이터 조회 오류:', error)
-        todayMeals.value = []
-    }
-}
+    });
+})
 
 const calculateTotalCalories = () => {
     if (!todayMeals.value || todayMeals.value.length === 0) {
@@ -147,12 +135,10 @@ const getNutrientColor = (current, target, isProtein = false) => {
     const ratio = (current / target) * 100
     
     if (isProtein) {
-        
         if (ratio < 90) return '#D30E0E'
         if (ratio < 100) return '#FF9D00'
         return '#696969'
     } else {
-
         if (ratio > 110) return '#D30E0E'
         if (ratio > 100) return '#FF9D00'
         return '#696969'
@@ -173,14 +159,6 @@ const caloriesRatio = computed(() => calculateNutrientRatio(calculateTotalCalori
 const carbsRatio = computed(() => calculateNutrientRatio(calculateTotalCarbs(), TARGET_VALUES.carbs))
 const proteinRatio = computed(() => calculateNutrientRatio(calculateTotalProtein(), TARGET_VALUES.protein))
 const fatRatio = computed(() => calculateNutrientRatio(calculateTotalFat(), TARGET_VALUES.fat))
-
-onMounted(() => {
-    fetchTodayMeals()
-})
-
-watch(selectedDate, () => {
-    fetchTodayMeals()
-})
 </script>
 
 <style scoped>

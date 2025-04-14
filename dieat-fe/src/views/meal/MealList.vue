@@ -13,45 +13,26 @@
 </template>
 
 <script setup>
-    import { ref, inject, watch, onMounted, computed } from 'vue'
+    import { inject, computed } from 'vue'
     import MealCard from '@/components/meal/MealCard.vue'
 
     const selectedDate = inject('selectedDate')
-    const meals = ref([])
+    const meals = inject('meals')
 
     const filteredMeals = computed(() => {
-        const filtered = meals.value.filter(meal => {
-            // DB date format: "2025-04-13 21:00"
-            const mealDateStr = meal.meal_dt.split(' ')[0]; // "2025-04-13"
-            
-            // Check if the dates match exactly
-            return mealDateStr === selectedDate.value;
-        });
+        if (!meals.value) return [];
         
-        return filtered;
-    })
-
-    const fetchMeals = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/meals')
-            if (!response.ok) {
-                throw new Error('식사 데이터를 가져오는데 실패했습니다.')
+        return meals.value.filter(meal => {
+            if (!meal.meal_dt) return false;
+            try {
+                // DB date format: "2025-04-13 21:00"
+                const mealDateStr = meal.meal_dt.split(' ')[0]; // "2025-04-13"
+                return mealDateStr === selectedDate.value;
+            } catch (error) {
+                console.error('날짜 형식 오류:', error);
+                return false;
             }
-            const data = await response.json()
-            meals.value = data
-        } catch (error) {
-            console.error('식사 데이터 조회 오류:', error)
-            meals.value = []
-        }
-    }
-
-    onMounted(() => {
-        fetchMeals()
-    })
-
-    // selectedDate가 변경될 때마다 fetchMeals를 다시 호출
-    watch(selectedDate, () => {
-        fetchMeals()
+        });
     })
 </script>
 
