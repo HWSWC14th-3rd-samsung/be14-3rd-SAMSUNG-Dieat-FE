@@ -22,7 +22,18 @@ import RegistFree from '@/views/post/FreePostWritePage.vue';
 import NoticeLayout from '@/views/service/NoticeLayout.vue';
 import QnaLayout from '@/views/service/QnaLayout.vue';
 
+import MyReportLayout from '@/views/service/MyReportLayout.vue';
+import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue';
+// import ReadFree from '@/features/readFree/pages/FreePostListPage.vue';
+import DietPostDetail from '@/views/dietpost/DietPostDetail.vue';
+
 import Dashboard from '@/views/dashboard/Dashboard.vue';
+
+import NoticeDetail from '@/views/service/NoticeDetail.vue';
+import QnaDetail from '@/views/service/QnaDetail.vue';
+import RegistQna from '@/views/service/RegistQna.vue';
+
+import BookMarkLayout from '@/views/bookmark/BookMarkLayout.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -49,7 +60,17 @@ const router = createRouter({
     { path: '/noticeLayout', component: NoticeLayout },
     { path: '/qnaLayout', component: QnaLayout },
 
-    { path: '/dashboard', component: Dashboard }
+    { path: '/myReportLayout', component: MyReportLayout },
+    { path: '/dietPost/:id', component: DietPostDetail },
+    { path: '/MealLayout', component: MealLayout},
+    {path: '/RegistMeal', component: RegistMeal},
+    { path: '/noticeDetail/:id', name: 'NoticeDetail', component: NoticeDetail, props: true},
+    { path: '/qnaDetail/:id', name: 'QnaDetail', component: QnaDetail, props: true},
+    { path: '/registQna', component: RegistQna},
+    // {path: '/readFree', component: ReadFree },
+    {path: '/dashboard', component: Dashboard},
+    {path: '/bookmarkLayout', component: BookMarkLayout},
+
   ]
 });
 
