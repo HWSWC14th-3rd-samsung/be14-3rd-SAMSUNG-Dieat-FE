@@ -1,7 +1,4 @@
 <template>
-    <header>
-        <Header />
-    </header>
     <div class="meal-container">
         <div class="meal-leftsection">
             <div class="meal-header">

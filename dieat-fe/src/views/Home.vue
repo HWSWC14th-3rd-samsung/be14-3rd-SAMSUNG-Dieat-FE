@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header></Header>
     <main class="main">
       <div class="image-wrapper">
         <img src="@/assets/home_img/diet_main_img.jpg" alt="기본 이미지" class="main-img"/>
@@ -10,6 +9,7 @@
 
     <br>    
 
+    <h2>🥕About DIEAT Service🥦</h2>
     <div class="swiper-wrapper">
       <swiper
         
@@ -52,6 +52,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 
 
+
 import img1 from '@/assets/home_img/mypage.png';
 import img2 from '@/assets/home_img/searchFood.png';
 import img3 from '@/assets/home_img/meal.png';
@@ -85,6 +86,11 @@ const resumeAutoplay = () => {
 </script>
 
 <style scoped>
+/* 예시 - Montserrat */
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+  /* 예시 - Pretendard */
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
+
   .main {
       display: flex;
       align-items: center;
@@ -126,6 +132,13 @@ const resumeAutoplay = () => {
       opacity: 0.8; /* 투명도 설정 */
   }
 
+  h2 {
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+  }
+
   .swiper-wrapper {
     display: flex;
     flex-direction: column;
@@ -152,17 +165,16 @@ const resumeAutoplay = () => {
   }
 
   .arrow-buttons button {
-    background: #189b71;
-    color: white;
-    font-size: 2rem;
+    color: black;
+    font-size: 20px;
     border: none;
-    padding: 0.5rem 1.5rem;
+    padding: 5px 15px;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
 
   .arrow-buttons button:hover {
-    background: #117653;
+    background: #abcec1;
   }
 </style>
