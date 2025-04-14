@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
     <div>
         <div class="breadcrumb">
             <RouterLink to="/" class="text-link">Home &gt; </RouterLink>
@@ -18,13 +17,17 @@
     </div>
 
     <div class="board-wrapper">
-        <ServiceTable :posts="noticePosts"/>
+        <ServiceTable
+            :posts="noticePosts"
+            titleHeader="공지 제목"
+            :useLink="true"
+            linkPrefix="/noticeDetail"
+            />
     </div>
 
 </template>
 
 <script setup>
-    import Header from '@/components/common/Header.vue';
     import ServiceTable from './ServiceTable.vue';
     import { ref } from 'vue';
     

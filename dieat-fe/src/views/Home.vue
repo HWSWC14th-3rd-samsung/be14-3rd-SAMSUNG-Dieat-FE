@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header></Header>
     <main class="main">
       <div class="image-wrapper">
         <img src="@/assets/home_img/diet_main_img.jpg" alt="기본 이미지" class="main-img"/>
