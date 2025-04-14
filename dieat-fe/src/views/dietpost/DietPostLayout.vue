@@ -1,7 +1,5 @@
 <template>
-  <header>
-    <Header />
-  </header>
+  
   <div class="layout-wrapper">
     <main class="content">
       <!-- 🔹 경로 표시 -->
