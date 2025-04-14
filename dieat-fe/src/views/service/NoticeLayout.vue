@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
     <div>
         <div class="breadcrumb">
             <RouterLink to="/" class="text-link">Home &gt; </RouterLink>
@@ -29,7 +28,6 @@
 </template>
 
 <script setup>
-    import Header from '@/components/common/Header.vue';
     import ServiceTable from './ServiceTable.vue';
     import { ref } from 'vue';
     

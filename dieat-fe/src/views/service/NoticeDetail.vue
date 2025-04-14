@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
     <div v-if="postId === '0'" class="notice-detail">
       <h1 class="title">공지 사항</h1>
   
@@ -27,7 +26,6 @@
     <div v-else style="text-align: center; margin-top: 5rem;">
       <h2 style="color: red;">해당 게시글은 존재하지 않습니다.</h2>
     </div>
-    <Footer></Footer>
 </template>
   
 <script setup>

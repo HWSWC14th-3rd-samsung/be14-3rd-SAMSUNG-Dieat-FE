@@ -1,8 +1,4 @@
 <template>
-    <header>
-        <Header />
-    </header>
-
     <main class="post-write-page">
         <h2 class="page-title">자유 게시글 작성</h2>
 

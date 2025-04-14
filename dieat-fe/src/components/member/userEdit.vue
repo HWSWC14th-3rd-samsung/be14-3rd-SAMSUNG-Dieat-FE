@@ -118,7 +118,7 @@ const submit = async () => {
     const updatedUser = await res.json()
     userStore.setUser(updatedUser)
     alert('회원 정보가 성공적으로 수정되었습니다.')
-    router.push('/info')
+    router.push('/userinfo')
   } catch (e) {
     alert('서버 오류가 발생했습니다.')
     console.error(e)
