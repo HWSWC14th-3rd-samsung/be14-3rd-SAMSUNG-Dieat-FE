@@ -4,12 +4,12 @@
       <main class="main">
         <div class="image-wrapper">
           <img
-            src="@/assets/diet_main_img.jpg"
+            src="@/assets/img_dy/diet_main_img.jpg"
             alt="기본 이미지"
             class="main-img"
           />
           <img
-            src="@/assets/diet_main_img_hover.png"
+            src="@/assets/img_dy/diet_main_img_hover.png"
             alt="호버 이미지"
             class="hover-overlay"
           />

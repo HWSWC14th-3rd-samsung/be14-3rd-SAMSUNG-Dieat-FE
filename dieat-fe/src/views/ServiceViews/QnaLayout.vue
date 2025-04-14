@@ -7,7 +7,7 @@
             <RouterLink to="/qnaLayout" class="text-link">문의 사항</RouterLink>
         </div>
         <h1>문의 사항</h1>
-        <img src="@/assets/searching.png" alt="searching bar" class="searchingBar-img">
+        <img src="@/assets/img_dy/searching.png" alt="searching bar" class="searchingBar-img">
 <!-- 
         <ul class="post-list">
             <li v-for="(post, index) in posts" :key="index" class="post-item">

@@ -2,7 +2,7 @@
     <header class="header">
         <div>
             <RouterLink to="/" class="logo">
-            <img src="@/assets/DieatLogo2.png" alt="Dieat Main Page" />
+            <img src="@/assets/img_dy/DieatLogo2.png" alt="Dieat Main Page" />
             </RouterLink>
         </div>
   
