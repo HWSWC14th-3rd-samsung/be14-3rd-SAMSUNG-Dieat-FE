@@ -126,6 +126,22 @@ function handleSelectResult(item) {
   searchFood(item.name)
 }
 
+function handleFilter(type) {
+  if (!selectedFood.value) return;
+
+  if (type === 'latest') {
+    selectedFood.value = [...selectedFood.value].sort((a, b) => b.id - a.id);
+  } else if (type === 'accuracy') {
+    selectedFood.value = [...selectedFood.value].sort((a, b) => b.accurate - a.accurate);
+  } else if (type === 'ratio') {
+    selectedFood.value = [...selectedFood.value].sort((a, b) => {
+      const aRatio = a.accurate + a.inaccurate === 0 ? 0 : a.accurate / (a.accurate + a.inaccurate);
+      const bRatio = b.accurate + b.inaccurate === 0 ? 0 : b.accurate / (b.accurate + b.inaccurate);
+      return bRatio - aRatio;
+    });
+  }
+}
+
 function handleAddToBasket(item) {
   const exists = basket.value.find(b => b.id === item.id)
   if (!exists) {
