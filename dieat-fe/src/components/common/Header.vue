@@ -72,107 +72,122 @@ const formatRole = (role) => {
     default: return '알 수 없음'
   }
 }
-
-const menu1 = [
-  { label: '음식 데이터 검색', href: '/searchFood' },
-  { label: '음식 데이터 등록', href: '/registerFood' }
-]
-const menu2 = [
-  { label: '식사 조회', href: '/readMeal' },
-  { label: '식사 등록', href: '/registerMeal' },
-  { label: '식단 게시글 조회', href: '/readDiet' },
-  { label: '식단 게시글 등록', href: '/registerDiet' }
-]
-const menu3 = [
-  { label: '자유 게시글 조회', href: '/readFree' },
-  { label: '자유 게시글 등록', href: '/registerFree' },
-  { label: '성공기 게시글 조회', href: '/readSuccess' },
-  { label: '성공기 게시글 등록', href: '/registerSuccess' }
-]
-const menu4 = [
-  { label: '개인 정보', href: '/userinfo' },
-  { label: '포인트 적립 내역', href: '/point' },
-  { label: '북마크', href: '/category' },
-  { label: '구독 관리', href: '/subscribeMng' },
-  { label: '구독 게시판', href: '/subscribePost' },
-  { label: '차단', href: '/block' }
-]
-const menu5 = [
-  { label: '공지 사항', href: '/noticeLayout' },
-  { label: '문의 사항', href: '/qnaLayout' },
-  { label: '나의 신고 내역', href: '/myReportLayout' }
-]
-</script>
-
-<style scoped>
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #155b45;
-  padding: 20px 40px;
-  z-index: 3000;
-  position: relative;
-}
-.logo img {
-  height: 48px;
-}
-.main-nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 80px;
-  font-weight: bold;
-  color: white;
-  white-space: nowrap;
-}
-.menu-item {
-  position: relative;
-  cursor: pointer;
-}
-.auth-nav {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.auth-nav a,
-.auth-nav button {
-  padding: 8px 12px;
-  font-size: 15px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-}
-.user-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: white;
-}
-.user-text {
-  display: flex;
-  flex-direction: column;
-  font-size: 13px;
-  line-height: 1.2;
-  text-align: right;
-}
-.user-name {
-  font-weight: bold;
-}
-.user-role {
-  font-size: 12px;
-  opacity: 0.8;
-}
-.logout-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 13px;
-  cursor: pointer;
-}
-</style>
+  const menu1 = [
+    { label: '음식 데이터 검색', href: '/searchFood' },
+    { label: '음식 데이터 등록', href: '/registerFood' }
+  ]
+  
+  const menu2 = [
+    { label: '식사 조회', href: '/meal' },
+    { label: '식사 등록', href: '/registermeal' },
+    { label: '식단 게시글 조회', href: '/dietPost' },
+    { label: '식단 게시글 등록', href: '/registerDiet' }
+  ]
+  
+  const menu3 = [
+    { label: '자유 게시글 조회', href: '/readFree' },
+    { label: '자유 게시글 등록', href: '/registerFree' },
+    { label: '성공기 게시글 조회', href: '/readSuccess' },
+    { label: '성공기 게시글 등록', href: '/registerSuccess' }
+  ]
+  
+  const menu4 = [
+    { label: '개인 정보', href: '/userInfo' },
+    { label: '포인트 적립 내역', href: '/point' },
+    { label: '북마크', href: '/category' },
+    { label: '구독 관리', href: '/subscribeMng' },
+    { label: '구독 게시판', href: '/subscribePost' },
+    { label: '차단', href: '/block' }
+  ]
+  
+  const menu5 = [
+    { label: '공지 사항', href: '/noticeLayout' },
+    { label: '문의 사항', href: '/qnaLayout' },
+    { label: '나의 신고 내역', href: '/myReportLayout' }
+  ]
+  </script>
+  
+  <style scoped>
+  .header {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* line-height: 100px; */
+    justify-content: space-between;
+    background-color: #155b45;
+    padding: 20px 30px;
+    z-index: 1000;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  
+  .logo img {
+    height: 50px;
+    max-width: 100%;
+    margin-left: 50px;
+  }
+  
+  .main-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    font-size: 20px;
+    gap: 80px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .menu-item {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .auth-nav {
+    position: absolute;
+    right: 30px;
+    bottom: 50px;
+    display: flex;
+    gap: 20px;
+    color: white;
+    margin-right: 100px;
+    flex-wrap: wrap;
+    cursor: pointer;
+  }
+  
+  .auth-nav a {
+    height: 50px;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  
+  .router-link-active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .main-nav {
+      position: absolute;
+      align-items: center;
+      gap: 15px;
+    }
+  
+    .header {
+      align-items: center;
+    }
+  
+    .logo img {
+      position: static;
+      margin-left: auto;
+    }
+  
+    .auth-nav {
+      justify-content: center;
+      margin-right: auto;
+    }
+  }
+  </style>
+  
