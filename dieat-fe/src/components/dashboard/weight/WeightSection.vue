@@ -44,14 +44,28 @@ while (current.isBefore(endDate) || current.isSame(endDate)) {
 const dateToWeightMap = Object.fromEntries(weightRecords.map(r => [r.date, r.weight]))
 const data = dateRange.map(date => dateToWeightMap[date] ?? null)
 
-// 3. y축 눈금 고정 (6칸)
+// 3. y축 눈금
 const values = weightRecords.map(r => r.weight).concat([weightGoals.startWeight, weightGoals.goalWeight])
-const minY = Math.floor(Math.min(...values))
-const maxY = Math.ceil(Math.max(...values))
-const step = (maxY - minY) / 5
-const yTicks = []
-for (let i = 0; i <= 5; i++) {
-  yTicks.push((maxY - step * i).toFixed(1))
+const rawMin = Math.min(...values)
+const rawMax = Math.max(...values)
+
+let minY, maxY
+
+if (Number.isInteger(rawMin)) {
+  minY = rawMin - 1
+} else {
+  minY = Math.floor(rawMin)
+}
+
+if (Number.isInteger(rawMax)) {
+  maxY = rawMax + 1
+} else {
+  maxY = Math.ceil(rawMax)
+}
+
+const yTicks=[];
+for(let i=maxY;i>=minY;i--){
+  yTicks.push(i);
 }
 
 // 4. 차트 크기
@@ -63,7 +77,7 @@ onMounted(() => {
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: dateRange.map(d => `${d}일`),
+      labels: dateRange.map(d => dayjs(d).format('M월 D일')), 
       datasets: [
         {
           data,
@@ -108,8 +122,8 @@ onMounted(() => {
           min: minY,
           max: maxY,
           ticks: {
-            stepSize: step,
-            callback: v => `${v}kg`,
+        //     stepSize: step,
+        //     callback: v => `${v}kg`,
             color: '#fff'
           },
           grid: {
@@ -132,7 +146,6 @@ onMounted(() => {
   height: 300px;
   width: 100%;
   background-color: white;
-  border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -140,7 +153,7 @@ onMounted(() => {
 .y-axis-labels {
   width: 50px;
   flex-shrink: 0;
-  padding: 8px 4px;
+  padding: 4px 4px 20px 4px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
