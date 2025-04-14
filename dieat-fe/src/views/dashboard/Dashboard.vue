@@ -48,11 +48,11 @@
 </template>
 
 <script setup>
-import Header from '../common/Header.vue'
-import SummarySection from './summary/SummarySection.vue'
-import TodayMealSection from './todaymeal/TodayMealSection.vue'
-import AddMealButton from './todaymeal/AddMealButton.vue'
-import WeightSection from './weight/WeightSection.vue'
+import Header from '@/components/common/Header.vue'
+import SummarySection from '@/components/dashboard/summary/SummarySection.vue'
+import TodayMealSection from '@/components/dashboard/todaymeal/TodayMealSection.vue'
+import AddMealButton from '@/components/dashboard/todaymeal/AddMealButton.vue'
+import WeightSection from '@/components/dashboard/weight/WeightSection.vue'
 </script>
 
 <style scoped>

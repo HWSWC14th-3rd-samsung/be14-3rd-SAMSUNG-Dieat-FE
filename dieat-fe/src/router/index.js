@@ -12,7 +12,7 @@ import QnaLayout from '../views/QnaLayout.vue';
 // import About from '@/pages/About.vue';
 // import Contact from '@/pages/Contact.vue';
 import SearchFood from '@/features/searchFood/pages/FoodSearchPage.vue'
-import Dashboard from '@/components/dashboard/Dashboard.vue';
+import Dashboard from '@/views/dashboard/Dashboard.vue';
 
 
 const router = createRouter({
