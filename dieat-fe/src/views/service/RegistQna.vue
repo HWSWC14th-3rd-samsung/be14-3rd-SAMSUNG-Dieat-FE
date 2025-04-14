@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
   
     <div class="breadcrumb">
             <RouterLink to="/" class="text-link">Home &gt; </RouterLink>
@@ -31,7 +30,6 @@
       </form>
     </div>
   
-    <Footer></Footer>
   </template>
   
   <script setup>

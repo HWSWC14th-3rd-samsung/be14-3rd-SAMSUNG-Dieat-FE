@@ -1,5 +1,4 @@
 <template>
-    <Header />
     <div class="food-register-page">
         <h2 class="food-register-title" v-if="!isModal">음식 데이터 등록</h2>
         <RegisterFoodForm @register="handleRegisterFood" />

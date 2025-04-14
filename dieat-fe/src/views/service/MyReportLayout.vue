@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
     <div class="breadcrumb">
         <RouterLink to="/" class="text-link">Home &gt; </RouterLink>
         <span>Service &gt; </span>

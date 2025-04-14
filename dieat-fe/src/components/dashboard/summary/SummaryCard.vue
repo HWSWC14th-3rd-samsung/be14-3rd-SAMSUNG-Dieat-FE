@@ -18,9 +18,17 @@
 
 <script setup>
 import { sampleMeals } from '../data/sampleMeals'
-import { nutritionGoals } from '../data/nutritionGoals' // 오타 주의: nutirition ❌ → nutrition ✅
+import { nutritionGoals } from '../data/nutritionGoals'
+import dayjs from 'dayjs'
 
-const total = sampleMeals.reduce((acc, meal) => {
+// ✅ 오늘 날짜 구하기 (yyyy-MM-dd 형식)
+const today = dayjs().format('YYYY-MM-DD')
+
+// ✅ 오늘 날짜에 해당하는 식사만 필터링
+const todayMeals = sampleMeals.filter(meal => meal.date === today)
+
+// ✅ 누적 영양소 계산
+const total = todayMeals.reduce((acc, meal) => {
   acc.calories += meal.calories
   acc.carbs += meal.carbs
   acc.protein += meal.protein
@@ -28,6 +36,7 @@ const total = sampleMeals.reduce((acc, meal) => {
   return acc
 }, { calories: 0, carbs: 0, protein: 0, fat: 0 })
 
+// ✅ 초과량에 따른 텍스트 색상 결정 함수
 function getTextColor(value, goal) {
   const overPercent = ((value - goal) / goal) * 100
   if (overPercent > 20) return 'over-red'
@@ -36,6 +45,7 @@ function getTextColor(value, goal) {
   return ''
 }
 
+// ✅ 렌더링용 summary 아이템 배열
 const summaryItems = [
   {
     label: '칼로리',
