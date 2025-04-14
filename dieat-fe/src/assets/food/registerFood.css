@@ -1,0 +1,221 @@
+.food-register-page {
+    background-color: #fff;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.food-register-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 2rem 0 1rem;
+}
+
+.food-register-container {
+    background-color: #fef7ed;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    max-width: 720px;
+    width: 100%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.food-register-label {
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1rem;
+}
+
+.food-register-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.food-register-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+}
+
+.food-register-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    border: none;
+    background-color: #fff;
+    font-size: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.unit-input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.unit-input-wrapper .unit {
+    position: absolute;
+    right: 1rem;
+    top: 0.85rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.unit-input-wrapper .unit-caption {
+    font-size: 0.875rem;
+    color: #555;
+    margin-top: 0.25rem;
+    text-align: center;
+    width: 100%;
+}
+
+.with-unit {
+    padding-right: 3rem;
+}
+
+.food-register-button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.primary-button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gray-button {
+    background-color: #c4c4c4;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 1400px */
+.food-register-page {
+    background-color: #fff;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.food-register-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 2rem 0 1rem;
+}
+
+.food-register-container {
+    background-color: #fef7ed;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    max-width: 1400px;
+    width: 100%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.food-register-label {
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1rem;
+}
+
+.food-register-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.food-register-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.food-register-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    border: none;
+    background-color: #fff;
+    font-size: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.unit-input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.unit-input-wrapper .unit {
+    position: absolute;
+    right: 1rem;
+    top: 0.85rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.unit-input-wrapper .unit-caption {
+    font-size: 0.875rem;
+    color: #555;
+    margin-top: 0.25rem;
+    text-align: center;
+    width: 100%;
+}
+
+.with-unit {
+    padding-right: 3rem;
+}
+
+.food-register-button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.primary-button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.gray-button {
+    background-color: #c4c4c4;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 120px;
+}
