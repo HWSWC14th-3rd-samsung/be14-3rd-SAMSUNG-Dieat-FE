@@ -274,8 +274,46 @@ const closeModal = () => {
     emit('close');
 };
 
-const confirmSelection = () => {
-    emit('confirm', selectedDate.value);
+const confirmSelection = async () => {
+    // 식사가 선택되었는지 확인
+    if (!selectedMeal.value) {
+        alert('식사를 선택해주세요.');
+        return;
+    }
+    
+    try {
+        // 선택한 식사의 전체 정보를 서버에서 가져오기
+        const response = await fetch(`${API_URL}?meal_code=${selectedMeal.value.id}`);
+        
+        if (!response.ok) {
+            throw new Error('서버 응답 오류');
+        }
+        
+        const meals = await response.json();
+        
+        // 일치하는 식사가 없는 경우
+        if (!meals || meals.length === 0) {
+            throw new Error('선택한 식사 정보를 찾을 수 없습니다.');
+        }
+        
+        // 첫 번째 항목이 해당 식사 정보
+        const mealData = meals[0];
+        
+        // 부모 컴포넌트로 선택한 식사 정보 전달
+        emit('confirm', {
+            date: selectedDate.value,
+            meal: {
+                meal_name: mealData.meal_title,
+                meal_description: mealData.meal_desc,
+                meal_time: mealData.meal_dt,
+                file: mealData.file ? mealData.file[0] : null,
+                foods: mealData.meal_foods || []
+            }
+        });
+    } catch (error) {
+        console.error('식사 정보 조회 중 오류 발생:', error);
+        alert('식사 정보를 불러오는 중 오류가 발생했습니다.');
+    }
 };
 
 const hasMeal = (date) => {

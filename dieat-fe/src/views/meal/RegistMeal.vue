@@ -561,8 +561,63 @@
         showLoadMealModal.value = false;
     };
 
-    const handleLoadMealConfirm = () => {
-        closeLoadMealModal();
+    const handleLoadMealConfirm = (data) => {
+        try {
+            // 선택한 식사 정보가 있는지 확인
+            if (!data || !data.meal) {
+                console.error('선택한 식사 정보가 없습니다.');
+                return;
+            }
+            
+            console.log('불러온 식사 정보:', data);
+            
+            // 식사 정보 화면에 표시
+            mealInfo.value = {
+                meal_name: data.meal.meal_name || '',
+                meal_description: data.meal.meal_description || '',
+                meal_time: data.meal.meal_time || koreanDateTime.dateTime,
+                file: data.meal.file || null
+            };
+            
+            // 시간 입력란에 시간 설정
+            if (data.meal.meal_time) {
+                // meal_time이 ISO 형식(T 포함)인 경우 공백으로 변환
+                if (data.meal.meal_time.includes('T')) {
+                    const parts = data.meal.meal_time.split('T');
+                    const timePart = parts[1]?.split(':') || [];
+                    if (parts[0] && timePart.length >= 2) {
+                        timeInput.value = `${parts[0]} ${timePart[0]}:${timePart[1]}`;
+                    }
+                } else {
+                    timeInput.value = data.meal.meal_time;
+                }
+            }
+            
+            // 이미지 정보 설정
+            if (data.meal.file) {
+                selectedImageInfo.value = data.meal.file;
+                previewImage.value = data.meal.file.path;
+            }
+            
+            // 등록된 음식 정보 설정
+            if (data.meal.foods && data.meal.foods.length > 0) {
+                registeredFoods.value = data.meal.foods;
+                showMealCard.value = true;
+                
+                // Pinia store에도 저장
+                mealStore.setSelectedFoods(data.meal.foods);
+            }
+            
+            // 식사 정보를 Pinia store에 임시 저장
+            mealStore.setTempMealInfo(mealInfo.value);
+            
+            // 모달 닫기
+            closeLoadMealModal();
+        } catch (error) {
+            console.error('식사 정보 로드 중 오류 발생:', error);
+            alert('식사 정보를 로드하는 중 오류가 발생했습니다.');
+            closeLoadMealModal();
+        }
     };
 
     const openLoadDietPostModal = () => {
