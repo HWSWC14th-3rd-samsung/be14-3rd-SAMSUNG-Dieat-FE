@@ -8,6 +8,7 @@
                 <PostDetailHeader :post="post" :likes="likes" />
                 <PostContent :content="post.content" :imageUrl="post.imageUrl" />
             </div>
+
             <PostInteraction :initialLikes="likes" :commentCount="comments.length" :liked="likedByUser"
                 @toggle-like="handleLikeToggle" />
             <PostCommentInput @submit="handleAddComment" />
@@ -19,98 +20,117 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import Header from '@/components/common/Header.vue';
-import PostDetailHeader from '@/components/post/free/PostHeader.vue';
-import PostContent from '@/components/post/free/PostContent.vue';
-import PostCommentInput from '@/components/post/free/PostCommentInput.vue';
-import PostCommentList from '@/components/post/free/PostCommentList.vue';
-import PostInteraction from '@/components/post/free/PostInteraction.vue';
-import { fetchPostById } from '@/api/freePostApi.js';
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
-// 로그인 사용자 (예시)
-const user = {
-    id: 1,
-    nickname: '50071'
-};
+import Header from '@/components/common/Header.vue'
+import PostDetailHeader from '@/components/post/free/PostHeader.vue'
+import PostContent from '@/components/post/free/PostContent.vue'
+import PostCommentInput from '@/components/post/free/PostCommentInput.vue'
+import PostCommentList from '@/components/post/free/PostCommentList.vue'
+import PostInteraction from '@/components/post/free/PostInteraction.vue'
 
-const route = useRoute();
-const postId = route.params.postId;
+import { fetchPostById } from '@/api/freePostApi.js'
 
-const post = ref(null);
-const comments = ref([]);
-const likes = ref(0);
-const likedByUser = ref(false);
+const user = { id: 1, nickname: '50071' }
+const route = useRoute()
+const postId = route.params.postId
+const isFromWrite = route.query.fromWrite === 'true'
+
+const post = ref(null)
+const comments = ref([])
+const likes = ref(0)
+const likedByUser = ref(false)
 
 onMounted(async () => {
     try {
-        const fetched = await fetchPostById(postId);
-        post.value = fetched;
-        comments.value = (fetched.comments || []).map((c, i) => ({
-            id: c.id ?? i + 1, // 기존 댓글에 id가 없으면 채워줌
-            ...c
-        }));
-        likes.value = fetched.likes || 0;
+        const fetched = await fetchPostById(postId)
+        if (!fetched) {
+            console.error('해당 게시글을 찾을 수 없습니다.')
+            return
+        }
 
-        // 좋아요 여부 localStorage 확인
-        const likedKey = `liked_post_${postId}_user_${user.id}`;
-        likedByUser.value = localStorage.getItem(likedKey) === 'true';
+        // ✅ 등록 직후 접근이 아니라면 조회수 증가
+        if (!isFromWrite) {
+            const updatedViews = (fetched.views || 0) + 1
+            await fetch(`http://localhost:3000/freeposts/${postId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ views: updatedViews })
+            })
+            fetched.views = updatedViews
+        }
+
+        post.value = fetched
+
+        // 댓글 정리
+        comments.value = (fetched.comments || []).map((c, i) => ({
+            id: c.id ?? i + 1,
+            ...c
+        })).sort((a, b) => {
+            const dateCompare = new Date(a.date) - new Date(b.date)
+            if (dateCompare !== 0) return dateCompare
+            return a.id - b.id
+        })
+
+        likes.value = fetched.likes || 0
+
+        const likedKey = `liked_post_${postId}_user_${user.id}`
+        likedByUser.value = localStorage.getItem(likedKey) === 'true'
     } catch (err) {
-        console.error('상세 게시글 로딩 실패:', err);
+        console.error('상세 게시글 로딩 실패:', err)
     }
-});
+})
 
 function handleAddComment(newContent) {
-    // 가장 큰 id 찾기
     const maxId = comments.value.length > 0
         ? Math.max(...comments.value.map(c => c.id || 0))
-        : 0;
+        : 0
 
     const newComment = {
         id: maxId + 1,
         author: user.nickname,
         content: newContent,
         date: new Date().toISOString().slice(0, 10)
-    };
+    }
 
-    comments.value.push(newComment);
-
-    // 날짜 → id 기준 정렬
+    comments.value.push(newComment)
     comments.value.sort((a, b) => {
-        const dateDiff = new Date(b.date) - new Date(a.date);
-        if (dateDiff !== 0) return dateDiff;
-        return b.id - a.id;
-    });
+        const dateCompare = new Date(a.date) - new Date(b.date)
+        if (dateCompare !== 0) return dateCompare
+        return a.id - b.id
+    })
 
     fetch(`http://localhost:3000/freeposts/${postId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ comments: comments.value })
     }).catch(err => {
-        console.error('댓글 저장 실패:', err);
-        alert('댓글 저장 중 오류가 발생했습니다.');
-    });
+        console.error('댓글 저장 실패:', err)
+        alert('댓글 저장 중 오류가 발생했습니다.')
+    })
 }
 
 function handleLikeToggle() {
-    const likedKey = `liked_post_${postId}_user_${user.id}`;
+    const likedKey = `liked_post_${postId}_user_${user.id}`
 
     if (likedByUser.value) {
-        likes.value--;
-        likedByUser.value = false;
-        localStorage.removeItem(likedKey);
+        likes.value--
+        likedByUser.value = false
+        localStorage.removeItem(likedKey)
     } else {
-        likes.value++;
-        likedByUser.value = true;
-        localStorage.setItem(likedKey, 'true');
+        likes.value++
+        likedByUser.value = true
+        localStorage.setItem(likedKey, 'true')
     }
 
     fetch(`http://localhost:3000/freeposts/${postId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ likes: likes.value })
-    });
+    }).catch(err => {
+        console.error('좋아요 저장 실패:', err)
+    })
 }
 </script>
 
