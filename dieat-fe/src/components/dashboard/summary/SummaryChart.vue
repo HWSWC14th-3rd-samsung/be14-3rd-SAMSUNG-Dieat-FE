@@ -39,12 +39,12 @@ const percentage = computed(() => {
 
 onMounted(async () => {
   // 1. weightGoals 데이터를 fetch
-  const responseGoals = await fetch('http://localhost:8080/weightGoals')
+  const responseGoals = await fetch('http://localhost:3000/weightGoals')
   const goals = await responseGoals.json()
   weightGoalsData.value = goals
 
   // 2. weightRecords 데이터를 fetch
-  const responseRecords = await fetch('http://localhost:8080/weightRecords')
+  const responseRecords = await fetch('http://localhost:3000/weightRecords')
   const records = await responseRecords.json()
   // 날짜 오름차순 정렬 (최신 기록이 마지막에 오도록)
   records.sort((a, b) => new Date(a.date) - new Date(b.date))

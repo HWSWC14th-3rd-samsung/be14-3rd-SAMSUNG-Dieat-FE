@@ -11,65 +11,70 @@
     </div>
 
     <!-- 🖼️ 썸네일 + 오버레이 + 제목 + 북마크 -->
-    <div class="image-container" @click="goToDetail" style="cursor: pointer;">
-      <img :src="dietImage" alt="식단 이미지" class="thumbnail" />
+    <div class="image-container" @click="goToDetail">
+      <img :src="post.img" alt="식단 이미지" class="thumbnail" />
       <div class="overlay"></div>
 
-    <!-- 제목 + 북마크 버튼 부분 -->
-    <div class="title-bookmark">
-      <h3 class="image-title">{{ post.title }}</h3>
-    <BookmarkButton
-      :isActive="isBookmarked"
-      @toggle="toggleBookmark"
-    />
-</div>
+      <div class="title-bookmark">
+        <h3 class="image-title">{{ post.title }}</h3>
+        <div class="bookmark-wrapper" @click.stop>
+          <BookmarkButton
+            :isActive="isBookmarked"
+            :post="post"
+            @toggle="toggleBookmark"
+          />
+        </div>
+      </div>
     </div>
 
     <!-- 📅 날짜 + ❤️ 좋아요 + 💬 댓글 -->
     <div class="meta">
       <span class="date">{{ post.date }}</span>
       <div class="right-meta">
-        <LikeButton :initialCount="post.likes" />
-        <span>💬 {{ post.comments }}</span>
+        <LikeButton :count="post.likes" @update="(val) => post.likes = val" />
+        <span>💬 {{ post.commentsList?.length || 0 }}</span>
       </div>
     </div>
 
     <!-- 🔥 영양 정보 -->
     <div class="nutrition-tags">
-      <span class="tag">열량 <br> {{ post.calories }} kcal</span>
-      <span class="tag">탄수화물 <br> {{ post.carbs }} g</span>
-      <span class="tag">단백질 <br> {{ post.protein }} g</span>
-      <span class="tag">지방 <br> {{ post.fat }} g</span>
-      <span class="tag">당 <br> {{ post.sugar }} g</span>
+      <span class="tag">열량 <br />{{ post.total.kcal }} kcal</span>
+      <span class="tag">탄수화물 <br />{{ post.total.carbs }} g</span>
+      <span class="tag">단백질 <br />{{ post.total.protein }} g</span>
+      <span class="tag">지방 <br />{{ post.total.fat }} g</span>
+      <span class="tag">당 <br />{{ post.total.sugar }} g</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import userImage from '@/assets/dietpost/user_img.png'
-import dietImage from '@/assets/dietpost/diet_post_img.png'
 import BookmarkButton from './BookmarkButton.vue'
 import MoreMenu from './MoreMenu.vue'
 import LikeButton from './LikeButton.vue'
 
-// defineProps({
-//   post: Object
-// })
+// props
+const { post } = defineProps(['post'])
 
+const router = useRouter()
 const isFollowing = ref(false)
 const isBookmarked = ref(false)
 
-const router = useRouter()
-const { post } = defineProps(['post'])
+// 북마크 상태 초기화
+onMounted(() => {
+  const saved = JSON.parse(localStorage.getItem('bookmarks') || '[]')
+  isBookmarked.value = saved.some(item => item.id === post.id)
+})
 
 function toggleFollow() {
   isFollowing.value = !isFollowing.value
 }
 
-function toggleBookmark() {
-  isBookmarked.value = !isBookmarked.value
+// 북마크 토글
+function toggleBookmark(isActive) {
+  isBookmarked.value = isActive
 }
 
 function goToDetail() {
@@ -116,42 +121,32 @@ function goToDetail() {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
 .follow-btn:hover {
   background-color: #f2f2f2;
 }
 
-.more-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: black;
-}
-
 .image-container {
   position: relative;
+  cursor: pointer;
 }
 
 .thumbnail {
   width: 100%;
-  height: auto;
+  height: 180px;
+  object-fit: cover;
   border-radius: 10px;
 }
 
-/* 🔳 어두운 오버레이 */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(43, 43, 43, 0.5);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  background-color: rgba(43, 43, 43, 0.4);
+  border-radius: 10px;
 }
 
-/* 📝 제목 + 저장 버튼 */
 .title-bookmark {
   position: absolute;
   top: 8px;
@@ -160,8 +155,13 @@ function goToDetail() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 2;
   color: white;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bookmark-wrapper {
+  pointer-events: auto;
 }
 
 .image-title {
@@ -170,19 +170,6 @@ function goToDetail() {
   font-weight: bold;
 }
 
-.bookmark-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.save-icon {
-  width: 20px;
-  height: 20px;
-}
-
-/* 📅 날짜 + 좋아요/댓글 */
 .meta {
   display: flex;
   justify-content: space-between;
@@ -210,6 +197,5 @@ function goToDetail() {
   display: flex;
   align-items: center;
   text-align: center;
-
 }
 </style>

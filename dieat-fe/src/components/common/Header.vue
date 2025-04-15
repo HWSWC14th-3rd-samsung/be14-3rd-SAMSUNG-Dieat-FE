@@ -45,7 +45,8 @@
       </template>
       <template v-else>
         <button @click="$emit('open-login')">로그인</button>
-        <RouterLink to="/register">회원가입</RouterLink>
+        <RouterLink to="/regist">회원가입</RouterLink>
+
       </template>
     </nav>
   </header>
@@ -78,10 +79,10 @@ const menu1 = [
   { label: '음식 데이터 등록', href: '/registerFood' }
 ]
 const menu2 = [
-  { label: '식사 조회', href: '/readMeal' },
-  { label: '식사 등록', href: '/registerMeal' },
-  { label: '식단 게시글 조회', href: '/readDiet' },
-  { label: '식단 게시글 등록', href: '/registerDiet' }
+  { label: '식사 조회', href: '/meal' },
+  { label: '식사 등록', href: '/registmeal' },
+  { label: '식단 게시글 조회', href: '/dietPost' },
+  { label: '식단 게시글 등록', href: '/dietPost/:id' }
 ]
 const menu3 = [
   { label: '자유 게시글 조회', href: '/readFree' },
@@ -90,11 +91,13 @@ const menu3 = [
   { label: '성공기 게시글 등록', href: '/registerSuccess' }
 ]
 const menu4 = [
-  { label: '개인 정보', href: '/userinfo' },
+
+  { label: '개인 정보', href: '/personalUserInfo' },
   { label: '포인트 적립 내역', href: '/point' },
   { label: '북마크', href: '/category' },
   { label: '구독 관리', href: '/subscribeMng' },
   { label: '구독 게시판', href: '/subscribePost' },
+  { label: '대시보드', href: '/dashboard' },
   { label: '차단', href: '/block' }
 ]
 const menu5 = [

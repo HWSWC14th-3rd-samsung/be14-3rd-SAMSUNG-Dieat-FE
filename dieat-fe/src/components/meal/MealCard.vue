@@ -6,7 +6,7 @@
                 <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
             </svg>
         </button>
-        <div class="meal-image"></div>
+        <div class="meal-image" :style="meal.meal_image ? { backgroundImage: `url(${meal.meal_image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}"></div>
         <div class="meal-content">
             <div class="meal-header">
                 <div class="meal-name">{{ meal.meal_title || meal.name || '제목 없음' }}</div>

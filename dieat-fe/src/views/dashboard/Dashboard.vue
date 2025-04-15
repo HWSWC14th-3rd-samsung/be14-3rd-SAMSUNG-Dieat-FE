@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header />
 
     <div class="dashboard-wrapper">
       <!-- 1. 요약 -->

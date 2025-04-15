@@ -28,7 +28,7 @@
       </div>
   
       <div class="button-wrapper">
-        <button class="edit-btn" @click="router.push('/info/edit')">수정하기</button>
+        <button class="edit-btn" @click="router.push('/userEdit')">수정하기</button>
       </div>
     </div>
   </template>

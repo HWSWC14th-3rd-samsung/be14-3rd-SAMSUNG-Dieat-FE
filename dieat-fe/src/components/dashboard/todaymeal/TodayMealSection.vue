@@ -16,7 +16,7 @@ const today = dayjs().format('YYYY-MM-DD')
 const meals = ref([])
 
 onMounted(async () => {
-  const response = await fetch('http://localhost:8080/meals')
+  const response = await fetch('http://localhost:3000/meals')
   const allMeals = await response.json()
   console.log('API에서 받은 meals:', allMeals)
 
