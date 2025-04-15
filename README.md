@@ -207,7 +207,12 @@
 
 ## 🧪 테스트 계획 및 결과
 
-대시보드
+<details>
+  <summary>📊 대시보드</summary>
+  
+  ![dashboard (1)](https://github.com/user-attachments/assets/92e63ad4-53ff-4d4d-ba65-9f2ccc1eeb5d)
+  
+  </details>
 
 ---
 
