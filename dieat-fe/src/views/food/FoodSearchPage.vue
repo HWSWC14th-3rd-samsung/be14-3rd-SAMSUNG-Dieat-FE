@@ -71,11 +71,13 @@ function goToRegisterMeal() {
     return
   }
 
-  console.log('FoodSearchPage - goToRegisterMeal: 장바구니 데이터', basket.value);
+  console.log('FoodSearchPage - goToRegisterMeal: 장바구니 데이터', JSON.parse(JSON.stringify(basket.value)));
   
   try {
     console.log('FoodSearchPage - goToRegisterMeal: Pinia store에 데이터 저장 시도');
-    const foodsWithAllInfo = basket.value.map(food => ({
+    // Proxy 객체를 일반 객체로 변환
+    const normalizedBasket = JSON.parse(JSON.stringify(basket.value));
+    const foodsWithAllInfo = normalizedBasket.map(food => ({
       id: food.id,
       name: food.name,
       unit: food.unit,
@@ -94,10 +96,12 @@ function goToRegisterMeal() {
     
     console.log('FoodSearchPage - goToRegisterMeal: 변환된 데이터', foodsWithAllInfo);
     
-
+    // 기존 선택된 음식 데이터도 Proxy 객체를 일반 객체로 변환
     const currentFoods = registMealStore.selectedFoods || [];
+    const normalizedCurrentFoods = JSON.parse(JSON.stringify(currentFoods));
 
-    registMealStore.setSelectedFoods([...currentFoods, ...foodsWithAllInfo]);
+    // 일반 객체로 변환한 데이터를 Pinia 스토어에 저장
+    registMealStore.setSelectedFoods([...normalizedCurrentFoods, ...foodsWithAllInfo]);
     
     console.log('FoodSearchPage - goToRegisterMeal: Pinia store에 데이터 저장 성공');
     console.log('FoodSearchPage - goToRegisterMeal: 라우터 이동 시도 /registmeal');

@@ -20,7 +20,8 @@ export const useRegistMealStore = defineStore('registMeal', {
         file: null
       };
 
-      const safeInfo = info || defaultInfo;
+      // Proxy 객체일 경우 일반 객체로 변환
+      const safeInfo = info ? JSON.parse(JSON.stringify(info)) : defaultInfo;
 
       // 이미지 정보 처리
       let fileInfo = null;
@@ -68,11 +69,14 @@ export const useRegistMealStore = defineStore('registMeal', {
     },
     // 식사 등록 창 음식 관리
     setSelectedFoods(foods) {
-      this.selectedFoods = foods || [];
+      // Proxy 객체일 경우 일반 객체로 변환
+      this.selectedFoods = foods ? JSON.parse(JSON.stringify(foods)) : [];
     },
     addSelectedFoods(foods) {
       if (Array.isArray(foods)) {
-        this.selectedFoods = [...this.selectedFoods, ...foods];
+        // Proxy 객체일 경우 일반 객체로 변환
+        const normalizedFoods = JSON.parse(JSON.stringify(foods));
+        this.selectedFoods = [...this.selectedFoods, ...normalizedFoods];
       }
     },
     clearSelectedFoods() {
@@ -80,7 +84,8 @@ export const useRegistMealStore = defineStore('registMeal', {
     },
     // 장바구니 음식 관리
     setBasketFoods(foods) {
-      this.basketFoods = foods || [];
+      // Proxy 객체일 경우 일반 객체로 변환
+      this.basketFoods = foods ? JSON.parse(JSON.stringify(foods)) : [];
     },
     clearBasketFoods() {
       this.basketFoods = [];
@@ -88,7 +93,9 @@ export const useRegistMealStore = defineStore('registMeal', {
     // 장바구니 음식을 식사 등록 창에 추가
     addBasketFoodsToSelected() {
       if (this.basketFoods.length > 0) {
-        this.selectedFoods = [...this.selectedFoods, ...this.basketFoods];
+        // Proxy 객체일 경우 일반 객체로 변환
+        const normalizedBasketFoods = JSON.parse(JSON.stringify(this.basketFoods));
+        this.selectedFoods = [...this.selectedFoods, ...normalizedBasketFoods];
         this.basketFoods = [];
       }
     }

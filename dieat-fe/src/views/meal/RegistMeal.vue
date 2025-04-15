@@ -454,7 +454,8 @@
 
     const handleSubmit = async () => {
         console.log('RegistMeal - handleSubmit: 등록 버튼 클릭');
-        console.log('RegistMeal - handleSubmit: 현재 등록된 음식', registeredFoods.value);
+        // Proxy 객체를 일반 객체로 변환하여 출력
+        console.log('RegistMeal - handleSubmit: 현재 등록된 음식', JSON.parse(JSON.stringify(registeredFoods.value)));
         if (!showMealCard.value || registeredFoods.value.length === 0) {
             showNoFoodModal.value = true;
             return;
@@ -478,6 +479,9 @@
             // 한국 시간을 그대로 사용하여 ISO 8601 형식으로 변환
             const mealDateTime = `${datePart}T${timePart}:00`;
             
+            // Proxy 객체를 일반 객체로 변환 - 서버 통신 시 문제 방지
+            const normalizedFoods = JSON.parse(JSON.stringify(registeredFoods.value));
+            
             // 음식 관련 영양소 데이터 계산
             const mealData = {
                 id: Date.now(),
@@ -489,11 +493,11 @@
                 meal_carbs: totalNutrients.value.carb,
                 meal_protein: totalNutrients.value.protein,
                 meal_fat: totalNutrients.value.fat,
-                meal_sugar: registeredFoods.value.reduce((sum, food) => {
+                meal_sugar: normalizedFoods.reduce((sum, food) => {
                     const quantity = parseFloat(food.quantity) || 1;
                     return sum + (parseFloat(food.sugar) || 0) * quantity;
                 }, 0),
-                meal_foods: registeredFoods.value,
+                meal_foods: normalizedFoods,
                 user_code: 1,
                 file: [selectedImageInfo.value]
             };
@@ -598,15 +602,17 @@
             
             // 등록된 음식 정보 설정
             if (data.meal.foods && data.meal.foods.length > 0) {
-                registeredFoods.value = data.meal.foods;
+                // Proxy 객체가 되지 않도록 일반 객체로 변환
+                const normalizedFoods = JSON.parse(JSON.stringify(data.meal.foods));
+                registeredFoods.value = normalizedFoods;
                 showMealCard.value = true;
                 
-                // Pinia store에도 저장
-                mealStore.setSelectedFoods(data.meal.foods);
+                // Pinia store에도 저장 (일반 객체로 변환)
+                mealStore.setSelectedFoods(normalizedFoods);
             }
             
             // 식사 정보를 Pinia store에 임시 저장
-            mealStore.setTempMealInfo(mealInfo.value);
+            mealStore.setTempMealInfo(JSON.parse(JSON.stringify(mealInfo.value)));
             
             // 모달 닫기
             closeLoadMealModal();
@@ -628,6 +634,8 @@
     const handleLoadDietPostConfirm = (selectedDiet) => {
         if (selectedDiet && selectedDiet.foods && Array.isArray(selectedDiet.foods)) {
             // 식단에 포함된 각 음식을 음식 카드로 추가
+            const foodsToAdd = [];
+            
             selectedDiet.foods.forEach(food => {
                 // 음식 데이터 형식 변환 (식단의 food 항목 -> 음식 카드 형식)
                 const newFood = {
@@ -643,9 +651,16 @@
                     quantity: food.quantity || 1
                 };
                 
-                // 음식 목록에 추가
-                registeredFoods.value.push(newFood);
+                // 새 음식을 배열에 추가
+                foodsToAdd.push(newFood);
             });
+            
+            // 음식 목록에 추가 (Proxy 객체가 되지 않도록 일반 객체로 변환)
+            registeredFoods.value = [...registeredFoods.value, ...foodsToAdd];
+            showMealCard.value = true;
+            
+            // Pinia store에도 저장 (일반 객체로 변환)
+            mealStore.setSelectedFoods(JSON.parse(JSON.stringify(registeredFoods.value)));
             
             // 추가된 음식에 따라 영양성분 업데이트
             updateMealInfo();
