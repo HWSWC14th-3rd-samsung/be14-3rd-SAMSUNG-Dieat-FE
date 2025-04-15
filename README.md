@@ -128,8 +128,12 @@
 
 ## 🎬 스토리보드
 
-대시보드
+<details>
+<summary>📊 대시보드</summary>
+
 ![image](https://github.com/user-attachments/assets/03f0f1ed-09a9-482d-8a46-b4705d717627)
+
+</details>
 
 ---
 
