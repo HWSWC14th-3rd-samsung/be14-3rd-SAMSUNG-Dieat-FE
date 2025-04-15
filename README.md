@@ -134,6 +134,10 @@
 ![image](https://github.com/user-attachments/assets/03f0f1ed-09a9-482d-8a46-b4705d717627)
 
 </details>
+<details>
+<summary>로그인</summary>
+  ![로그인](https://github.com/user-attachments/assets/42045d39-4b5e-4bd2-a246-c4b5e7963c59)
+</details>
 
 ---
 
