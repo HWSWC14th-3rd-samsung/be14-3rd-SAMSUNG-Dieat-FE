@@ -1,4 +1,3 @@
-
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 
@@ -8,6 +7,7 @@ import Login from '@/views/Login.vue';
 
 import MealLayout from '@/views/meal/MealLayout.vue';
 import RegistMeal from '@/views/meal/RegistMeal.vue';
+import EditMeal from '@/views/meal/EditMeal.vue';
 
 import DietPostLayout from '@/views/dietpost/DietPostLayout.vue';
 import DietPostDetail from '@/views/dietpost/DietPostDetail.vue';
@@ -50,11 +50,9 @@ const router = createRouter({
     { path: '/personalUserInfo', component: personalUserInfo },
     { path: '/userEdit', component: userEdit },
 
-
-
-
     { path: '/meal', component: MealLayout },
     { path: '/registmeal', component: RegistMeal },
+    { path: '/editmeal/:id', component: EditMeal },
 
     { path: '/dietPost', component: DietPostLayout },
     { path: '/dietPost/:id', component: DietPostDetail },

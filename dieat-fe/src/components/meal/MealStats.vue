@@ -19,7 +19,7 @@
                 <div class="stat-content">
                     <div class="stat-label">탄수화물</div>
                     <div class="stat-value" :style="{ color: carbsColor }">
-                        {{ calculateTotalCarbs() }}
+                        {{ calculateTotalCarbs() }} g
                     </div>
                 </div>
                 <div class="line-div"></div>
@@ -32,7 +32,7 @@
                 <div class="stat-content">
                     <div class="stat-label">단백질</div>
                     <div class="stat-value" :style="{ color: proteinColor }">
-                        {{ calculateTotalProtein() }}g
+                        {{ calculateTotalProtein() }} g
                     </div>
                 </div>
                 <div class="line-div"></div>
@@ -45,7 +45,7 @@
                 <div class="stat-content">
                     <div class="stat-label">지방</div>
                     <div class="stat-value" :style="{ color: fatColor }">
-                        {{ calculateTotalFat() }}g
+                        {{ calculateTotalFat() }} g
                     </div>
                 </div>
                 <div class="line-div"></div>

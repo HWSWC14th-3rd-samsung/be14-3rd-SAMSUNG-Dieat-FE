@@ -1,12 +1,12 @@
 <template>
-    <div class="meal-card">
-        <button v-if="showDeleteButton" class="meal-card-delete-btn" @click="$emit('delete')">
+    <div class="meal-card" @click="goToEdit">
+        <button v-if="showDeleteButton" class="meal-card-delete-btn" @click.stop="$emit('delete')">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1L11 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
                 <path d="M11 1L1 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
             </svg>
         </button>
-        <div class="meal-image" :style="meal.meal_image ? { backgroundImage: `url(${meal.meal_image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}"></div>
+        <div class="meal-image" :style="getImageStyle()"></div>
         <div class="meal-content">
             <div class="meal-header">
                 <div class="meal-name">{{ meal.meal_title || meal.name || '제목 없음' }}</div>
@@ -40,7 +40,12 @@
 </template>
 
 <script setup>
-    defineProps({
+    import { computed } from 'vue';
+    import { useRouter } from 'vue-router';
+    
+    const router = useRouter();
+    
+    const props = defineProps({
         meal: {
             type: Object,
             required: true
@@ -53,11 +58,47 @@
 
     defineEmits(['delete'])
 
+    const goToEdit = () => {
+        router.push(`/editmeal/${props.meal.id}`);
+    };
+
+    const getImageStyle = () => {
+        // 1. meal_image가 있는 경우 해당 이미지 사용
+        if (props.meal.meal_image) {
+            return {
+                backgroundImage: `url(${props.meal.meal_image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            };
+        }
+        
+        // 2. file 배열이 있고 그 안에 path가 있는 경우 (base64 이미지)
+        if (props.meal.file && props.meal.file.length > 0 && props.meal.file[0].path) {
+            return {
+                backgroundImage: `url(${props.meal.file[0].path})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            };
+        }
+        
+        // 3. file 배열이 있고 그 안에 imageData가 있는 경우 (이전 로직 유지)
+        if (props.meal.file && props.meal.file.length > 0 && props.meal.file[0].imageData) {
+            return {
+                backgroundImage: `url(${props.meal.file[0].imageData})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            };
+        }
+        
+        // 4. 이미지가 없는 경우 기본 스타일
+        return {};
+    };
+
     const formatTime = (dateTimeStr) => {
         if (!dateTimeStr) return '';
         
         try {
-            // ISO 8601 형식 ('YYYY-MM-DDTHH:mm:ss' 또는 'YYYY-MM-DD HH:mm:ss')을 처리
+
             const normalizedDateTime = dateTimeStr.replace(' ', 'T');
             const date = new Date(normalizedDateTime);
             
@@ -66,7 +107,6 @@
                 return '';
             }
             
-            // 한국 시간대(UTC+9)로 변환
             const offset = date.getTimezoneOffset() * 60000;
             const koreanTime = new Date(date.getTime() + offset + (9 * 60 * 60 * 1000));
             

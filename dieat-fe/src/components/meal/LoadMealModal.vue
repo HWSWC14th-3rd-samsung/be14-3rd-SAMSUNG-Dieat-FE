@@ -141,12 +141,10 @@ const fetchMonthlyMeals = async () => {
         const data = await response.json();
         
         if (Array.isArray(data) && data.length > 0) {
-            // 현재 달의 데이터만 필터링 (한국 시간 기준)
             const currentYear = currentDate.value.getFullYear();
             const currentMonth = String(currentDate.value.getMonth() + 1).padStart(2, '0');
             const yearMonth = `${currentYear}-${currentMonth}`;
             
-            // meal_dt 값이 있는 식사들만 필터링
             mealsData.value = data
                 .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
                 .filter(meal => {
@@ -175,19 +173,16 @@ const fetchMonthlyMeals = async () => {
     }
 };
 
-// 월이 변경될 때마다 데이터 다시 조회
 watch(currentDate, () => {
     fetchMonthlyMeals();
 });
 
-// 컴포넌트가 마운트될 때 초기 데이터 조회
 onMounted(() => {
     if (props.show) {
         fetchMonthlyMeals();
     }
 });
 
-// show prop이 변경될 때 데이터 조회
 watch(() => props.show, (newValue) => {
     if (newValue) {
         fetchMonthlyMeals();
@@ -212,7 +207,7 @@ const calendarDays = computed(() => {
     // 달력에 표시할 날짜들을 저장할 배열
     const days = [];
     
-    // 이전 달의 날짜들 추가
+
     const firstDayWeekday = firstDay.getDay();
     for (let i = firstDayWeekday - 1; i >= 0; i--) {
         days.push({
@@ -222,7 +217,6 @@ const calendarDays = computed(() => {
         });
     }
     
-    // 현재 달의 날짜들 추가
     for (let i = 1; i <= lastDay.getDate(); i++) {
         days.push({
             date: new Date(year, month, i),
@@ -231,8 +225,7 @@ const calendarDays = computed(() => {
         });
     }
     
-    // 다음 달의 날짜들 추가
-    const remainingDays = 42 - days.length; // 6주 x 7일 = 42
+    const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
         days.push({
             date: new Date(year, month + 1, i),
@@ -282,7 +275,7 @@ const confirmSelection = async () => {
     }
     
     try {
-        // 선택한 식사의 전체 정보를 서버에서 가져오기
+
         const response = await fetch(`${API_URL}?meal_code=${selectedMeal.value.id}`);
         
         if (!response.ok) {
@@ -291,15 +284,12 @@ const confirmSelection = async () => {
         
         const meals = await response.json();
         
-        // 일치하는 식사가 없는 경우
         if (!meals || meals.length === 0) {
             throw new Error('선택한 식사 정보를 찾을 수 없습니다.');
         }
         
-        // 첫 번째 항목이 해당 식사 정보
         const mealData = meals[0];
         
-        // 부모 컴포넌트로 선택한 식사 정보 전달
         emit('confirm', {
             date: selectedDate.value,
             meal: {
@@ -321,28 +311,23 @@ const hasMeal = (date) => {
         return false;
     }
     
-    // 날짜를 YYYY-MM-DD 형식으로 변환
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const targetDate = `${year}-${month}-${day}`;
     
-    // 한국 시간 기준으로 날짜 비교
     return mealsData.value.some(mealDate => {
         if (!mealDate || typeof mealDate !== 'string') return false;
         
         try {
-            // 'T'나 공백으로 분리하여 날짜 부분만 추출 (YYYY-MM-DD)
             const mealDateParts = mealDate.split(/[T ]/);
             if (mealDateParts.length === 0) return false;
             
             const mealDateStr = mealDateParts[0];
             if (!mealDateStr) return false;
-            
-            // 날짜 부분이 'undefined'를 포함하는지 확인
+        
             if (mealDateStr.includes('undefined')) return false;
             
-            // 날짜 부분이 targetDate와 일치하는지 비교
             return mealDateStr === targetDate;
         } catch (error) {
             console.error('날짜 비교 오류:', error, mealDate);
@@ -353,13 +338,12 @@ const hasMeal = (date) => {
 
 const fetchMealsByDate = async (date) => {
     try {
-        // 날짜를 YYYY-MM-DD 형식으로 변환
+
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const targetDate = `${year}-${month}-${day}`;
         
-        // 모든 데이터를 가져옴
         const response = await fetch(API_URL);
         
         if (!response.ok) {
@@ -368,12 +352,11 @@ const fetchMealsByDate = async (date) => {
         
         const allData = await response.json();
         
-        // 클라이언트에서 날짜 필터링 (한국 시간 기준)
         const filteredData = allData
             .filter(meal => meal && meal.meal_dt && typeof meal.meal_dt === 'string')
             .filter(meal => {
                 try {
-                    // 'T'나 공백으로 분리하여 날짜 부분만 추출
+
                     const mealDateParts = meal.meal_dt.split(/[T ]/);
                     if (mealDateParts.length === 0) return false;
                     
@@ -387,17 +370,15 @@ const fetchMealsByDate = async (date) => {
                 }
             });
 
-        // 해당 날짜에 meal 데이터가 없는 경우
         if (filteredData.length === 0) {
             alert('선택한 날짜에 등록된 식사 정보가 없습니다.');
             selectedDateMeals.value = [];
             return;
         }
 
-        // 시간 추출 및 분 단위 변환 함수
         const getMinutes = (dateTimeStr) => {
             try {
-                // 'T'나 공백을 기준으로 날짜와 시간 분리
+
                 const timeParts = dateTimeStr.split(/[T ]/);
                 if (timeParts.length < 2) return 0;
                 
@@ -417,20 +398,18 @@ const fetchMealsByDate = async (date) => {
             }
         };
 
-        // 시간 순으로 정렬
         filteredData.sort((a, b) => {
             const minutesA = getMinutes(a.meal_dt);
             const minutesB = getMinutes(b.meal_dt);
             return minutesA - minutesB;
         });
 
-        // 서버에서 받은 데이터를 화면에 표시할 형식으로 변환
         selectedDateMeals.value = filteredData.map(meal => {
-            // 날짜 및 시간 형식 처리
+
             let mealTime = '';
             try {
                 const mealDateStr = meal.meal_dt;
-                // 'T'나 공백으로 분리
+
                 const timeParts = mealDateStr.split(/[T ]/);
                 if (timeParts.length >= 2) {
                     const timeElements = timeParts[1].split(':');
@@ -520,7 +499,7 @@ const calculateNutrient = (value, quantity) => {
     padding: 0;
     display: flex;
     gap: 20px;
-    height: calc(611px - 70px); /* 헤더 높이만 제외 */
+    height: calc(611px - 70px);
 }
 
 .calendar-section {
@@ -546,7 +525,7 @@ const calculateNutrient = (value, quantity) => {
     justify-content: space-between;
     align-items: center;
     margin-top: 0;
-    padding: 0 5px;  /* 양쪽에 5px 패딩 추가 */
+    padding: 0 5px;
 }
 
 .calendar-navigation button {
@@ -554,7 +533,7 @@ const calculateNutrient = (value, quantity) => {
     border: none;
     cursor: pointer;
     padding: 5px;
-    margin: 0 -5px;  /* 양쪽으로 -5px 마진으로 원래 위치에서 안쪽으로 이동 */
+    margin: 0 -5px;
 }
 
 .arrow {

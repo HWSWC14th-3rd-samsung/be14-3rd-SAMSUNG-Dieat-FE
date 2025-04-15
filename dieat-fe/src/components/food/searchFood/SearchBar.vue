@@ -31,7 +31,7 @@ defineProps({
     modelValue: String,
 })
 
-defineEmits(['update:modelValue', 'add', 'selectFilter'])
+const emit = defineEmits(['update:modelValue', 'add', 'selectFilter'])
 
 const showFilter = ref(false)
 const selectedFilter = ref(null) // 기본값 설정

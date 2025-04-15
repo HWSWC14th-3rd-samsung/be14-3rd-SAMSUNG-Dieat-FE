@@ -105,9 +105,6 @@
                             </div>
                             <span class="nutrient-label">지방<br/>(50g)</span>
                         </div>
-                        <!-- 그리드 라인 -->
-                        <div class="grid-line line-1"></div>
-                        <div class="grid-line line-2"></div>
                     </div>
                 </div>
             </div>
@@ -140,7 +137,8 @@
             <div class="registmeal-footer">
                 <button class="registmeal-load-dietpost" @click="openLoadDietPostModal">식단 불러오기</button>
                 <button class="registmeal-load-meal" @click="openLoadMealModal">식사 불러오기</button>
-                <button class="registmeal-regist" @click="handleSubmit">등록</button>
+                <button class="registmeal-regist" @click="handleSubmit">수정</button>
+                <button class="registmeal-delete" @click="handleDelete">삭제</button>
                 <button class="registmeal-cancel" @click="goToMeal">취소</button>
             </div>
         </div>
@@ -164,6 +162,15 @@
         :show="showCompleteModal"
         @close="closeCompleteModal"
     />
+    <AlertModal
+        :show="showDeleteConfirmModal"
+        message="정말 삭제하시겠습니까?"
+        :showCancel="true"
+        confirmText="삭제"
+        cancelText="취소"
+        @confirm="confirmDelete"
+        @cancel="closeDeleteConfirmModal"
+    />
 </template>
 
 <script setup>
@@ -174,10 +181,11 @@
     import LoadDietPostModal from '@/components/meal/LoadDietPostModal.vue';
     import CompleteModal from '@/components/common/CompleteModal.vue';
     import { ref, onMounted, computed } from 'vue';
-    import { useRouter } from 'vue-router';
+    import { useRouter, useRoute } from 'vue-router';
     import { useRegistMealStore } from '@/stores/registMeal';
 
     const router = useRouter();
+    const route = useRoute();
     
     // 한국 시간(UTC+9)로 현재 날짜 및 시간 가져오기
     const getKoreanDateTime = () => {
@@ -211,6 +219,7 @@
     const showLoadMealModal = ref(false);
     const showLoadDietPostModal = ref(false);
     const showCompleteModal = ref(false);
+    const showDeleteConfirmModal = ref(false);
     const registeredFoods = ref([]); // 등록된 음식 목록을 관리하는 ref
     const showDeleteMode = ref(false);
 
@@ -259,27 +268,64 @@
         };
     });
 
-    onMounted(() => {
-        // Pinia store에서 선택된 음식 데이터 가져오기
-        const selectedFoods = mealStore.selectedFoods;
-        if (selectedFoods && selectedFoods.length > 0) {
-            registeredFoods.value = selectedFoods;
-            showMealCard.value = true;
+    onMounted(async () => {
+        // URL에서 meal ID를 가져옴
+        const mealId = route.params.id;
+        if (!mealId) {
+            router.push('/meal');
+            return;
         }
 
-        // Pinia store에서 임시 식사 정보 가져오기
-        const tempInfo = mealStore.tempMealInfo;
-        if (tempInfo) {
-            mealInfo.value = { ...tempInfo };
-            timeInput.value = tempInfo.meal_time;
-            if (tempInfo.file) {
-                selectedImageInfo.value = tempInfo.file[0];
-                previewImage.value = tempInfo.file[0].path;
+        try {
+            // 서버에서 meal 데이터 가져오기 - ID로 필터링하여 조회
+            const response = await fetch(`${API_URL}?id=${mealId}`);
+            if (!response.ok) {
+                throw new Error('식사 데이터를 가져오는데 실패했습니다.');
             }
+            
+            const meals = await response.json();
+            if (!meals || meals.length === 0) {
+                throw new Error('해당 ID의 식사를 찾을 수 없습니다.');
+            }
+            
+            const mealData = meals[0];
+            console.log('불러온 식사 데이터:', mealData);
+
+            // 가져온 데이터로 폼 초기화
+            mealInfo.value = {
+                meal_name: mealData.meal_title || '',
+                meal_description: mealData.meal_desc || '',
+                meal_time: mealData.meal_dt ? mealData.meal_dt.replace('T', ' ').substring(0, 16) : koreanDateTime.dateTime,
+                file: mealData.file || null
+            };
+
+            timeInput.value = mealInfo.value.meal_time;
+
+            if (mealData.file && mealData.file.length > 0) {
+                selectedImageInfo.value = mealData.file[0];
+                previewImage.value = mealData.file[0].path;
+            }
+
+            // 음식 데이터 처리
+            if (mealData.meal_foods && mealData.meal_foods.length > 0) {
+                registeredFoods.value = [...mealData.meal_foods];
+                showMealCard.value = true;
+            }
+
+            // Pinia 스토어에 정보 저장 - 명확하게 registMealStore 사용
+            mealStore.setTempMealInfo(mealInfo.value);
+            mealStore.setSelectedFoods(registeredFoods.value);
+
+            console.log('초기화된 식사 정보:', mealInfo.value);
+            console.log('스토어에 저장된 음식 목록:', mealStore.selectedFoods);
+
+        } catch (error) {
+            console.error('식사 데이터 로드 중 오류:', error);
+            errorMessage.value = '식사 데이터를 로드하는데 실패했습니다.';
         }
     });
 
-    // JSON 서버 기본 URL
+    // JSON 서버 기본 URL - meals 배열에 접근하도록 수정
     const API_URL = 'http://localhost:3000/meals';
 
     // 고유한 파일명 생성 함수
@@ -292,84 +338,31 @@
     };
 
     const formatTimeInput = (event) => {
-        const originalValue = event.target.value;
-        if (/[^\d\-: ]/.test(originalValue)) {  // 숫자, 하이픈, 콜론, 공백이 아닌 문자가 있는지 체크
-            timeError.value = true;
-            return;
-        }
-        timeError.value = false;
+        let value = event.target.value.replace(/[^0-9]/g, '');
         
-        let value = originalValue.replace(/[^\d]/g, ''); // 숫자만 남김
-        
-        // 날짜와 시간 형식 적용 (0000-00-00 00:00)
-        if (value.length > 0) {
-            // 연도
-            let formatted = value.slice(0, 4);
-            
-            // 월 추가
-            if (value.length > 4) {
-                formatted += '-' + value.slice(4, 6);
-            }
-            
-            // 일 추가
-            if (value.length > 6) {
-                formatted += '-' + value.slice(6, 8);
-            }
-            
-            // 시간 추가
-            if (value.length > 8) {
-                formatted += ' ' + value.slice(8, 10);
-            }
-            
-            // 분 추가
-            if (value.length > 10) {
-                formatted += ':' + value.slice(10, 12);
-            }
-            
-            value = formatted;
+        if (value.length > 12) {
+            value = value.slice(0, 12);
         }
         
-        // 날짜 및 시간 유효성 검사
-        const dateParts = value.split(' ')[0]?.split('-') || [];
-        const timeParts = value.split(' ')[1]?.split(':') || [];
-        
-        // 월 검증 (01-12)
-        if (dateParts.length > 1 && dateParts[1].length === 2) {
-            const month = parseInt(dateParts[1]);
-            if (month > 12) {
-                value = value.substring(0, 5) + '12' + value.substring(7);
-            } else if (month === 0) {
-                value = value.substring(0, 5) + '01' + value.substring(7);
-            }
+        if (value.length >= 4) {
+            value = value.slice(0, 4) + '-' + value.slice(4);
         }
-        
-        // 일 검증 (01-31)
-        if (dateParts.length > 2 && dateParts[2].length === 2) {
-            const day = parseInt(dateParts[2]);
-            if (day > 31) {
-                value = value.substring(0, 8) + '31' + value.substring(10);
-            } else if (day === 0) {
-                value = value.substring(0, 8) + '01' + value.substring(10);
-            }
+        if (value.length >= 7) {
+            value = value.slice(0, 7) + '-' + value.slice(7);
         }
-        
-        // 시간 검증 (00-23)
-        if (timeParts.length > 0 && timeParts[0].length === 2) {
-            const hours = parseInt(timeParts[0]);
-            if (hours > 23) {
-                value = value.substring(0, 11) + '23' + value.substring(13);
-            }
+        if (value.length >= 10) {
+            value = value.slice(0, 10) + ' ' + value.slice(10);
         }
-        
-        // 분 검증 (00-59)
-        if (timeParts.length > 1 && timeParts[1].length === 2) {
-            const minutes = parseInt(timeParts[1]);
-            if (minutes > 59) {
-                value = value.substring(0, 14) + '59';
-            }
+        if (value.length >= 13) {
+            value = value.slice(0, 13) + ':' + value.slice(13);
         }
         
         timeInput.value = value;
+        
+        // 숫자만 입력되었는지 확인
+        const numericValue = value.replace(/[^0-9]/g, '');
+        timeError.value = numericValue.length !== 12;
+        
         updateMealInfo();
     };
 
@@ -379,45 +372,42 @@
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
-        if (file) {
-            try {
-                const uniqueFileName = generateUniqueFileName(file.name);
-                
-                // FileReader를 사용하여 이미지를 Base64로 변환
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const imageData = e.target.result;
-                    selectedImageInfo.value = {
-                        id: Date.now(),
-                        originalName: file.name,
-                        uniqueName: uniqueFileName,
-                        imageData: imageData, // Base64 이미지 데이터 저장
-                        type: file.type,
-                        size: file.size,
-                        path: imageData, // path 대신 Base64 데이터를 사용
-                        uploadDate: new Date().toISOString()
-                    };
-                    previewImage.value = imageData;
-                };
-                reader.readAsDataURL(file);
+        if (!file) return;
 
-                console.log('파일 업로드 성공');
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
 
-            } catch (error) {
-                console.error('파일 업로드 중 오류 발생:', error);
-                errorMessage.value = '파일 업로드에 실패했습니다.';
-                previewImage.value = null;
-                selectedImageInfo.value = null;
-                if (fileInput.value) {
-                    fileInput.value.value = '';
-                }
+            const response = await fetch('http://localhost:3000/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('파일 업로드 실패');
             }
+
+            const data = await response.json();
+            
+            selectedImageInfo.value = {
+                id: Date.now(),
+                originalName: file.name,
+                uniqueName: data.filename,
+                path: `http://localhost:3000/uploads/${data.filename}`
+            };
+
+            previewImage.value = selectedImageInfo.value.path;
+            errorMessage.value = '';
+            updateMealInfo();
+
+        } catch (error) {
+            console.error('파일 업로드 중 오류:', error);
+            errorMessage.value = '파일 업로드에 실패했습니다.';
         }
-        updateMealInfo();
     };
 
     const addMealCard = () => {
-        console.log('RegistMeal - addMealCard: 음식 추가 버튼 클릭');
+        console.log('EditMeal - addMealCard: 음식 추가 버튼 클릭');
         const mealInfo = {
             meal_name: document.querySelector('.registmeal-name-input').value,
             meal_description: document.querySelector('.registmeal-desc-input').value,
@@ -425,38 +415,35 @@
             file: selectedImageInfo.value
         };
         
-        console.log('RegistMeal - addMealCard: 현재 등록된 음식', registeredFoods.value);
+        console.log('EditMeal - addMealCard: 현재 등록된 음식', registeredFoods.value);
         mealStore.setTempMealInfo(mealInfo);
-        console.log('RegistMeal - addMealCard: 임시 식사 정보 저장됨', mealInfo);
+        console.log('EditMeal - addMealCard: 임시 식사 정보 저장됨', mealInfo);
         router.push('/searchFood');
     };
 
     const removeMealCard = () => {
-        console.log('RegistMeal - removeMealCard: 음식 제거 버튼 클릭');
+        console.log('EditMeal - removeMealCard: 음식 제거 버튼 클릭');
         showDeleteMode.value = !showDeleteMode.value;
-        console.log('RegistMeal - removeMealCard: 삭제 모드 상태 변경됨', showDeleteMode.value);
+        console.log('EditMeal - removeMealCard: 삭제 모드 상태 변경됨', showDeleteMode.value);
     };
 
     const handleDeleteFood = (index) => {
-        console.log('RegistMeal - handleDeleteFood: 음식 삭제', index);
-        // 해당 인덱스의 음식을 배열에서 제거
+        console.log('EditMeal - handleDeleteFood: 음식 삭제', index);
         registeredFoods.value = registeredFoods.value.filter((_, i) => i !== index);
-        // Pinia store 업데이트
         mealStore.setSelectedFoods(registeredFoods.value);
         
-        // 모든 음식이 삭제되었을 때 처리
         if (registeredFoods.value.length === 0) {
             showMealCard.value = false;
             showDeleteMode.value = false;
         }
-        console.log('RegistMeal - handleDeleteFood: 남은 음식', registeredFoods.value);
+        console.log('EditMeal - handleDeleteFood: 남은 음식', registeredFoods.value);
     };
 
     const handleSubmit = async () => {
-        console.log('RegistMeal - handleSubmit: 등록 버튼 클릭');
-        // Proxy 객체를 일반 객체로 변환하여 출력
-        console.log('RegistMeal - handleSubmit: 현재 등록된 음식', JSON.parse(JSON.stringify(registeredFoods.value)));
-        if (!showMealCard.value || registeredFoods.value.length === 0) {
+        console.log('EditMeal - handleSubmit: 수정 버튼 클릭');
+        console.log('등록된 음식 목록:', registeredFoods.value);
+        
+        if (registeredFoods.value.length === 0) {
             showNoFoodModal.value = true;
             return;
         }
@@ -471,41 +458,46 @@
             isLoading.value = true;
             errorMessage.value = '';
 
-            // 날짜와 시간을 한국 시간 기준으로 ISO 8601 형식으로 변환
             const [datePart, timePart] = timeInput.value.split(' ');
-            const [year, month, day] = datePart.split('-');
-            const [hours, minutes] = timePart.split(':');
-            
-            // 한국 시간을 그대로 사용하여 ISO 8601 형식으로 변환
             const mealDateTime = `${datePart}T${timePart}:00`;
             
-            // Proxy 객체를 일반 객체로 변환 - 서버 통신 시 문제 방지
-            const normalizedFoods = JSON.parse(JSON.stringify(registeredFoods.value));
+            // 먼저 해당 ID로 데이터 조회
+            const getResponse = await fetch(`${API_URL}?id=${route.params.id}`);
+            if (!getResponse.ok) {
+                throw new Error('식사 데이터 조회 실패');
+            }
             
-            // 음식 관련 영양소 데이터 계산
+            const items = await getResponse.json();
+            if (!items || items.length === 0) {
+                throw new Error('해당 ID의 식사를 찾을 수 없습니다');
+            }
+            
+            // 찾은 항목의 ID 사용
+            const itemToUpdate = items[0];
+            
             const mealData = {
-                id: Date.now(),
-                meal_code: Date.now(),
+                id: itemToUpdate.id,
+                meal_code: route.params.id,
                 meal_title: document.querySelector('.registmeal-name-input').value,
                 meal_desc: document.querySelector('.registmeal-desc-input').value,
-                meal_dt: mealDateTime,  // ISO 8601 형식으로 저장
+                meal_dt: mealDateTime,
                 meal_calories: totalNutrients.value.calorie,
                 meal_carbs: totalNutrients.value.carb,
                 meal_protein: totalNutrients.value.protein,
                 meal_fat: totalNutrients.value.fat,
-                meal_sugar: normalizedFoods.reduce((sum, food) => {
+                meal_sugar: registeredFoods.value.reduce((sum, food) => {
                     const quantity = parseFloat(food.quantity) || 1;
                     return sum + (parseFloat(food.sugar) || 0) * quantity;
                 }, 0),
-                meal_foods: normalizedFoods,
+                meal_foods: registeredFoods.value,
                 user_code: 1,
                 file: [selectedImageInfo.value]
             };
 
-            console.log('저장될 데이터:', JSON.stringify(mealData, null, 2));
+            console.log('수정될 데이터:', JSON.stringify(mealData, null, 2));
 
-            const response = await fetch(API_URL, {
-                method: 'POST',
+            const response = await fetch(`${API_URL}/${itemToUpdate.id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -514,15 +506,70 @@
 
             if (!response.ok) throw new Error('서버 응답 오류');
             
-            // 등록 완료 모달 표시
             showCompleteModal.value = true;
+            mealStore.clearTempMealInfo();
+            mealStore.clearSelectedFoods();
 
         } catch (error) {
-            console.error('저장 중 오류 발생:', error);
-            errorMessage.value = '저장에 실패했습니다.';
+            console.error('수정 중 오류 발생:', error);
+            errorMessage.value = '수정에 실패했습니다. 잠시 후 다시 시도해주세요.';
         } finally {
             isLoading.value = false;
         }
+    };
+
+    const handleDelete = () => {
+        showDeleteConfirmModal.value = true;
+    };
+
+    const confirmDelete = async () => {
+        try {
+            const mealId = route.params.id;
+            console.log(`삭제 시도: 식사 ID ${mealId}`);
+            
+            // 먼저 해당 ID로 데이터 조회
+            const getResponse = await fetch(`${API_URL}?id=${mealId}`);
+            if (!getResponse.ok) {
+                throw new Error('식사 데이터 조회 실패');
+            }
+            
+            const items = await getResponse.json();
+            if (!items || items.length === 0) {
+                throw new Error('해당 ID의 식사를 찾을 수 없습니다');
+            }
+            
+            // 찾은 항목의 첫 번째 요소 ID로 삭제 요청
+            const itemToDelete = items[0];
+            const deleteResponse = await fetch(`${API_URL}/${itemToDelete.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!deleteResponse.ok) {
+                console.error(`삭제 실패 상태 코드: ${deleteResponse.status}`);
+                throw new Error('삭제 실패');
+            }
+
+            console.log('식사 삭제 성공');
+            showCompleteModal.value = true;
+            closeDeleteConfirmModal();
+            mealStore.clearSelectedFoods();
+            mealStore.clearTempMealInfo();
+            
+            // 삭제 후 목록 페이지로 리다이렉트
+            setTimeout(() => {
+                router.push('/meal');
+            }, 500);
+        } catch (error) {
+            console.error('삭제 중 오류 발생:', error);
+            errorMessage.value = '삭제에 실패했습니다. 잠시 후 다시 시도해주세요.';
+        }
+    };
+
+    const closeDeleteConfirmModal = () => {
+        showDeleteConfirmModal.value = false;
     };
 
     const removeImage = () => {
@@ -534,11 +581,9 @@
     };
 
     const goToMeal = () => {
-        console.log('RegistMeal - goToMeal: 취소 버튼 클릭');
-        console.log('RegistMeal - goToMeal: 취소 전 음식 데이터', registeredFoods.value);
+        console.log('EditMeal - goToMeal: 취소 버튼 클릭');
         mealStore.clearSelectedFoods();
         mealStore.clearTempMealInfo();
-        console.log('RegistMeal - goToMeal: Pinia store 초기화 후', mealStore.selectedFoods);
         router.push('/meal');
     };
 
@@ -548,7 +593,6 @@
 
     const closeCompleteModal = () => {
         showCompleteModal.value = false;
-        // 모달을 닫을 때 메인 페이지로 이동
         mealStore.clearSelectedFoods();
         mealStore.clearTempMealInfo();
         router.push('/meal');
@@ -564,7 +608,6 @@
 
     const handleLoadMealConfirm = (data) => {
         try {
-            // 선택한 식사 정보가 있는지 확인
             if (!data || !data.meal) {
                 console.error('선택한 식사 정보가 없습니다.');
                 return;
@@ -572,7 +615,6 @@
             
             console.log('불러온 식사 정보:', data);
             
-            // 식사 정보 화면에 표시
             mealInfo.value = {
                 meal_name: data.meal.meal_name || '',
                 meal_description: data.meal.meal_description || '',
@@ -580,9 +622,7 @@
                 file: data.meal.file || null
             };
             
-            // 시간 입력란에 시간 설정
             if (data.meal.meal_time) {
-                // meal_time이 ISO 형식(T 포함)인 경우 공백으로 변환
                 if (data.meal.meal_time.includes('T')) {
                     const parts = data.meal.meal_time.split('T');
                     const timePart = parts[1]?.split(':') || [];
@@ -594,27 +634,19 @@
                 }
             }
             
-            // 이미지 정보 설정
             if (data.meal.file) {
                 selectedImageInfo.value = data.meal.file;
                 previewImage.value = data.meal.file.path;
             }
             
-            // 등록된 음식 정보 설정
             if (data.meal.foods && data.meal.foods.length > 0) {
-                // Proxy 객체가 되지 않도록 일반 객체로 변환
-                const normalizedFoods = JSON.parse(JSON.stringify(data.meal.foods));
-                registeredFoods.value = normalizedFoods;
+                registeredFoods.value = data.meal.foods;
                 showMealCard.value = true;
-                
-                // Pinia store에도 저장 (일반 객체로 변환)
-                mealStore.setSelectedFoods(normalizedFoods);
+                mealStore.setSelectedFoods(data.meal.foods);
             }
             
-            // 식사 정보를 Pinia store에 임시 저장
-            mealStore.setTempMealInfo(JSON.parse(JSON.stringify(mealInfo.value)));
+            mealStore.setTempMealInfo(mealInfo.value);
             
-            // 모달 닫기
             closeLoadMealModal();
         } catch (error) {
             console.error('식사 정보 로드 중 오류 발생:', error);
@@ -633,15 +665,11 @@
 
     const handleLoadDietPostConfirm = (selectedDiet) => {
         if (selectedDiet && selectedDiet.foods && Array.isArray(selectedDiet.foods)) {
-            // 식단에 포함된 각 음식을 음식 카드로 추가
-            const foodsToAdd = [];
-            
             selectedDiet.foods.forEach(food => {
-                // 음식 데이터 형식 변환 (식단의 food 항목 -> 음식 카드 형식)
                 const newFood = {
-                    id: generateUniqueId(), // 고유 ID 생성
+                    id: generateUniqueId(),
                     name: food.name || food.title || '음식',
-                    type: food.type || 'USERDATA', // 기본 타입
+                    type: food.type || 'USERDATA',
                     unit: food.unit || '1인분',
                     kcal: food.kcal || food.calories || 0,
                     carb: food.carb || food.carbs || 0,
@@ -651,26 +679,15 @@
                     quantity: food.quantity || 1
                 };
                 
-                // 새 음식을 배열에 추가
-                foodsToAdd.push(newFood);
+                registeredFoods.value.push(newFood);
             });
             
-            // 음식 목록에 추가 (Proxy 객체가 되지 않도록 일반 객체로 변환)
-            registeredFoods.value = [...registeredFoods.value, ...foodsToAdd];
-            showMealCard.value = true;
-            
-            // Pinia store에도 저장 (일반 객체로 변환)
-            mealStore.setSelectedFoods(JSON.parse(JSON.stringify(registeredFoods.value)));
-            
-            // 추가된 음식에 따라 영양성분 업데이트
             updateMealInfo();
         }
         
-        // 모달 닫기
         closeLoadDietPostModal();
     };
 
-    // 고유 ID 생성 함수
     const generateUniqueId = () => {
         return 'food_' + Date.now() + Math.floor(Math.random() * 1000);
     };
@@ -684,7 +701,6 @@
             file: selectedImageInfo.value
         };
         
-        // Pinia 스토어에 임시 정보 저장
         mealStore.setTempMealInfo(mealInfo.value);
     };
 </script>
@@ -880,7 +896,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    min-height: 24px; /* 최소 높이 설정 */
+    min-height: 24px;
 }
 
 .nutrient-value {
@@ -943,6 +959,7 @@
 .registmeal-load-dietpost,
 .registmeal-load-meal,
 .registmeal-regist,
+.registmeal-delete,
 .registmeal-cancel {
     font-family: 'Inter';
     font-weight: 400;
@@ -983,8 +1000,24 @@
 
 .registmeal-regist {
     position: absolute;
-    right: 280px;
+    right: 350px;
     background-color: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registmeal-delete {
+    position: absolute;
+    right: 230px;
+    background-color: #ff4b4b;
     color: white;
     padding: 8px 20px;
     border: none;
@@ -999,7 +1032,7 @@
 
 .registmeal-cancel {
     position: absolute;
-    right: 140px;
+    right: 110px;
     background-color: #9e9e9e;
     color: white;
     padding: 8px 20px;
@@ -1020,6 +1053,10 @@
 
 .registmeal-regist:hover {
     background-color: #45a049;
+}
+
+.registmeal-delete:hover {
+    background-color: #ff3333;
 }
 
 .registmeal-cancel:hover {
@@ -1252,4 +1289,4 @@
 .carb { background-color: #FDCA5D; }
 .protein { background-color: #50E250; }
 .fat { background-color: #5D7DFD; }
-</style>
+</style> 
