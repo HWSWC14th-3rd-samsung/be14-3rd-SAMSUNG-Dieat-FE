@@ -300,6 +300,13 @@
   ![음식-검색-정확도-평가](https://github.com/user-attachments/assets/009398db-33b0-4ca7-bbdf-148732f6c48a)
 
   </details>
+
+  <details>
+    <summary>음식-검색-우유</summary>
+    
+  ![음식 검색 - 우유](https://github.com/user-attachments/assets/eb14094f-c442-4fc4-982e-5f9b83f1afe7)
+
+  </details>
     
     
   
