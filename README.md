@@ -214,6 +214,13 @@
   
   </details>
 
+  <details>
+    <summary>회원가입</summary>
+    
+  ![회원가입](https://github.com/user-attachments/assets/8af9b137-2ad0-486a-86bd-2c76221ab5dd)
+  </details>
+
+
 ---
 
 ## 🛠️ 기술 스택
