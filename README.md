@@ -203,6 +203,32 @@
   
   ![Image](https://github.com/user-attachments/assets/d20bb99c-ef81-44fc-b238-5b5ad493fec8)
   </details>
+  
+### 📍 식사
+  <details>
+    <summary>식사 조회</summary>
+    <img width="1401" alt="1  식사 조회" src="https://github.com/user-attachments/assets/e8764749-531c-4ae2-afcb-07dc3549b1cb" />
+    
+  </details>
+  <details>
+    <summary>식사 등록</summary>
+    <img width="1401" alt="2  식사 등록" src="https://github.com/user-attachments/assets/44b7c8d3-f163-4396-bd3c-ca48f7268b35" />
+    
+  </details>
+    <details>
+    <summary>식사 불러오기</summary>
+    <img width="1401" alt="3  식사 불러오기" src="https://github.com/user-attachments/assets/b6bece0e-7694-4826-95de-fd8a8aa9a94c" />
+    
+  </details>
+    <details>
+    <summary>식단 불러오기</summary>
+    <img width="1400" alt="4  식단 불러오기" src="https://github.com/user-attachments/assets/605cd5b5-69d9-4c83-a4b4-bc10b53ed09d" />
+    
+  </details>
+  
+
+
+
 
 
 ---
@@ -327,6 +353,62 @@
     
   ![차단](https://github.com/user-attachments/assets/d6576039-e352-4571-9c6c-b55f1701cf11)
   </details>
+
+<details>
+  <summary>식사 조회</summary>
+  
+  ![1  식사 - 조회](https://github.com/user-attachments/assets/7149fb7e-7bb7-4603-91b3-364a1d361853)
+</details>
+
+<details>
+  <summary>식사 - 등록</summary>
+  
+  ![2  식사 - 등록](https://github.com/user-attachments/assets/048e86de-7132-4e64-b8a2-9ac7e9ecc2f3)
+</details>
+
+<details>
+  <summary>식사 - 수정</summary>
+  
+  ![3  식사 - 수정](https://github.com/user-attachments/assets/958ee2bf-d777-4fb7-ba8a-3915915792ee)
+</details>
+
+<details>
+  <summary>식사 - 삭제</summary>
+  
+  ![4  식사 - 삭제](https://github.com/user-attachments/assets/d55691bc-f852-4596-bae3-b66a78fcaa6b)
+</details>
+
+<details>
+  <summary>식사 불러오기</summary>
+  
+  ![5  식사 - 식사 불러오기](https://github.com/user-attachments/assets/a8674440-8c35-41b0-9b54-0ad9c2771b63)
+</details>
+
+<details>
+  <summary>식단 불러오기</summary>
+  
+  ![6  식사 -식단 불러오기](https://github.com/user-attachments/assets/663b3160-a200-475f-9267-dc8ba31b04ef)
+</details>
+
+<details>
+  <summary>식단 - 정렬 옵션</summary>
+  
+  ![7  식단 - 정렬 옵션](https://github.com/user-attachments/assets/efa971a3-b01c-4b3e-9eb3-6c31b3d7279a)
+</details>
+
+<details>
+  <summary>식단 - 검색 후 게시글 조회, 댓글 달고 좋아요</summary>
+  
+  ![8  식단 - 검색 후 게시글 조회, 댓글 달고 좋아요](https://github.com/user-attachments/assets/c6e962ab-792f-4eba-b72c-a07210ec1a3c)
+</details>
+
+<details>
+  <summary>식단 - 게시글 상호작용</summary>
+  
+  ![9  식단 - 게시글 상호작용](https://github.com/user-attachments/assets/56203786-df55-4e41-8d3f-7ad61161985a)
+</details>
+
+
 
 
 ---
