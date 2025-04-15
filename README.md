@@ -1,5 +1,5 @@
 # 🥗 Dieat - 감각적인 식단 기록 커뮤니티
-
+![Image](https://github.com/user-attachments/assets/f8d72c2d-e838-4b23-af4c-97b690810297)
 
 ---
 
