@@ -137,37 +137,37 @@
   <details>
   <summary>로그인</summary>
     
-    ![image](https://github.com/user-attachments/assets/b53e7db8-fe45-42c2-970a-5e0e9b99b22a)
+  ![image](https://github.com/user-attachments/assets/b53e7db8-fe45-42c2-970a-5e0e9b99b22a)
   </details>
   
   <details>
   <summary>회원 가입</summary>
     
-    ![image](https://github.com/user-attachments/assets/5f8e6dcb-5a55-4ab9-b2a5-6026d107972e)
+  ![image](https://github.com/user-attachments/assets/5f8e6dcb-5a55-4ab9-b2a5-6026d107972e)
   </details>
   
   <details>
     <summary>개인 정보</summary>
     
-    ![Image](https://github.com/user-attachments/assets/15e234d5-cad8-457e-bba3-d2e9d510ff3c)
+  ![Image](https://github.com/user-attachments/assets/15e234d5-cad8-457e-bba3-d2e9d510ff3c)
   </details>
   
   <details>
     <summary>개인 정보 수정</summary>
     
-    ![image](https://github.com/user-attachments/assets/80805a29-8ee9-4bdb-a716-ca3ea1ab855e)
+  ![image](https://github.com/user-attachments/assets/80805a29-8ee9-4bdb-a716-ca3ea1ab855e)
   </details>
   
   <details>
     <summary>구독 관리</summary>
     
-    ![Image](https://github.com/user-attachments/assets/af132697-4ddd-4361-90db-87c3da3684c1)
+  ![Image](https://github.com/user-attachments/assets/af132697-4ddd-4361-90db-87c3da3684c1)
   </details>
   
   <details>
     <summary>차단 관리</summary>
     
-    ![Image](https://github.com/user-attachments/assets/cbea51f0-db97-457c-a2ec-0e744f069557)
+  ![Image](https://github.com/user-attachments/assets/cbea51f0-db97-457c-a2ec-0e744f069557)
   </details>
 
 ### 📍 음식 데이터
@@ -223,8 +223,7 @@
   <details>
     <summary>북마크</summary>
     
-    ![북마크](https://github.com/user-attachments/assets/32c9e10b-4b47-4d25-b009-0514cc088e8a)
-
+  ![북마크](https://github.com/user-attachments/assets/b44427c5-0a69-4091-9db5-9e903f0fdd53)
   </details>
 
 
