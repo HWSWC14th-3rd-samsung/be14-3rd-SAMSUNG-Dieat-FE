@@ -127,49 +127,80 @@
 ---
 
 ## 🎬 스토리보드
-
-<details>
-<summary>📊 대시보드</summary>
-
-![image](https://github.com/user-attachments/assets/03f0f1ed-09a9-482d-8a46-b4705d717627)
-
-</details>
-<details>
-<summary>로그인</summary>
+### 📍 마이 페이지
+  <details>
+  <summary>📊 대시보드</summary>
   
-  ![image](https://github.com/user-attachments/assets/b53e7db8-fe45-42c2-970a-5e0e9b99b22a)
-</details>
-
-<details>
-<summary>회원가입</summary>
+  ![image](https://github.com/user-attachments/assets/03f0f1ed-09a9-482d-8a46-b4705d717627)
   
-  ![image](https://github.com/user-attachments/assets/5f8e6dcb-5a55-4ab9-b2a5-6026d107972e)
-</details>
-
-<details>
-  <summary>개인정보</summary>
+  </details>
+  <details>
+  <summary>로그인</summary>
+    
+    ![image](https://github.com/user-attachments/assets/b53e7db8-fe45-42c2-970a-5e0e9b99b22a)
+  </details>
   
-  ![Image](https://github.com/user-attachments/assets/15e234d5-cad8-457e-bba3-d2e9d510ff3c)
-</details>
-
-<details>
-  <summary>개인정보 수정</summary>
+  <details>
+  <summary>회원 가입</summary>
+    
+    ![image](https://github.com/user-attachments/assets/5f8e6dcb-5a55-4ab9-b2a5-6026d107972e)
+  </details>
   
-  ![image](https://github.com/user-attachments/assets/80805a29-8ee9-4bdb-a716-ca3ea1ab855e)
-</details>
-
-<details>
-  <summary>구독 관리</summary>
+  <details>
+    <summary>개인 정보</summary>
+    
+    ![Image](https://github.com/user-attachments/assets/15e234d5-cad8-457e-bba3-d2e9d510ff3c)
+  </details>
   
-  ![Image](https://github.com/user-attachments/assets/af132697-4ddd-4361-90db-87c3da3684c1)
-</details>
-
-<details>
-  <summary>차단 관리</summary>
+  <details>
+    <summary>개인 정보 수정</summary>
+    
+    ![image](https://github.com/user-attachments/assets/80805a29-8ee9-4bdb-a716-ca3ea1ab855e)
+  </details>
   
-  ![Image](https://github.com/user-attachments/assets/cbea51f0-db97-457c-a2ec-0e744f069557)
-</details>
+  <details>
+    <summary>구독 관리</summary>
+    
+    ![Image](https://github.com/user-attachments/assets/af132697-4ddd-4361-90db-87c3da3684c1)
+  </details>
+  
+  <details>
+    <summary>차단 관리</summary>
+    
+    ![Image](https://github.com/user-attachments/assets/cbea51f0-db97-457c-a2ec-0e744f069557)
+  </details>
 
+### 📍 음식 데이터
+  <details>
+  <summary>음식 데이터 등록</summary>
+  
+  ![Image](https://github.com/user-attachments/assets/4595f2ce-e77f-4701-9930-7ed7b321d3cf)
+  </details>
+  
+  <details>
+  <summary>음식 데이터 검색</summary>
+  
+  ![Image](https://github.com/user-attachments/assets/e4b3b36e-5c23-45ac-9b4e-671a02a068a0)
+  </details>
+
+### 📍 자유 게시글
+  <details>
+  <summary>자유 게시글 등록</summary>
+  
+  ![Image](https://github.com/user-attachments/assets/f4a1dff7-d81f-452b-b2bb-eb94dc647b96)
+  </details>
+  
+  <details>
+  <summary>자유 게시글 상세 조회</summary>
+  
+  ![Image](https://github.com/user-attachments/assets/e4c1dc92-1f44-4815-bc7f-f0e9fdecd167)
+  </details>
+  
+  <details>
+  <summary>자유 게시글 목록 조회</summary>
+  
+  ![Image](https://github.com/user-attachments/assets/d20bb99c-ef81-44fc-b238-5b5ad493fec8)
+  </details>
 
 
 ---
