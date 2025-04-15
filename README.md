@@ -1,4 +1,4 @@
-# 🥗 Dieat - 감각적인 식단 기록 커뮤니티
+![문의 사항](https://github.com/user-attachments/assets/630de337-b23a-4f57-8673-c8cb27c6fc80)# 🥗 Dieat - 감각적인 식단 기록 커뮤니티
 ![Image](https://github.com/user-attachments/assets/f8d72c2d-e838-4b23-af4c-97b690810297)
 
 ---
@@ -224,6 +224,12 @@
     <summary>북마크</summary>
     
   ![북마크](https://github.com/user-attachments/assets/b44427c5-0a69-4091-9db5-9e903f0fdd53)
+  </details>
+
+  <details>
+    <summary>문의 사항</summary>
+    
+  ![문의 사항](https://github.com/user-attachments/assets/70ce5351-19fe-4e3f-80ef-09b7f73fbc89)
   </details>
 
 
