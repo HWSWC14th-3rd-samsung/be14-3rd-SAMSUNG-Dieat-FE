@@ -37,75 +37,95 @@
 ---
 
 ## 🕊️ 기능 명세서
+- 식단
+  <details>
+    <summary>게시글 등록</summary>
+    <img src="https://github.com/user-attachments/assets/8f4e9263-5951-40ec-862f-4bb1750c6e76">
+  </details>
 
-### 📌 식단
+  <details>
+    <summary>게시글 수정</summary>
+    <img src="https://github.com/user-attachments/assets/d4c42cc2-e7e2-4f88-8fb7-738f77951ad4">
+  </details>
 
-#### 게시글 등록
-![등록](https://github.com/user-attachments/assets/8f4e9263-5951-40ec-862f-4bb1750c6e76)
+  <details>
+    <summary>게시글 전체 조회</summary>
+    <img src="https://github.com/user-attachments/assets/8d8fa8a5-7681-4a41-8ee7-f4818a70f15f">
+  </details>
 
-#### 게시글 수정
-![수정](https://github.com/user-attachments/assets/d4c42cc2-e7e2-4f88-8fb7-738f77951ad4)
+  <details>
+    <summary>단일 게시글 상세 조회</summary>
+    <img src="https://github.com/user-attachments/assets/49848e3b-e0b8-4be4-a1f4-3a392cb5c002">
+  </details>
 
-#### 게시글 전체 조회
-![전체조회](https://github.com/user-attachments/assets/8d8fa8a5-7681-4a41-8ee7-f4818a70f15f)
+  <details>
+    <summary>페이징네이션</summary>
+    <img src="https://github.com/user-attachments/assets/e845a1de-0d0e-4353-80f5-7673d5fb455c">
+  </details>
+  
+  <details>
+    <summary>영양소 범위로 조회</summary>
+    <img src="https://github.com/user-attachments/assets/771769b6-f567-49cc-a286-0bdca76fdc19">
+  </details>
 
-#### 단일 게시글 상세 조회
-![상세조회](https://github.com/user-attachments/assets/49848e3b-e0b8-4be4-a1f4-3a392cb5c002)
+- 회원
+  <details>
+    <summary>로그인</summary>
+    <img src="https://github.com/user-attachments/assets/b4d2a3f2-a2b7-4038-840e-072432740d9a">
+  </details>
+  
+  <details>
+    <summary>회원 가입</summary>
+    <img src="https://github.com/user-attachments/assets/031c2679-f316-489b-9288-dbb035cb0d6b">
+  </details>
 
-#### 페이징네이션
-![페이지네이션](https://github.com/user-attachments/assets/e845a1de-0d0e-4353-80f5-7673d5fb455c)
+- 댓글
+  <details>
+    <summary>댓글 등록</summary>
+    <img src="https://github.com/user-attachments/assets/8f6aa988-b7a5-4d45-80e8-82ae792ba337">
+  </details>
+  
+  <details>
+    <summary>댓글 수정</summary>
+    <img src="https://github.com/user-attachments/assets/2ea6adfb-87d4-4f5e-9077-2336b43bf299">
+  </details>
+  
+  <details>
+    <summary>댓글 삭제(soft)</summary>
+    <img src="https://github.com/user-attachments/assets/d70a7fe0-4685-46e3-ae65-f6fc32ae31a7">
+  </details>
+  
+  <details>
+    <summary>특정 게시글의 댓글 조회</summary>
+    <img src="https://github.com/user-attachments/assets/a1c8c9da-7067-41b7-b625-42fc67f0642d">
+  </details>
 
-#### 영양소 범위로 조회
-![영양소](https://github.com/user-attachments/assets/771769b6-f567-49cc-a286-0bdca76fdc19)
+- 사용자 데이터 음식 평가
+  <details>
+    <summary>수정이 필요해요</summary>
+    <img src="https://github.com/user-attachments/assets/6d3627fd-6db2-401c-a93d-a621896e3d87">
+  </details>
+  
+  <details>
+    <summary>음식 정보 정확해요</summary>
+    <img src="https://github.com/user-attachments/assets/824a8de7-803c-4a79-a646-f1984b5b6b76">
+  </details>
+  
+  <details>
+    <summary>평가 삭제</summary>
+    <img src="https://github.com/user-attachments/assets/92918f28-73e3-4aa2-bb05-66607035f009">
+  </details>
 
----
-
-### 👤 회원
-
-#### 로그인
-![로그인](https://github.com/user-attachments/assets/b4d2a3f2-a2b7-4038-840e-072432740d9a)
-
-#### 회원 가입
-![회원가입](https://github.com/user-attachments/assets/031c2679-f316-489b-9288-dbb035cb0d6b)
-
----
-
-### 💬 댓글
-
-#### 댓글 등록
-![등록](https://github.com/user-attachments/assets/8f6aa988-b7a5-4d45-80e8-82ae792ba337)
-
-#### 댓글 수정
-![수정](https://github.com/user-attachments/assets/2ea6adfb-87d4-4f5e-9077-2336b43bf299)
-
-#### 댓글 삭제 (soft)
-![삭제](https://github.com/user-attachments/assets/d70a7fe0-4685-46e3-ae65-f6fc32ae31a7)
-
-#### 특정 게시글의 댓글 조회
-![조회](https://github.com/user-attachments/assets/a1c8c9da-7067-41b7-b625-42fc67f0642d)
-
----
-
-### 🍽 사용자 데이터 음식 평가
-
-#### 수정이 필요해요
-![수정요청](https://github.com/user-attachments/assets/6d3627fd-6db2-401c-a93d-a621896e3d87)
-
-#### 음식 정보 정확해요
-![정확](https://github.com/user-attachments/assets/824a8de7-803c-4a79-a646-f1984b5b6b76)
-
-#### 평가 삭제
-![삭제](https://github.com/user-attachments/assets/92918f28-73e3-4aa2-bb05-66607035f009)
-
----
-
-### 🍱 사용자 데이터 음식
-
-#### 음식 추가
-![추가](https://github.com/user-attachments/assets/8bc895b5-f891-4eb7-8c50-a813e3cb8de9)
-
-#### 음식 삭제
-![삭제](https://github.com/user-attachments/assets/7ab950bd-56ab-47d0-90b4-8bd1209afdac)
+- 사용자 데이터 음식
+  <details>
+    <summary>음식 추가</summary>
+    <img src="https://github.com/user-attachments/assets/8bc895b5-f891-4eb7-8c50-a813e3cb8de9">
+  </details>
+  
+  <details>
+    <summary>음식 삭제</summary>
+    <img src="https://github.com/user-attachments/assets/7ab950bd-56ab-47d0-90b4-8bd1209afdac">
+  </details>
 
 ---
 
