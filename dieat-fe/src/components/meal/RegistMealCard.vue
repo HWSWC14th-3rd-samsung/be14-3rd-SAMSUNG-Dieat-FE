@@ -78,7 +78,7 @@ const emit = defineEmits(['delete', 'update:quantity']);
 const getFoodType = (type) => {
     if (type === 'OPENDATA') return '공공';
     if (type === 'USERDATA') return '회원';
-    return '회원';  // 기본값
+    return '회원';
 };
 
 const handleQuantityChange = (event, index) => {
@@ -102,10 +102,9 @@ const calculateNutrient = (value, quantity) => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: -16px;  /* right section의 패딩만큼 왼쪽으로 이동 */
+    margin-left: -16px;
 }
 
-/* 카드 전체 컨테이너 스타일 */
 .registmeal-card {
     width: 453px;
     height: 99px;
@@ -133,7 +132,6 @@ const calculateNutrient = (value, quantity) => {
     padding: 16px;
 }
 
-/* 카테고리 영역 */
 .regstmeal-card-category {
     position: absolute;
     top: 0;
@@ -193,7 +191,7 @@ const calculateNutrient = (value, quantity) => {
 .registmeal-card-unit-name {
     font-family: 'Inter';
     font-size: 10px;
-    font-weight: 600;  /* semi bold */
+    font-weight: 600;
     color: #676767;
     text-align: right;
 }
@@ -231,7 +229,7 @@ const calculateNutrient = (value, quantity) => {
 .registmeal-card-nutr-sugar-value {
     font-family: 'Inter';
     font-size: 14px;
-    font-weight: 700;  /* bold */
+    font-weight: 700;
     color: #333333;
     margin: 0;
     line-height: 1;
@@ -244,13 +242,12 @@ const calculateNutrient = (value, quantity) => {
 .registmeal-card-nutr-sugar-unit {
     font-family: 'Inter';
     font-size: 10px;
-    font-weight: 600;  /* semi bold */
+    font-weight: 600;
     color: #787878;
     margin: 0;
     line-height: 1;
 }
 
-/* 수량 영역 */
 .registmeal-card-amout-div {
     position: absolute;
     bottom: 8px;
@@ -322,14 +319,12 @@ const calculateNutrient = (value, quantity) => {
     outline: none;
 }
 
-/* Chrome, Safari, Edge에서 number input의 화살표 제거 */
 .registmeal-card-amout input::-webkit-outer-spin-button,
 .registmeal-card-amout input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* Firefox에서 number input의 화살표 제거 */
 .registmeal-card-amout input[type=number] {
     -moz-appearance: textfield;
 }

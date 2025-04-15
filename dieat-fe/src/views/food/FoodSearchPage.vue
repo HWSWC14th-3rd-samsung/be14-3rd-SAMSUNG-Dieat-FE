@@ -94,9 +94,9 @@ function goToRegisterMeal() {
     
     console.log('FoodSearchPage - goToRegisterMeal: 변환된 데이터', foodsWithAllInfo);
     
-    // 기존 선택된 음식들 가져오기
+
     const currentFoods = registMealStore.selectedFoods || [];
-    // 새로운 음식들 추가
+
     registMealStore.setSelectedFoods([...currentFoods, ...foodsWithAllInfo]);
     
     console.log('FoodSearchPage - goToRegisterMeal: Pinia store에 데이터 저장 성공');

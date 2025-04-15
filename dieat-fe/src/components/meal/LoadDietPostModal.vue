@@ -164,14 +164,12 @@ const selectedCategory = ref('all');
 const selectedDiet = ref(null);
 const bookmarkedDiets = ref([]);
 
-// 외부 데이터 로드 함수 추가
 const loadBookmarkedDiets = async () => {
     try {
         const response = await fetch('/src/views/meal/mealdb.json');
         const data = await response.json();
         const bookmarkData = data.bookmarkedDietPost || [];
         
-        // 데이터 구조 매핑
         bookmarkedDiets.value = bookmarkData.map(item => ({
             id: parseInt(item.id),
             title: item.name,
@@ -186,7 +184,6 @@ const loadBookmarkedDiets = async () => {
         }));
     } catch (error) {
         console.error('북마크 데이터를 불러오는데 실패했습니다:', error);
-        // 오류 발생 시 기본 데이터로 대체
         bookmarkedDiets.value = [
             {
                 id: 1,
@@ -200,12 +197,10 @@ const loadBookmarkedDiets = async () => {
                 sodium: 25,
                 bookmarked: true
             },
-            // ... 기존 데이터
         ];
     }
 };
 
-// 컴포넌트 마운트 시 데이터 로드
 onMounted(() => {
     loadBookmarkedDiets();
 });
@@ -213,13 +208,11 @@ onMounted(() => {
 const currentPage = ref(1);
 const itemsPerPage = 9;
 
-// 카테고리에 따른 식단 필터링
 const filteredDiets = computed(() => {
     if (selectedCategory.value === 'all') {
         return bookmarkedDiets.value;
     } else {
-        // 여기서는 예시로 카테고리별 필터링을 구현할 수 있습니다
-        // 실제 데이터 구조에 맞게 필터링 로직을 작성해야 합니다
+
         return bookmarkedDiets.value.filter(diet => {
             if (selectedCategory.value === 'diet') return diet.kcal < 500;
             if (selectedCategory.value === 'meat') return diet.protein > 30;
@@ -230,30 +223,25 @@ const filteredDiets = computed(() => {
     }
 });
 
-// 페이지네이션된 식단 목록
 const paginatedDiets = computed(() => {
     const startIndex = (currentPage.value - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return filteredDiets.value.slice(startIndex, endIndex);
 });
 
-// 전체 페이지 수 계산
 const totalPages = computed(() => {
-    // '모든 게시물' 카테고리에서는 10개의 페이지로 고정
     if (selectedCategory.value === 'all') {
         return 10;
     }
     return Math.ceil(filteredDiets.value.length / itemsPerPage);
 });
 
-// 페이지 변경 함수
 const changePage = (page) => {
     if (page >= 1 && page <= totalPages.value) {
         currentPage.value = page;
     }
 };
 
-// 카테고리 선택 시 페이지 초기화
 const selectCategory = (category) => {
     selectedCategory.value = category;
     currentPage.value = 1;
@@ -265,13 +253,11 @@ const closeModal = () => {
 
 const confirmSelection = () => {
     if (!selectedDiet.value) {
-        // 선택된 식단이 없을 경우 처리
+
         alert('식단을 선택해주세요.');
         return;
     }
     
-    // 선택한 식단에 가상의 foods 배열 추가 (실제 구현 시에는 API에서 받아오는 데이터 사용)
-    // 이미 foods 배열이 있는지 확인
     const dietWithFoods = {
         ...selectedDiet.value,
         foods: selectedDiet.value.foods || [
@@ -310,8 +296,7 @@ const confirmSelection = () => {
             }
         ]
     };
-    
-    // 선택한 식단과 음식 정보를 부모 컴포넌트로 전달
+
     emit('confirm', dietWithFoods);
     closeModal();
 };

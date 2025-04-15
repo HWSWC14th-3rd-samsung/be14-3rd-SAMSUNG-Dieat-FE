@@ -2,7 +2,10 @@
     <div v-if="show" class="modal-overlay">
         <div class="modal-content">
             <p>{{ message }}</p>
-            <button @click="$emit('confirm')" class="modal-confirm-btn">{{ confirmText }}</button>
+            <div class="modal-buttons">
+                <button v-if="showCancel" @click="$emit('cancel')" class="modal-cancel-btn">{{ cancelText }}</button>
+                <button @click="$emit('confirm')" class="modal-confirm-btn">{{ confirmText }}</button>
+            </div>
         </div>
     </div>
 </template>
@@ -24,10 +27,18 @@ defineProps({
     confirmText: {
         type: String,
         default: '확인'
+    },
+    cancelText: {
+        type: String,
+        default: '취소'
+    },
+    showCancel: {
+        type: Boolean,
+        default: false
     }
 });
 
-defineEmits(['confirm']);
+defineEmits(['confirm', 'cancel']);
 </script>
 
 <style scoped>
@@ -74,9 +85,14 @@ defineEmits(['confirm']);
     font-weight: 600;
 }
 
-.modal-confirm-btn {
+.modal-buttons {
     position: absolute;
     bottom: 40px;
+    display: flex;
+    gap: 20px;
+}
+
+.modal-confirm-btn {
     width: 93px;
     height: 35px;
     background-color: #F85230;
@@ -94,7 +110,29 @@ defineEmits(['confirm']);
     align-items: center;
 }
 
+.modal-cancel-btn {
+    width: 93px;
+    height: 35px;
+    background-color: #9e9e9e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    transition: background-color 0.2s;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .modal-confirm-btn:hover {
     background-color: #e64a2b;
+}
+
+.modal-cancel-btn:hover {
+    background-color: #888888;
 }
 </style> 
