@@ -1000,7 +1000,7 @@
 
 .registmeal-regist {
     position: absolute;
-    right: 280px;
+    right: 350px;
     background-color: #4CAF50;
     color: white;
     padding: 8px 20px;
@@ -1016,7 +1016,7 @@
 
 .registmeal-delete {
     position: absolute;
-    right: 210px;
+    right: 230px;
     background-color: #ff4b4b;
     color: white;
     padding: 8px 20px;
@@ -1032,7 +1032,7 @@
 
 .registmeal-cancel {
     position: absolute;
-    right: 140px;
+    right: 110px;
     background-color: #9e9e9e;
     color: white;
     padding: 8px 20px;
