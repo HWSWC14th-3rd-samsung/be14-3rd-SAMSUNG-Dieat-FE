@@ -1,9 +1,4 @@
 # 🥗 Dieat - 감각적인 식단 기록 커뮤니티
-
-| 🍃 Primary | 🍊 Accent | 🌼 Background |
-|-----------|-----------|--------------|
-| `#189b71` | `#f85230` | `#fff8ed`    |
-
 **Dieat**는 감각적인 UI와 직관적인 UX로 누구나 쉽게 식단을 기록하고 공유할 수 있도록 돕는 식단 커뮤니티 플랫폼입니다.
 
 음식을 검색하고, 나만의 식단을 구성하고, 다른 사람들과 함께 이야기해 보세요!
@@ -33,6 +28,10 @@
 ## 📋 요구사항 명세서 (Summary)
 
 [요구사항 명세서 보기](https://github.com/user-attachments/assets/3d6159ec-6847-449e-b710-921f7bd6073d)
+
+---
+
+## 🖼️ Wire Frame
 
 ---
 
@@ -126,6 +125,10 @@
     <summary>음식 삭제</summary>
     <img src="https://github.com/user-attachments/assets/7ab950bd-56ab-47d0-90b4-8bd1209afdac">
   </details>
+
+---
+
+## 🧪 테스트 계획 및 결과
 
 ---
 
