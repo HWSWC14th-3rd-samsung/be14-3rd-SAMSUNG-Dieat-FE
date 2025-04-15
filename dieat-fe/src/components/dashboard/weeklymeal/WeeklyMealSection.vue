@@ -36,12 +36,12 @@ const yAxisTicks = ref([])
 
 onMounted(async () => {
   // 1. meals 데이터 fetch
-  const response = await fetch('http://localhost:8080/meals')
+  const response = await fetch('http://localhost:3000/meals')
   const meals = await response.json()
   console.log('받아온 meals:', meals)
 
   // 2. nutritionGoals 데이터 fetch
-  const goalsResponse = await fetch('http://localhost:8080/nutritionGoals')
+  const goalsResponse = await fetch('http://localhost:3000/nutritionGoals')
   const fetchedNutritionGoals = await goalsResponse.json()
   nutritionGoals.value = fetchedNutritionGoals
   console.log('받아온 nutritionGoals:', nutritionGoals.value)

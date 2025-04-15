@@ -36,7 +36,7 @@ const nutritionGoals = ref({
 // onMounted에서 API 호출 후, 데이터를 변환하여 저장
 onMounted(async () => {
   // meals 데이터 fetch
-  const response = await fetch('http://localhost:8080/meals')
+  const response = await fetch('http://localhost:3000/meals')
   const allMeals = await response.json()
   console.log('API에서 받아온 meals:', allMeals)
   
@@ -51,7 +51,7 @@ onMounted(async () => {
   }))
   
   // nutritionGoals 데이터 fetch
-  const responseGoals = await fetch('http://localhost:8080/nutritionGoals')
+  const responseGoals = await fetch('http://localhost:3000/nutritionGoals')
   const fetchedNutritionGoals = await responseGoals.json()
   console.log('API에서 받아온 nutritionGoals:', fetchedNutritionGoals)
   nutritionGoals.value = fetchedNutritionGoals

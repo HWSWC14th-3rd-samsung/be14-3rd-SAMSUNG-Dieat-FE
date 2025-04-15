@@ -97,6 +97,7 @@ const menu4 = [
   { label: '북마크', href: '/category' },
   { label: '구독 관리', href: '/subscribeMng' },
   { label: '구독 게시판', href: '/subscribePost' },
+  { label: '대시보드', href: '/dashboard' },
   { label: '차단', href: '/block' }
 ]
 const menu5 = [

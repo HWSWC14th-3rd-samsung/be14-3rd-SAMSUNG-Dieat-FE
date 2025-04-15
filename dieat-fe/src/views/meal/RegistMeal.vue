@@ -625,8 +625,39 @@
         showLoadDietPostModal.value = false;
     };
 
-    const handleLoadDietPostConfirm = () => {
+    const handleLoadDietPostConfirm = (selectedDiet) => {
+        if (selectedDiet && selectedDiet.foods && Array.isArray(selectedDiet.foods)) {
+            // 식단에 포함된 각 음식을 음식 카드로 추가
+            selectedDiet.foods.forEach(food => {
+                // 음식 데이터 형식 변환 (식단의 food 항목 -> 음식 카드 형식)
+                const newFood = {
+                    id: generateUniqueId(), // 고유 ID 생성
+                    name: food.name || food.title || '음식',
+                    type: food.type || 'USERDATA', // 기본 타입
+                    unit: food.unit || '1인분',
+                    kcal: food.kcal || food.calories || 0,
+                    carb: food.carb || food.carbs || 0,
+                    protein: food.protein || 0,
+                    fat: food.fat || 0,
+                    sugar: food.sugar || 0,
+                    quantity: food.quantity || 1
+                };
+                
+                // 음식 목록에 추가
+                registeredFoods.value.push(newFood);
+            });
+            
+            // 추가된 음식에 따라 영양성분 업데이트
+            updateMealInfo();
+        }
+        
+        // 모달 닫기
         closeLoadDietPostModal();
+    };
+
+    // 고유 ID 생성 함수
+    const generateUniqueId = () => {
+        return 'food_' + Date.now() + Math.floor(Math.random() * 1000);
     };
 
     const updateMealInfo = () => {

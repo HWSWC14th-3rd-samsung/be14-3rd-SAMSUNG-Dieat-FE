@@ -56,7 +56,7 @@ import { useRouter } from 'vue-router'; // ✅ 추가
 const router = useRouter(); // ✅ 추가
 
 const goToRegister = () => {
-    router.push('/registerSucc')
+    router.push('/registerSuccess')
 }
 
 const page = ref(1)

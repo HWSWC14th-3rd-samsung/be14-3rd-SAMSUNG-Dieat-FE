@@ -35,13 +35,13 @@ const yTicks = ref([])
 
 onMounted(async () => {
   // 1. API에서 weightRecords 데이터를 가져옴
-  const recordsResponse = await fetch('http://localhost:8080/weightRecords')
+  const recordsResponse = await fetch('http://localhost:3000/weightRecords')
   const weightRecords = await recordsResponse.json()
   // 날짜 오름차순 정렬 (날짜 문자열을 Date 객체로 변환하여 비교)
   weightRecords.sort((a, b) => new Date(a.date) - new Date(b.date))
 
   // 2. API에서 weightGoals 데이터를 가져옴
-  const goalsResponse = await fetch('http://localhost:8080/weightGoals')
+  const goalsResponse = await fetch('http://localhost:3000/weightGoals')
   const weightGoals = await goalsResponse.json()
 
   // 3. 날짜 범위 생성  

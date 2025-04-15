@@ -1,87 +1,100 @@
+<!-- components/PostTable.vue -->
 <template>
     <table class="post-table">
         <thead>
             <tr>
-                <th class="no-col">No.</th>
-                <th class="title-col">제목</th>
-                <th class="date-col">일시</th>
-                <th class="count-col">조회수</th>
+                <th>No.</th>
+                <th>제목</th>
+                <th>일시</th>
+                <th>조회수</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="(post, index) in posts" :key="index">
-                <td class="no-col">{{ index + 1 }}</td>
-                <td class="title-col">{{ post.title }}</td>
-                <td class="date-col">{{ post.date }}</td>
-                <td class="count-col">{{ post.count }}</td>
+                <td>{{ index + 1 }}</td>
+                <td class="title-link">
+                  <RouterLink :to="`${linkPrefix}/${index}`">{{ post.title }}</RouterLink>
+                </td>
+                <td>{{ post.date }}</td>
+                <td>{{ post.count }}</td>
             </tr>
         </tbody>
     </table>
 </template>
-
+  
 <script setup>
-defineProps({
-    posts: {
-        type: Array,
-        required: true,
+    defineProps({
+        posts: {
+            type: Array,
+            required: true,
+        },
+        titleHeader: {
+        type: String,
+        default: '제목',
     },
-})
+    useLink: {
+        type: Boolean,
+        default: true,
+    },
+    linkPrefix: {
+        type: String,
+        default: '/noticeDetail',
+    },
+    })
 </script>
-
+  
 <style scoped>
-.post-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    margin-top: 1rem;
-    font-size: 15px;
-}
+    .post-table {
+        position: relative;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+        margin-top: 1rem;
+        border-radius: 12px;
+        border: 2px solid lightgray;
+        padding: 30px;
+  
+    }
+  
+    /* .post-table th,
+    .post-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+    } */
+  
+    .post-table th {
+        background-color: white;
+        font-weight: bold;
+        padding: 12px;
+        text-align: center;
+        border-bottom: 2px solid gray;
+    }
 
-.post-table thead th {
-    background-color: #f2f2f2;
-    font-weight: 600;
-    text-align: center;
-    padding: 12px;
-    border-bottom: 2px solid #ccc;
-    border-radius: 6px;
-}
+    .post-table td {
+        background-color: white;
+        padding: 16px;
+        text-align: center;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        border-radius: 8px;
+    }
+  
+    .post-table tr:hover  td{
+        background-color: #f9f9f9;
+        transition: background-color 0.2s ease;
+    }
 
-.post-table tbody td {
-    background-color: #ffffff;
-    padding: 16px 12px;
-    text-align: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    font-size: 14px;
-}
+    .title-link a {
+        text-decoration: none;
+        color: inherit;     
+        font-weight: normal;
+        cursor: pointer;
+    }
 
-/* 열 정렬 */
-.no-col {
-    text-align: right;
-    width: 10%;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.title-col {
-    text-align: left;
-    width: 50%;
-}
-
-.date-col {
-    text-align: center;
-    width: 20%;
-}
-
-.count-col {
-    text-align: right;
-    width: 20%;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-/* hover 효과 */
-.post-table tbody tr:hover td {
-    background-color: #f9f9f9;
-    transition: background-color 0.3s ease;
-}
+    .title-link a:hover {
+        text-decoration: none;     /* 호버 시에도 밑줄 제거 */
+        color: inherit;
+    }
 </style>
+  

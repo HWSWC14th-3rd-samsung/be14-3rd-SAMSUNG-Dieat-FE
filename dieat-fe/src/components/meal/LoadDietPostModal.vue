@@ -146,7 +146,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, computed } from 'vue';
+import { defineProps, defineEmits, ref, computed, onMounted } from 'vue';
 
 const props = defineProps({
     show: {
@@ -162,116 +162,53 @@ const props = defineProps({
 const emit = defineEmits(['close', 'confirm', 'delete']);
 const selectedCategory = ref('all');
 const selectedDiet = ref(null);
-const bookmarkedDiets = ref([
-    {
-        id: 1,
-        title: '쉽게 따라하는 샐러드',
-        image: 'https://via.placeholder.com/150',
-        time: '12:30',
-        kcal: 279,
-        carbs: 33,
-        protein: 8,
-        fat: 13,
-        sodium: 25,
-        bookmarked: true
-    },
-    {
-        id: 2,
-        title: '스크램블 에그',
-        image: 'https://via.placeholder.com/150',
-        time: '18:00',
-        kcal: 180,
-        carbs: 2,
-        protein: 11,
-        fat: 15,
-        sodium: 1,
-        bookmarked: false
-    },
-    {
-        id: 3,
-        title: '마라탕 (대)',
-        image: 'https://via.placeholder.com/150',
-        time: '19:30',
-        kcal: 900,
-        carbs: 45,
-        protein: 40,
-        fat: 60,
-        sodium: 8,
-        bookmarked: true
-    },
-    {
-        id: 4,
-        title: '소곱창',
-        image: 'https://via.placeholder.com/150',
-        time: '20:00',
-        kcal: 1800,
-        carbs: 10,
-        protein: 75,
-        fat: 170,
-        sodium: 4,
-        bookmarked: true
-    },
-    {
-        id: 5,
-        title: '닭가슴살 볶음밥',
-        image: 'https://via.placeholder.com/150',
-        time: '13:00',
-        kcal: 550,
-        carbs: 60,
-        protein: 30,
-        fat: 18,
-        sodium: 3,
-        bookmarked: false
-    },
-    {
-        id: 6,
-        title: '닭고야',
-        image: 'https://via.placeholder.com/150',
-        time: '14:30',
-        kcal: 450,
-        carbs: 40,
-        protein: 35,
-        fat: 10,
-        sodium: 7,
-        bookmarked: true
-    },
-    {
-        id: 7,
-        title: '돈부리 (규동)',
-        image: 'https://via.placeholder.com/150',
-        time: '12:00',
-        kcal: 700,
-        carbs: 80,
-        protein: 25,
-        fat: 22,
-        sodium: 12,
-        bookmarked: false
-    },
-    {
-        id: 8,
-        title: '쉽게 따라하는 사과 다이어트',
-        image: 'https://via.placeholder.com/150',
-        time: '10:00',
-        kcal: 850,
-        carbs: 15,
-        protein: 40,
-        fat: 65,
-        sodium: 20,
-        bookmarked: true
-    },
-    {
-        id: 9,
-        title: '쉽게 따라하는 사과 다이어트',
-        image: 'https://via.placeholder.com/150',
-        time: '09:00',
-        kcal: 1400,
-        carbs: 120,
-        protein: 40,
-        fat: 65,
-        sodium: 20,
-        bookmarked: true
+const bookmarkedDiets = ref([]);
+
+// 외부 데이터 로드 함수 추가
+const loadBookmarkedDiets = async () => {
+    try {
+        const response = await fetch('/src/views/meal/mealdb.json');
+        const data = await response.json();
+        const bookmarkData = data.bookmarkedDietPost || [];
+        
+        // 데이터 구조 매핑
+        bookmarkedDiets.value = bookmarkData.map(item => ({
+            id: parseInt(item.id),
+            title: item.name,
+            image: item.img,
+            kcal: item.kcal,
+            carbs: item.carb,
+            protein: item.protein,
+            fat: item.fat,
+            sodium: item.sugar,
+            bookmarked: true,
+            foods: item.food || []
+        }));
+    } catch (error) {
+        console.error('북마크 데이터를 불러오는데 실패했습니다:', error);
+        // 오류 발생 시 기본 데이터로 대체
+        bookmarkedDiets.value = [
+            {
+                id: 1,
+                title: '쉽게 따라하는 샐러드',
+                image: 'https://via.placeholder.com/150',
+                time: '12:30',
+                kcal: 279,
+                carbs: 33,
+                protein: 8,
+                fat: 13,
+                sodium: 25,
+                bookmarked: true
+            },
+            // ... 기존 데이터
+        ];
     }
-]);
+};
+
+// 컴포넌트 마운트 시 데이터 로드
+onMounted(() => {
+    loadBookmarkedDiets();
+});
 
 const currentPage = ref(1);
 const itemsPerPage = 9;
@@ -327,9 +264,56 @@ const closeModal = () => {
 };
 
 const confirmSelection = () => {
-    if (selectedDiet.value) {
-        emit('confirm', selectedDiet.value);
+    if (!selectedDiet.value) {
+        // 선택된 식단이 없을 경우 처리
+        alert('식단을 선택해주세요.');
+        return;
     }
+    
+    // 선택한 식단에 가상의 foods 배열 추가 (실제 구현 시에는 API에서 받아오는 데이터 사용)
+    // 이미 foods 배열이 있는지 확인
+    const dietWithFoods = {
+        ...selectedDiet.value,
+        foods: selectedDiet.value.foods || [
+            {
+                name: `${selectedDiet.value.title}의 음식 1`,
+                type: 'USERDATA',
+                unit: '1인분',
+                kcal: Math.round(selectedDiet.value.kcal * 0.3),
+                carbs: Math.round(selectedDiet.value.carbs * 0.3),
+                protein: Math.round(selectedDiet.value.protein * 0.3),
+                fat: Math.round(selectedDiet.value.fat * 0.3),
+                sugar: 5,
+                quantity: 1
+            },
+            {
+                name: `${selectedDiet.value.title}의 음식 2`,
+                type: 'OPENDATA',
+                unit: '100g',
+                kcal: Math.round(selectedDiet.value.kcal * 0.4),
+                carbs: Math.round(selectedDiet.value.carbs * 0.4),
+                protein: Math.round(selectedDiet.value.protein * 0.4),
+                fat: Math.round(selectedDiet.value.fat * 0.4),
+                sugar: 3,
+                quantity: 1
+            },
+            {
+                name: `${selectedDiet.value.title}의 음식 3`,
+                type: 'USERDATA',
+                unit: '1인분',
+                kcal: Math.round(selectedDiet.value.kcal * 0.3),
+                carbs: Math.round(selectedDiet.value.carbs * 0.3),
+                protein: Math.round(selectedDiet.value.protein * 0.3),
+                fat: Math.round(selectedDiet.value.fat * 0.3),
+                sugar: 2,
+                quantity: 1
+            }
+        ]
+    };
+    
+    // 선택한 식단과 음식 정보를 부모 컴포넌트로 전달
+    emit('confirm', dietWithFoods);
+    closeModal();
 };
 
 const selectDiet = (diet) => {
