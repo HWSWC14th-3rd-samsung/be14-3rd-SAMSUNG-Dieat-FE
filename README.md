@@ -136,31 +136,37 @@
 </details>
 <details>
 <summary>로그인</summary>
-  ![Image](https://github.com/user-attachments/assets/b53e7db8-fe45-42c2-970a-5e0e9b99b22a)
+  
+  ![image](https://github.com/user-attachments/assets/b53e7db8-fe45-42c2-970a-5e0e9b99b22a)
 </details>
 
 <details>
 <summary>회원가입</summary>
-  ![Image](https://github.com/user-attachments/assets/5f8e6dcb-5a55-4ab9-b2a5-6026d107972e)
+  
+  ![image](https://github.com/user-attachments/assets/5f8e6dcb-5a55-4ab9-b2a5-6026d107972e)
 </details>
 
 <details>
   <summary>개인정보</summary>
+  
   ![Image](https://github.com/user-attachments/assets/15e234d5-cad8-457e-bba3-d2e9d510ff3c)
 </details>
 
 <details>
   <summary>개인정보 수정</summary>
-  ![Image](https://github.com/user-attachments/assets/80805a29-8ee9-4bdb-a716-ca3ea1ab855e)
+  
+  ![image](https://github.com/user-attachments/assets/80805a29-8ee9-4bdb-a716-ca3ea1ab855e)
 </details>
 
 <details>
   <summary>구독 관리</summary>
+  
   ![Image](https://github.com/user-attachments/assets/af132697-4ddd-4361-90db-87c3da3684c1)
 </details>
 
 <details>
   <summary>차단 관리</summary>
+  
   ![Image](https://github.com/user-attachments/assets/cbea51f0-db97-457c-a2ec-0e744f069557)
 </details>
 
