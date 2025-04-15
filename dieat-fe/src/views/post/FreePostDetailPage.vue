@@ -1,5 +1,4 @@
 <template>
-
     <main class="post-detail-page-container">
         <h2 class="page-title animated-title" @click="goToList">자유 게시글</h2>
 
@@ -11,6 +10,7 @@
 
             <PostInteraction :initialLikes="likes" :commentCount="comments.length" :liked="likedByUser"
                 @toggle-like="handleLikeToggle" />
+
             <PostCommentInput @submit="handleAddComment" />
             <PostCommentList :comments="comments" />
         </div>
@@ -53,7 +53,7 @@ onMounted(async () => {
             return
         }
 
-        // ✅ 등록 직후 접근이 아니라면 조회수 증가
+        // 등록 직후 접근이 아니라면 조회수 증가
         if (!isFromWrite) {
             const updatedViews = (fetched.views || 0) + 1
             await fetch(`http://localhost:3000/freeposts/${postId}`, {
@@ -78,8 +78,9 @@ onMounted(async () => {
 
         likes.value = fetched.likes || 0
 
+        // 좋아요 상태 로컬스토리지에서 확인
         const likedKey = `liked_post_${postId}_user_${user.id}`
-        likedByUser.value = localStorage.getItem(likedKey) === 'true'
+        likedByUser.value = isFromWrite ? false : localStorage.getItem(likedKey) === 'true'
     } catch (err) {
         console.error('상세 게시글 로딩 실패:', err)
     }
@@ -118,7 +119,7 @@ function handleLikeToggle() {
     const likedKey = `liked_post_${postId}_user_${user.id}`
 
     if (likedByUser.value) {
-        likes.value--
+        likes.value = Math.max(0, likes.value - 1)
         likedByUser.value = false
         localStorage.removeItem(likedKey)
     } else {
