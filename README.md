@@ -232,6 +232,36 @@
   ![문의 사항](https://github.com/user-attachments/assets/70ce5351-19fe-4e3f-80ef-09b7f73fbc89)
   </details>
 
+  <details>
+    <summary>자유 게시글 조회-상세 페이지 조회</summary>
+    
+  ![자유 게시글 조회-상세 페이지 조회](https://github.com/user-attachments/assets/f120ab81-47eb-4f30-a132-63d58201f608)
+  </details>
+
+  <details>
+    <summary>자유 게시글 등록</summary>
+    
+  ![자유 게시글 등록](https://github.com/user-attachments/assets/3b3848ef-248a-4fd2-b130-2aa30d02cb88)
+  </details>
+
+  <details>
+    <summary>자유 게시글 조회 - 목록 조회 및 제목 검색</summary>
+    
+  ![자유 게시글 조회 - 목록 조회 및 제목 검색](https://github.com/user-attachments/assets/5db02240-a18e-4129-b842-8478023b6d2c)
+  </details>
+
+  <details>
+    <summary>자유 게시글 조회 - 게시글 등록</summary>
+    
+  ![자유 게시글 조회 - 게시글 등록](https://github.com/user-attachments/assets/fcbcfa5f-57a9-4893-a830-83d424a9c921)
+  </details>
+
+  <details>
+    <summary>자유 게시글 조회 - 댓글 등록</summary>
+    
+  ![자유 게시글 조회 - 댓글 등록](https://github.com/user-attachments/assets/c7b74bdc-7845-403d-b122-811f6db35dbb)
+  </details>
+
 
 ---
 
