@@ -145,6 +145,8 @@
     
   ![image](https://github.com/user-attachments/assets/5f8e6dcb-5a55-4ab9-b2a5-6026d107972e)
   </details>
+
+
   
   <details>
     <summary>개인 정보</summary>
@@ -260,6 +262,63 @@
     <summary>자유 게시글 조회 - 댓글 등록</summary>
     
   ![자유 게시글 조회 - 댓글 등록](https://github.com/user-attachments/assets/c7b74bdc-7845-403d-b122-811f6db35dbb)
+  </details>
+
+  <details>
+  <summary>음식 검색 - 완료 후 식사 등록으로 이동</summary>
+    
+  ![음식 검색 - 완료 후 식사 등록으로 이동](https://github.com/user-attachments/assets/5ff0c9b4-e007-4a48-a397-a1643eaa05b3)
+  </details>
+
+  <details>
+  <summary>음식 검색 - 장바구니 내역 삭제</summary>
+
+  ![음식 검색 - 장바구니 내역 삭제](https://github.com/user-attachments/assets/1fb54dd4-8895-4671-a095-86134c195895)
+  </details>
+
+  <details>
+    <summary>음식 검색 - 정렬 필터</summary>
+    
+  ![음식 검색- 정렬 필터](https://github.com/user-attachments/assets/351fb8c0-1f19-4672-83e2-09f04b5f42d8)
+  </details>
+
+  <details>
+    <summary>음식 검색 - 계란말이 등록 후 장바구니 자동 추가</summary>
+    
+  ![음식 검색-계란말이 등록 후 장바구니 자동 추가](https://github.com/user-attachments/assets/3496f7d0-79f0-491e-bafc-e69550aec07b)
+  </details>
+
+  <details>
+    <summary>음식-검색-장바구니-추가</summary>
+    
+  ![음식-검색-장바구니-추가](https://github.com/user-attachments/assets/79ede635-ac01-4b47-8f8a-de7fc746db33)
+  </details>
+
+  <details>
+    <summary>음식-검색-정확도-평가</summary>
+    
+  ![음식-검색-정확도-평가](https://github.com/user-attachments/assets/009398db-33b0-4ca7-bbdf-148732f6c48a)
+
+  </details>
+    
+    
+  
+  <details>
+    <summary>음식-데이터-장바구니-수량-수정</summary>
+    
+  ![음식-데이터-장바구니-수량-수정](https://github.com/user-attachments/assets/cf57f48d-0867-46e0-9f36-48e08705e9c2)
+  </details>
+
+  <details>
+    <summary>음식-등록-치즈-계란말이</summary>
+    
+  ![음식-등록-치즈-계란말이](https://github.com/user-attachments/assets/d0f18c8f-31e8-40bc-b6aa-54adbbdcb8c9)
+  </details>
+
+  <details>
+    <summary>차단</summary>
+    
+  ![차단](https://github.com/user-attachments/assets/d6576039-e352-4571-9c6c-b55f1701cf11)
   </details>
 
 
