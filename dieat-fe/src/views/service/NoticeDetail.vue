@@ -24,7 +24,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-// import Footer from '@/components/common/Footer.vue'
+import Footer from '@/components/common/Footer.vue'
 
 const route = useRoute()
 const postId = route.params.id
