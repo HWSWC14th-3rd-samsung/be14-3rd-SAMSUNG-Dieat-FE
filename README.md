@@ -1,4 +1,4 @@
-# 🥗 Dieat - 감각적인 식단 기록 커뮤니티
+![WireFrame_2](https://github.com/user-attachments/assets/49db31a9-48df-4966-a621-fd8288a1865a)# 🥗 Dieat - 감각적인 식단 기록 커뮤니티
 ![Image](https://github.com/user-attachments/assets/f8d72c2d-e838-4b23-af4c-97b690810297)
 
 ---
@@ -33,27 +33,27 @@
 <details>
   <summary>로그인</summary>
   
-  ![로그인](https://github.com/user-attachments/assets/83205c06-a5a7-425b-9c70-c405ad292316)
+  ![로그인](https://github.com/user-attachments/assets/f45a3584-33ce-44a0-94c0-d99fb271da0a)
 </details>
 
 <details>
   <summary>음식데이터</summary>
 
-  ![음식데이터 ](https://github.com/user-attachments/assets/8263ebdb-e6f7-48d4-8be2-cf53d039dc7e)
+![음식데이터](https://github.com/user-attachments/assets/f875d862-172c-4d5b-b82e-972935c96e32)
 </details>
 
 
 <details>
-  <summary>식사등록</summary>
+  <summary>식사</summary>
+  <details>
+    <summary>식사등록</summary>
+    
+  ![식사등록](https://github.com/user-attachments/assets/25d2bd25-90ac-459c-9dbb-0a060fd297e8)
+  </details>
   
-![식사등록](https://github.com/user-attachments/assets/7effd71f-7a40-43fe-9d86-e3a42d8e8c2c)
 </details>
 
-<details>
-  <summary>식사수정및삭제</summary>
 
-  ![식사수정및삭제](https://github.com/user-attachments/assets/366c8f78-1a9a-434e-9f92-109e8e044264)
-</details>
 
 <details>
   <summary>식사식단불러오기</summary>
