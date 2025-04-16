@@ -1,6 +1,6 @@
 <template>
   <div class="notice-detail">
-    <h1 class="title">공지 사항</h1>
+    <h1 class="title" @click="goToList">공지 사항</h1>
     <div class="detail-box">
       <div class="meta-table">
         <div class="meta-row" v-if="post">
@@ -24,12 +24,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import Footer from '@/components/common/Footer.vue'
+// import Footer from '@/components/common/Footer.vue'
 
 const route = useRoute()
 const postId = route.params.id
 const isFromList = route.query.from === 'list'
 const post = ref(null)
+
+const goToList = () => router.push('/noticeLayout')
 
 onMounted(async () => {
   try {

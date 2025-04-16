@@ -23,7 +23,6 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import Header from '@/components/common/Header.vue'
 import PostDetailHeader from '@/components/post/free/PostHeader.vue'
 import PostContent from '@/components/post/free/PostContent.vue'
 import PostCommentInput from '@/components/post/free/PostCommentInput.vue'
