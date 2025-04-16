@@ -30,6 +30,86 @@
 ---
 
 ## 🖼️ Wire Frame
+<details>
+  <summary>로그인</summary>
+  
+  ![로그인](https://github.com/user-attachments/assets/83205c06-a5a7-425b-9c70-c405ad292316)
+</details>
+
+<details>
+  <summary>음식데이터</summary>
+
+  ![음식데이터 ](https://github.com/user-attachments/assets/8263ebdb-e6f7-48d4-8be2-cf53d039dc7e)
+</details>
+
+
+<details>
+  <summary>식사등록</summary>
+  
+![식사등록](https://github.com/user-attachments/assets/7effd71f-7a40-43fe-9d86-e3a42d8e8c2c)
+</details>
+
+<details>
+  <summary>식사수정및삭제</summary>
+
+  ![식사수정및삭제](https://github.com/user-attachments/assets/366c8f78-1a9a-434e-9f92-109e8e044264)
+</details>
+
+<details>
+  <summary>식사식단불러오기</summary>
+
+  ![식사식단불러오기](https://github.com/user-attachments/assets/6e4149ca-90b8-488f-b71b-83c2e606cd2b)
+</details>
+
+<details>
+  <summary>식단게시글 작성</summary>
+
+  ![식단게시글 작성](https://github.com/user-attachments/assets/6fbe9d46-9d28-4d7e-af98-8e806cdaecd3)
+</details>
+
+<details>
+  <summary>식단게시글 조회</summary>
+
+  ![식단게시글 조회](https://github.com/user-attachments/assets/088e3625-cf4b-46b9-9477-eaf6bdb2213a)
+</details>
+
+<details>
+  <summary>성공기 게시글</summary>
+
+  ![성공기게시글](https://github.com/user-attachments/assets/5fc1b3c6-0761-4eba-a003-9856a8bc559b)
+</details>
+
+<details>
+  <summary>자유게시글</summary>
+  
+  ![자유게시글](https://github.com/user-attachments/assets/c4bf5a58-ea61-4ae4-8542-9deeabbd7e0e)
+</details>
+
+<details>
+  <summary>마이페이지</summary>
+  
+  ![마이페이지](https://github.com/user-attachments/assets/69eb8a16-4381-4034-a4a9-931c42785775)
+  ![마이페이지 (2)](https://github.com/user-attachments/assets/9afd3eb1-5e24-48a3-a7f6-8612d01994ef)
+
+</details>
+
+<details>
+  <summary>공지사항</summary>
+
+  ![공지사항](https://github.com/user-attachments/assets/58488dc1-9d96-4c63-afca-7e175ceeaf07)
+</details>
+
+<details>
+  <summary>문의사항</summary>
+
+![문의사항](https://github.com/user-attachments/assets/c92d6751-31df-4537-8540-f286651dad72)
+</details>
+
+<details>
+  <summary>신고</summary>
+
+![신고](https://github.com/user-attachments/assets/7530bae6-7c57-49ce-99ae-866427250b49)
+</details>
 
 ---
 
