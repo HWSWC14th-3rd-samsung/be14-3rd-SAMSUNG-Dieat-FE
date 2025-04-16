@@ -1,11 +1,12 @@
 <template>
     <div class="notice-page">
         <h1 class="page-title">공지 사항</h1>
+
         <div class="card-list">
-            <div class="card" v-for="post in noticePosts" :key="post.id">
-                <RouterLink :to="`/noticeDetail/${post.id}?from=list`" class="card-title">
+            <div class="card" v-for="post in noticePosts" :key="post.id" @click="goToDetail(post.id)">
+                <div class="card-title" :class="{ 'animate-title': hoveredId === post.id }">
                     {{ post.title }}
-                </RouterLink>
+                </div>
                 <div class="card-meta">
                     <span>📅 {{ post.date }}</span>
                     <span>👁️ {{ post.count }}</span>
@@ -18,9 +19,16 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Footer from '@/components/common/Footer.vue'
 
+const router = useRouter()
 const noticePosts = ref([])
+const hoveredId = ref(null)
+
+function goToDetail(id) {
+    router.push(`/noticeDetail/${id}?from=list`)
+}
 
 onMounted(async () => {
     const res = await fetch('http://localhost:3000/notices')
@@ -28,14 +36,6 @@ onMounted(async () => {
     noticePosts.value = data.sort((a, b) => new Date(b.date) - new Date(a.date))
 })
 </script>
-
-<style scoped>
-.notice-page {
-    max-width: 1024px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-</style>
 
 <style scoped>
 .notice-page {
@@ -72,17 +72,8 @@ onMounted(async () => {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-.card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-
-.card-meta {
-    font-size: 0.9rem;
-    color: gray;
-    display: flex;
-    justify-content: space-between;
+.card:hover .card-title {
+    animation: pulseColor 1.2s infinite;
 }
 
 .card-title {
@@ -94,9 +85,11 @@ onMounted(async () => {
     transition: transform 0.2s ease;
 }
 
-.card-title:hover {
-    animation: pulseColor 1.2s infinite;
-    transform: scale(1.03);
+.card-meta {
+    font-size: 0.9rem;
+    color: gray;
+    display: flex;
+    justify-content: space-between;
 }
 
 @keyframes pulseColor {

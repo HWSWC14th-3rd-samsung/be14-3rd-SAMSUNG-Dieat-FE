@@ -1,6 +1,6 @@
 <template>
   <div class="notice-detail">
-    <h1 class="title" @click="goToList">공지 사항</h1>
+    <h1 class="title animated-title" @click="goToList">공지 사항</h1>
     <div class="detail-box">
       <div class="meta-table">
         <div class="meta-row" v-if="post">
@@ -23,10 +23,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Footer from '@/components/common/Footer.vue'
 
 const route = useRoute()
+const router = useRouter()
 const postId = route.params.id
 const isFromList = route.query.from === 'list'
 const post = ref(null)
@@ -114,5 +115,29 @@ onMounted(async () => {
   line-height: 1.6;
   font-size: 14px;
   white-space: pre-line;
+}
+
+.animated-title {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.animated-title:hover {
+  transform: scale(1.05);
+  animation: pulseColor 1.2s infinite;
+}
+
+@keyframes pulseColor {
+  0% {
+    color: var(--color-primary);
+  }
+
+  50% {
+    color: var(--color-accent);
+  }
+
+  100% {
+    color: var(--color-primary);
+  }
 }
 </style>
