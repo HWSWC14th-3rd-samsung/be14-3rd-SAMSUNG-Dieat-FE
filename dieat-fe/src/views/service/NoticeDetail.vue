@@ -1,54 +1,69 @@
 <template>
-  <div v-if="postId === '0'" class="notice-detail">
-    <h1 class="title">공지 사항</h1>
-
-    <button class="back-btn" @click="router.push('/noticeLayout')">
-      <img src="@/assets/service_img/gotoList.png" alt="목록"/>
-    </button>
-
+  <div class="notice-detail">
+    <h1 class="title animated-title" @click="goToList">공지 사항</h1>
     <div class="detail-box">
       <div class="meta-table">
-        <div class="meta-row">
-          <span class="label">제목</span>
+        <div class="meta-row" v-if="post">
           <span class="value">{{ post.title }}</span>
-          <span class="date">작성일자: {{ post.date }}</span>
+          <span class="date">작성일: {{ post.date }} | 조회수: {{ post.count }}</span>
         </div>
       </div>
-
       <div class="content-box">
-        <p>저희 서비스는 <strong>2025년 4월 16일 이후</strong> 이후로 잠시 중단될 예정입니다.<br />
-        그동안 많은 이용해주셔서 감사합니다.</p>
-        <p>더 좋은 서비스로 여러분들을 찾아뵙겠습니다.</p>
+        <template v-if="post">
+          <p v-for="(line, i) in post.content.split('\n')" :key="i">{{ line }}</p>
+        </template>
+        <template v-else>
+          <p style="color: red; text-align: center;">해당 게시글은 존재하지 않습니다.</p>
+        </template>
       </div>
     </div>
   </div>
-
-  <div v-else style="text-align: center; margin-top: 5rem;">
-    <h2 style="color: red;">해당 게시글은 존재하지 않습니다.</h2>
-  </div>
-  <Footer></Footer>
+  <Footer />
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
-import Header from '@/components/common/Header.vue';
-import Footer from '@/components/common/Footer.vue';
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import Footer from '@/components/common/Footer.vue'
 
-const route = useRoute();
-const router = useRouter();
-const postId = route.params.id;
+const route = useRoute()
+const router = useRouter()
+const postId = route.params.id
+const isFromList = route.query.from === 'list'
+const post = ref(null)
 
-// 0번 게시물만 허용
-const post = {
-  title: '공지사항입니다. 공지사항',
-  date: '2025-03-27 03:24:23',
-  count: '18',
-};
+const goToList = () => router.push('/noticeLayout')
+
+onMounted(async () => {
+  try {
+    const res = await fetch(`http://localhost:3000/notices/${postId}`)
+    if (!res.ok) return
+    const fetched = await res.json()
+
+    const viewedKey = `viewed_notice_${postId}`
+    const alreadyViewed = sessionStorage.getItem(viewedKey)
+
+    if (isFromList || !alreadyViewed) {
+      const updatedCount = Number(fetched.count || 0) + 1
+      await fetch(`http://localhost:3000/notices/${postId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ count: updatedCount })
+      })
+      sessionStorage.setItem(viewedKey, 'true')
+      fetched.count = updatedCount
+    }
+
+    post.value = fetched
+  } catch (err) {
+    console.error('상세 요청 실패:', err)
+  }
+})
 </script>
 
 <style scoped>
 .notice-detail {
-  max-width: 800px;
+  max-width: 1024px;
   margin: 3rem auto;
   padding: 1rem;
 }
@@ -56,14 +71,6 @@ const post = {
 .title {
   text-align: center;
   margin-bottom: 1.5rem;
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  
-  cursor: pointer;
-  margin-bottom: 50px;
 }
 
 .detail-box {
@@ -88,12 +95,6 @@ const post = {
   flex-wrap: wrap;
 }
 
-.label {
-  font-weight: bold;
-  margin-right: 0.5rem;
-  font-size: 23px;
-}
-
 .value {
   flex: 1;
   font-weight: 500;
@@ -112,6 +113,31 @@ const post = {
   border-radius: 8px;
   padding: 1.2rem;
   line-height: 1.6;
-  font-size: 18px;
+  font-size: 14px;
+  white-space: pre-line;
+}
+
+.animated-title {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.animated-title:hover {
+  transform: scale(1.05);
+  animation: pulseColor 1.2s infinite;
+}
+
+@keyframes pulseColor {
+  0% {
+    color: var(--color-primary);
+  }
+
+  50% {
+    color: var(--color-accent);
+  }
+
+  100% {
+    color: var(--color-primary);
+  }
 }
 </style>

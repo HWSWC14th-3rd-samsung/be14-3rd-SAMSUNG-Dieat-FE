@@ -1,86 +1,108 @@
 <template>
-    <div>
-        <div class="breadcrumb">
-            <RouterLink to="/" class="text-link">Home &gt; </RouterLink>
-            <span>Service &gt; </span>
-            <RouterLink to="/noticeLayout" class="text-link">공지 사항</RouterLink>
+    <div class="notice-page">
+        <h1 class="page-title">공지 사항</h1>
+
+        <div class="card-list">
+            <div class="card" v-for="post in noticePosts" :key="post.id" @click="goToDetail(post.id)">
+                <div class="card-title" :class="{ 'animate-title': hoveredId === post.id }">
+                    {{ post.title }}
+                </div>
+                <div class="card-meta">
+                    <span>📅 {{ post.date }}</span>
+                    <span>👁️ {{ post.count }}</span>
+                </div>
+            </div>
         </div>
-        <h1>공지 사항</h1>
-        <img src="@/assets/service_img/searching.png" alt="searching bar" class="searchingBar-img">
-
-        <ul class="post-list">
-            <li v-for="(post, index) in posts" :key="index" class="post-item">
-                <h3>{{ post.title }}</h3>
-                <p class="meta">일시: {{ post.date }} | 조회수: {{ post.count }}</p>
-            </li>
-        </ul>
     </div>
-
-    <div class="board-wrapper">
-        <ServiceTable
-            :posts="noticePosts"
-            titleHeader="공지 제목"
-            :useLink="true"
-            linkPrefix="/noticeDetail"
-            />
-    </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <Footer></Footer>
+    <Footer />
 </template>
 
 <script setup>
-    import Header from '@/components/common/Header.vue';
-    import Footer from '@/components/common/Footer.vue';
-    import ServiceTable from './ServiceTable.vue';
-    import { ref } from 'vue';
-    
-    const noticePosts = ref([
-        { title: '공지사항입니다. 공지사항', date: '2025-03-27', count: '18' },
-        { title: 'Dieat 서비스 안내', date: '2025-03-27', count: '18' },
-        { title: '3월 업데이트 안내', date: '2025-03-24', count: '65' },
-        { title: '시스템 점검 시간 안내', date: '2025-03-14', count: '69' },
-        { title: '공지사항에는', date: '2025-03-11', count: '73' },
-        { title: '또 무슨 공지가 있을까요', date: '2025-03-08', count: '99' },
-        { title: '그래서 저희의 요점은', date: '2025-03-01', count: '123' },
-        { title: '다잇, 삼성 사랑.', date: '2025-02-27', count: '232' }
-    ])
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Footer from '@/components/common/Footer.vue'
+
+const router = useRouter()
+const noticePosts = ref([])
+const hoveredId = ref(null)
+
+function goToDetail(id) {
+    router.push(`/noticeDetail/${id}?from=list`)
+}
+
+onMounted(async () => {
+    const res = await fetch('http://localhost:3000/notices')
+    const data = await res.json()
+    noticePosts.value = data.sort((a, b) => new Date(b.date) - new Date(a.date))
+})
 </script>
 
 <style scoped>
+.notice-page {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--color-background);
+}
 
-    .breadcrumb {
-        display: block;
-        text-align: right;
-        margin-top: 1rem;
-        margin-right: 3rem;
-        color: gray;
-        flex-wrap: nowrap;
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover .card-title {
+    animation: pulseColor 1.2s infinite;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #222;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.card-meta {
+    font-size: 0.9rem;
+    color: gray;
+    display: flex;
+    justify-content: space-between;
+}
+
+@keyframes pulseColor {
+    0% {
+        color: var(--color-primary);
     }
 
-    .text-link {
-        color: inherit;
-        text-decoration: none;
-        font-weight: normal;
-        cursor: pointer;
+    50% {
+        color: var(--color-accent);
     }
 
-    h1 {
-        text-align: center;
+    100% {
+        color: var(--color-primary);
     }
-
-    .searchingBar-img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 6rem;
-    }
-
-    .board-wrapper {
-        padding: 2rem;
-        max-width: 800px;
-        margin: 0 auto;
-    }
+}
 </style>
