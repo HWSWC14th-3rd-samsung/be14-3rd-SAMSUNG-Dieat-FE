@@ -1,4 +1,4 @@
-![WireFrame_2](https://github.com/user-attachments/assets/49db31a9-48df-4966-a621-fd8288a1865a)# 🥗 Dieat - 감각적인 식단 기록 커뮤니티
+# 🥗 Dieat - 감각적인 식단 기록 커뮤니티
 ![Image](https://github.com/user-attachments/assets/f8d72c2d-e838-4b23-af4c-97b690810297)
 
 ---
